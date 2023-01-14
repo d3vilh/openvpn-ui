@@ -1,0 +1,57 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>OpenVPN</title>
+{{end}}
+
+{{define "body"}}
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Edit your profile</h3>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+  <form role="form" action="{{urlfor "ProfileController.Post"}}" method="post">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="name">Login</label>
+        <input type="text" class="form-control" id="login" name="Login" disabled
+          value="{{ .profile.Login }}">
+      </div>
+      <div class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}" >
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="Name" placeholder="Enter name"
+          value="{{ .profile.Name }}">
+        <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+      </div>
+      <div class="form-group {{if field_error_exist .validation "Email" }}has-error{{end}}">
+        <label for="email">Email address</label>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+          <input type="email" class="form-control" id="email" name="Email" placeholder="Enter email"
+            value="{{ .profile.Email }}">
+        </div>
+        <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Email" }}</span>
+      </div>
+      <div class="form-group {{if field_error_exist .validation "Password" }}has-error{{end}}">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="Password" placeholder="Password">
+        <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Password" }}</span>
+      </div>
+      <div class="form-group {{if field_error_exist .validation "Repassword" }}has-error{{end}}">
+        <label for="Repassword">Repeat password</label>
+        <input type="password" class="form-control" id="Repassword" name="Repassword" placeholder="Repeat password">
+        <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Repassword" }}</span>
+      </div>
+      {{ .xsrfdata }}
+    </div>
+    <!-- /.box-body -->
+
+    <div class="box-footer">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+<!-- /.box -->
+{{end}}

@@ -1,0 +1,89 @@
+swagger: "2.0"
+info:
+  title: OpenVPN API
+  description: REST API allows you to control and monitor your OpenVPN server
+  version: 1.0.0
+  contact:
+    email: adam.walach@gmail.com
+basePath: /api/v1
+paths:
+  /session/:
+    get:
+      tags:
+      - session
+      description: List vpn sessions
+      operationId: APISessionController.list
+      responses:
+        "200":
+          description: request success
+        "400":
+          description: request failure
+    delete:
+      tags:
+      - session
+      description: Delete (kill) session
+      operationId: APISessionController.Kill
+      parameters:
+      - in: body
+        name: body
+        description: CommonName of client to kill
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.KillParams'
+      responses:
+        "200":
+          description: request success
+        "400":
+          description: request failure
+  /signal/:
+    post:
+      tags:
+      - signal
+      description: Sends signal to OpenVPN daemon
+      operationId: APISignalController.Send signal
+      parameters:
+      - in: body
+        name: body
+        description: Signal to send
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.SignalParams'
+      responses:
+        "200":
+          description: request success
+        "400":
+          description: request failure
+  /sysload/:
+    get:
+      tags:
+      - sysload
+      description: Shows OS stats
+      operationId: APISysloadController.Get system info
+      responses:
+        "200":
+          description: request success
+        "400":
+          description: request failure
+definitions:
+  controllers.KillParams:
+    title: KillParams
+    type: object
+    properties:
+      cname:
+        type: string
+  controllers.SignalParams:
+    title: SignalParams
+    type: object
+    properties:
+      sname:
+        type: string
+tags:
+- name: session
+  description: |
+    APISessionController manages vpn sessions
+- name: sysload
+  description: |
+    APISysloadController provides system information
+- name: signal
+  description: |
+    APISignalController sends signals to OpenVPN daemon

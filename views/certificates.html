@@ -1,0 +1,204 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>OpenVPN - Settings</title>
+{{end}}
+
+{{define "body"}}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Clients certificates</h3>
+
+      </div>
+      <!-- /.box-header -->
+
+      <div class="box-body">
+        <!--if .ovstatus -->
+        <div class="table-responsive">
+          <table class="table no-margin">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>State</th>
+              <th>Static IP</th>
+              <th>Expiration</th>
+              <th>Revocation</th>
+              <th>Serial</th>
+              <th>Details</th>
+              <th>Revoke</th>
+              <th>Delete</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {{range .certificates}}
+              {{ if ne .Details.Name "server"}}
+              <tr>
+                  <td>
+                    <a href="{{urlfor "CertificatesController.Download" ":key" .Details.Name}}">
+                      {{ .Details.Name }}
+                    </a>
+                  </td>
+                  {{if eq .Revocation ""}}
+                    <td>
+                      <img src="/static/img/check-circle-fill.svg" width="16" height="16" alt="Valid">
+                    </td>
+                  {{else}}
+                    <td>
+                      <img src="/static/img/x-circle-fill.svg" width="16" height="16" alt="Invalid">
+                    </td>
+                  {{end}}
+                    <td>
+                      {{ .Details.LocalIP }}
+                    </td>
+
+                  {{if eq .Revocation ""}}
+                    <td>
+                      <span class="label label-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
+                    </td>
+                  {{else}}
+                    <td>
+                      <span class="label label-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
+                    </td>
+                  {{end}}
+                  {{if eq .Revocation ""}}
+                    <td></td>
+                  {{else}}
+                    <td>
+                      <span class="label label-danger">{{ dateformat .RevocationT "2006-01-02 15:04"}}</span>
+                    </td>
+                  {{end}}
+                    <td>
+                      {{ .Serial }}
+                    </td>
+                    <td>
+                      <span class="label label-warning">CN: {{ .Details.CN }}</span>
+                      <span class="label label-warning">Email: {{ .Details.Email }}</span>
+                    </td>
+                  {{ if eq .Revocation ""}}
+                    <td>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
+                    </td>
+                  {{else}}
+                    <td></td>
+                  {{end}}
+                  {{ if eq .Revocation ""}}
+                    <td></td>
+                  {{else}}
+                    <td>
+                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial}}" class="btn btn-danger btn-sm" title="Burn">Remove</a>
+                    </td>
+                  {{end}}
+              </tr>
+              {{ end }}
+            {{end}}
+
+            </tbody>
+          </table>
+        </div>
+        <!-- /.table-responsive -->
+      </div>
+      <!--else
+          Fix your configuration
+      end-->
+      <div class="box-footer clearfix">
+      </div>
+      <!--
+      <div class="box-footer clearfix">
+        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+      </div>
+    -->
+      <!-- /.box-footer -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Create a new certificate</h3>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+  <form role="form" action="{{urlfor "CertificatesController.Post"}}" method="post">
+    <div class="box-body">
+      <table class="create-new-cert">
+        <thead>
+          <tr>
+            <th>
+              <label for="name">Name</label>
+            </th>
+            <th>
+              <label for="name">Passphrase (Optional)</label>
+            </th>
+            <th>
+              <label for="name">Static IP (Optional)</label>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}">
+              <input type="text" class="form-control" placeholder="Enter name" id="Name" name="Name">
+            </td>
+            <td class="form-group">
+              <input type="password" class="form-control" placeholder="Enter Password" id="password-input" id="passphrase" name="passphrase">
+              <a href="#" class="password-control" title="Show or Hide Password"></a>
+            </td>
+            <td class="form-group">
+              <input type="text" class="form-control" placeholder="Enter Static IP" id="staticip" name="staticip">
+            </td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td class="form-group">
+              <span class="help-block">Common name of the certificate.&nbsp;<span>
+            </td>
+            <td class="form-group">
+              <span class="help-block">Passphrase is used for privte key protection.&nbsp;</span>
+            </td>
+            <td class="form-group">
+              <span class="help-block">Client Static IP used as a local Client IP for subnet split.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+    </div>
+    <!-- /.box-body -->
+
+    <div class="box-footer">
+      <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+  </form>
+</div>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Restart OpenVPN</h3>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <span id="helpBlock" class="help-block">If you are revoking Certificate, don't forget to restart your OpenVPN container to disconnect all active client sessions and make revocation to take the effect.<br/></span>
+  </div>
+  <div class="box-footer">
+    <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger" title="Restart OpenVPN container">Restart</a> &nbsp; &nbsp; Restart can take up to the 7 seconds.
+  </div>
+  <div class="box-footer clearfix">
+  </div>
+  <!--
+  <div class="box-footer clearfix">
+    <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+  </div>
+-->
+  <!-- /.box-footer -->
+</div>
+{{end}}

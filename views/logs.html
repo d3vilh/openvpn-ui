@@ -1,0 +1,17 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>OpenVPN - Logs</title>
+{{end}}
+
+{{define "body"}}
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Last 200 lines of OpenVPN log</h3>
+  </div>
+  <pre style="font-size: 13px;line-height: 1.4em;">
+{{ range $i, $line := .logs }}{{$line}}
+{{ end }}</pre>
+</div>
+<!-- /.box -->
+{{end}}

@@ -1,0 +1,5 @@
+{{if .}}
+  {{ range $key, $value := . }}
+    <i class="fa fa-times-circle-o"></i> {{ $key }}: {{ $value }}<br/>
+  {{ end }}
+{{end}}

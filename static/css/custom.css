@@ -1,0 +1,21 @@
+.info-box-number2{
+  font-weight:bold;
+  font-size:18px;
+}
+
+.info-box-text2{
+  display:block;
+  font-size:18px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.info-box-number3{
+  font-weight:bold;
+  font-size:11px;
+  overflow: visible;
+  word-wrap: break-word;
+  white-space: initial;
+  display: block;
+}
