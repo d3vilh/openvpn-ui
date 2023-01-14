@@ -11,27 +11,22 @@ It does include 2 different Docker containers:
  - OpenVPN Back-End container (openvpn) and 
  - OpenVPN UI WEB based Front-End container (openvpn-ui) for managing OpenVPN server.
 
-## Original Features of [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) Project
+## Features
 
 * status page that shows server statistics and list of connected clients
 * easy creation of client certificates
 * ability to download client certificates as a zip package with client configuration inside
 * log preview
-* modification of OpenVPN configuration file through web interface
-
-[Original Readme](./Original_README.md)
-
-## Improvments
-* Added support for ARM32v7 and ARM64v8 architecture (Raspberry Pi)
+* modification of OpenVPN configuration file through web interface i.e:
+* Downloading generated clients certificate as .OVPN file
+* Certificates revocation and removal via UI
+* Back-End OpenVPN container restart via UI
+* Static IP configuration for clients
+* Secret passfprase for certificates generation
+* Support ARM32v7 and ARM64v8 architecture (Raspberry Pi)
 * Added support for Docker Compose
 * EasyRSA 3.X support
 * Added support for Admin user and password creation via environment variables
-* New feature for downloading generated clients certificate as .OVPN file via WEB UI
-* New feature for Certificates revocation via WEB UI
-* New feature for Certificates removal via WEB UI
-* New feature for Back-End OpenVPN container restart via WEB UI
-* New feature for Static IP configuration for clients
-* New feature - secret passfprase for certificates generation
 
 ### Run this image using a `docker-compose.yml` file
 
@@ -121,7 +116,7 @@ sudo docker run openvpn \
 ```
 
 ### Build Docker image by itself for Raspberry Pi computer
-To build the image by yourself you'll have to follow [openvpn-web-ui-docker-build](https://github.com/d3vilh/openvpn-web-ui-docker-build) instructions.
+To build the image by yourself you'll have to follow [openvpn-ui-docker-build](https://github.com/d3vilh/openvpn-ui-docker-build) instructions.
 
 ### Documentation
 Most of documentation can be found in the [main README.md](https://github.com/d3vilh/raspberry-gateway) file, if you want to run it without anything else you'll have to edit the [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L20) (which currently points to the PiHole DNS Server) and
