@@ -9,7 +9,7 @@ Goal: create quick to deploy and easy to use solution that makes work with small
 
 It does include 2 different Docker containers:
  - OpenVPN Back-End container (openvpn) and 
- - OpenVPN WEB UI Front-End container (openvpn-ui) for managing OpenVPN server.
+ - OpenVPN UI WEB based Front-End container (openvpn-ui) for managing OpenVPN server.
 
 ## Original Features of [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) Project
 
@@ -28,8 +28,10 @@ It does include 2 different Docker containers:
 * Added support for Admin user and password creation via environment variables
 * New feature for downloading generated clients certificate as .OVPN file via WEB UI
 * New feature for Certificates revocation via WEB UI
+* New feature for Certificates removal via WEB UI
 * New feature for Back-End OpenVPN container restart via WEB UI
-* New feature for Static IP configuration for clients (work in progress)
+* New feature for Static IP configuration for clients
+* New feature - secret passfprase for certificates generation
 
 ### Run this image using a `docker-compose.yml` file
 
