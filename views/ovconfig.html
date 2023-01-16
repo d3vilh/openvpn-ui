@@ -21,6 +21,50 @@
       </div>
 
       <div class="form-group">
+        <label for="name">Your Home subnet</label>
+        <input type="text" class="form-control" name="PushRoute" id="PushRoute" placeholder="10.0.60.0 255.255.255.0"
+          value="{{ .Settings.PushRoute }}">
+        <span id="helpBlock" class="help-block">Used to push route for Home Network to access for &quot;VLAN1&quot; (Trusted VPN) subnet clients.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Trusted VPN subnet</label>
+        <input type="text" class="form-control" name="Server" id="Server" placeholder="10.0.70.0 255.255.255.0"
+          value="{{ .Settings.Server }}">
+        <span id="helpBlock" class="help-block">Configures server mode and supply a VPN subnet
+            for OpenVPN to draw &quot;VLAN1&quot; (Trusted VPN) client addresses from.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Guest VPN subnet</label>
+        <input type="text" class="form-control" name="Route" id="Route" placeholder="10.0.71.0 255.255.255.0"
+          value="{{ .Settings.Route }}">
+        <span id="helpBlock" class="help-block">Used to route for Guest Network to for &quot;VLAN2&quot; (Guest Users) subnet clients.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">DNS Server 1 (optional. Using 8.8.8.8 by default)</label>
+        <input type="text" class="form-control" name="DNSServer1" id="DNSServer1" placeholder="Enter the first DNS server"
+          value="{{ .Settings.DNSServer1 }}">
+        <span class="help-block">DNS Server 1 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">DNS Server #2 (optional. Using 1.0.0.1 by default)</label>
+        <input type="text" class="form-control" name="DNSServer2" id="DNSServer2" placeholder="Enter the second DNS server"
+          value="{{ .Settings.DNSServer2 }}">
+        <span class="help-block">DNS Server 2 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">MaxClients</label>
+        <input type="text" class="form-control" name="MaxClients" id="MaxClients" placeholder="100"
+          value="{{ .Settings.MaxClients }}">
+        <span id="helpBlock" class="help-block">The maximum number of concurrently connected
+            clients we want to allow.</span>
+      </div>
+
+      <div class="form-group">
         <label for="name">Dev</label>
         <input type="text" class="form-control" name="Device" id="Device" placeholder="tun"
           value="{{ .Settings.Device }}">
@@ -41,19 +85,6 @@
         <span class="help-block">TCP or UDP server</span>
       </div>
 
-      <div class="form-group">
-        <label for="name">DNS Server 1 (optional. Using 8.8.8.8 by default)</label>
-        <input type="text" class="form-control" name="DNSServer1" id="DNSServer1" placeholder="Enter the first DNS server"
-          value="{{ .Settings.DNSServer1 }}">
-        <span class="help-block">DNS Server 1 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">DNS Server #2 (optional. Using 1.0.0.1 by default)</label>
-        <input type="text" class="form-control" name="DNSServer2" id="DNSServer2" placeholder="Enter the second DNS server"
-          value="{{ .Settings.DNSServer2 }}">
-        <span class="help-block">DNS Server 2 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.</span>
-      </div>
       <div class="form-group">
         <label for="name">CA cert</label>
         <input type="text" class="form-control" name="Ca" id="Ca" placeholder="pki/ca.crt"
@@ -103,29 +134,6 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Server</label>
-        <input type="text" class="form-control" name="Server" id="Server" placeholder="server 10.0.70.0 255.255.255.0"
-          value="{{ .Settings.Server }}">
-        <span id="helpBlock" class="help-block">Configures server mode and supply a VPN subnet
-            for OpenVPN to draw client addresses from.</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Push Route for Home subnet</label>
-        <input type="text" class="form-control" name="PushRoute" id="PushRoute" placeholder="push &quot;route 10.0.60.0 255.255.255.0&quot;"
-          value="{{ .Settings.PushRoute }}">
-        <span id="helpBlock" class="help-block">Configures route to Home Network to access for &quot;VLAN1&quot; (Trusted Users VPN Subnet) a VPN subnet.</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Route for VPN Guest subnet</label>
-        <input type="text" class="form-control" name="Route" id="Route" placeholder="route 10.0.71.0 255.255.255.0"
-          value="{{ .Settings.Route }}">
-        <span id="helpBlock" class="help-block">Configures route for clients from &quot;VLAN2&quot; (Guest Users Subnet)
-            for OpenVPN to route client addresses.</span>
-      </div>
-
-      <div class="form-group">
         <label for="name">Keepalive</label>
         <input type="text" class="form-control" name="Keepalive" id="Keepalive" placeholder="10 120"
           value="{{ .Settings.Keepalive }}">
@@ -150,20 +158,14 @@
             previously assigned.</span>
       </div>
 
-      <div class="form-group">
-        <label for="name">MaxClients</label>
-        <input type="text" class="form-control" name="MaxClients" id="MaxClients" placeholder="100"
-          value="{{ .Settings.MaxClients }}">
-        <span id="helpBlock" class="help-block">The maximum number of concurrently connected
-            clients we want to allow.</span>
-      </div>
-
+   <!-- Commented for now as not used
       <div class="form-group">
         <label for="name">Management</label>
         <input type="text" class="form-control" name="Management" id="Management" placeholder="0.0.0.0 2080"
           value="{{ .Settings.Management }}">
         <span id="helpBlock" class="help-block"></span>
       </div>
+    -->
 
       {{ .xsrfdata }}
     </div>
