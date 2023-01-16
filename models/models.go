@@ -87,7 +87,7 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 		Config: config.Config{
 			Device:              "tun",
 			Port:                1194,
-			ClientPort:          12235,
+			ClientPort:          12234,
 			Proto:               "udp",
 			DNSServer1:          "8.8.8.8",
 			DNSServer2:          "1.0.0.1",

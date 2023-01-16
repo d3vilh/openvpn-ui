@@ -7,7 +7,7 @@
 {{define "body"}}
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Edit configuration</h3>
+    <h3 class="box-title">Standard Configuration</h3>
   </div>
   <!-- /.box-header -->
   <!-- form start -->
@@ -62,6 +62,10 @@
           value="{{ .Settings.MaxClients }}">
         <span id="helpBlock" class="help-block">The maximum number of concurrently connected
             clients we want to allow.</span>
+      </div>
+
+      <div class="box-header with-border">
+        <h3 class="box-title">Expert configuration</h3>
       </div>
 
       <div class="form-group">

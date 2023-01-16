@@ -11,7 +11,7 @@ import (
 var defaultConfig = Config{
 	Management:          "0.0.0.0 2080",
 	Port:                1194,
-	ClientPort:          12235,
+	ClientPort:          12234,
 	Proto:               "udp",
 	Device:              "tun",
 	Ca:                  "pki/ca.crt",
