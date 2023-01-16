@@ -14,10 +14,10 @@ keysize {{ .Keysize }}
 auth {{ .Auth }}
 dh {{ .Dh }}
 
-server {{ .Server }}}
+server {{ .Server }}
 route {{ .Route }}
 ifconfig-pool-persist {{ .IfconfigPoolPersist }}
-push {{ .PushRoute }}
+push "route {{ .PushRoute }}"
 push "dhcp-option DNS {{ .DNSServer1 }}"
 push "dhcp-option DNS {{ .DNSServer2 }}"
 

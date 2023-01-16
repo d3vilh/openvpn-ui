@@ -9,7 +9,7 @@ persist-tun
 persist-key
 remote-cert-tls server
 cipher {{ .Cipher }}
-keysize 256
+keysize {{ .Keysize }}
 auth {{ .Auth }}
 auth-nocache
 tls-client

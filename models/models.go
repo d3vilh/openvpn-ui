@@ -91,6 +91,7 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 			Proto:               "udp",
 			DNSServer1:          "8.8.8.8",
 			DNSServer2:          "1.0.0.1",
+			PushRoute:           "10.0.60.0 255.255.255.0",
 			Cipher:              "AES-256-CBC",
 			Keysize:             256,
 			Auth:                "SHA512",
