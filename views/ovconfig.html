@@ -21,8 +21,15 @@
       </div>
 
       <div class="form-group">
+        <label for="name">Dev</label>
+        <input type="text" class="form-control" name="Device" id="Device" placeholder="to tun or to tap, that's the question!"
+          value="{{ .Settings.Device }}">
+        <span class="help-block">Which tunnel(tun) or bridge(tap) should OpenVPN use</span>
+      </div>
+
+      <div class="form-group">
         <label for="name">Port</label>
-        <input type="text" class="form-control" name="Port" id="Port" placeholder=""
+        <input type="text" class="form-control" name="Port" id="Port" placeholder="tcp or udp ports"
           value="{{ .Settings.Port }}">
         <span class="help-block">Which TCP/UDP port should OpenVPN listen on</span>
       </div>
@@ -34,6 +41,19 @@
         <span class="help-block">TCP or UDP server</span>
       </div>
 
+      <div class="form-group">
+        <label for="name">DNS Server 1 (optional. Using 8.8.8.8 by default)</label>
+        <input type="text" class="form-control" name="DNSServer1" id="DNSServer1" placeholder="Enter the first DNS server"
+          value="{{ .Settings.DNSServer1 }}">
+        <span class="help-block">DNS Server 1 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">DNS Server #2 (optional. Using 1.0.0.1 by default)</label>
+        <input type="text" class="form-control" name="DNSServer2" id="DNSServer2" placeholder="Enter the second DNS server"
+          value="{{ .Settings.DNSServer2 }}">
+        <span class="help-block">DNS Server 2 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.</span>
+      </div>
       <div class="form-group">
         <label for="name">CA cert</label>
         <input type="text" class="form-control" name="Ca" id="Ca" placeholder="Enter CA certificate path"
@@ -48,7 +68,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Server key</label>
+        <label for="name">Server Private key</label>
         <input type="text" class="form-control" name="Key" id="Key" placeholder="Enter server private key path"
           value="{{ .Settings.Key }}">
         <span id="helpBlock" class="help-block"></span>

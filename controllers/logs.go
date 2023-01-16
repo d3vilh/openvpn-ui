@@ -44,7 +44,8 @@ func (c *LogsController) Get() {
 	var logs []string
 	for scanner.Scan() {
 		line := scanner.Text()
-		if strings.Index(line, " MANAGEMENT: ") == -1 {
+		//	if strings.Index(line, " MANAGEMENT: ") == -1 {
+		if !strings.Contains(line, " MANAGEMENT: ") {
 			logs = append(logs, strings.Trim(line, "\t"))
 		}
 	}

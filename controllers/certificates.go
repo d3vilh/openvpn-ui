@@ -3,7 +3,7 @@ package controllers
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"text/template"
 
@@ -51,7 +51,7 @@ func (c *CertificatesController) Download() {
 		beego.Error(err)
 		return
 	}
-	data, err := ioutil.ReadFile(cfgPath)
+	data, err := os.ReadFile(cfgPath)
 	if err != nil {
 		beego.Error(err)
 		return
@@ -124,7 +124,7 @@ func (c *CertificatesController) Revoke() {
 func (c *CertificatesController) Restart() {
 	lib.Restart()
 	c.Redirect(c.URLFor("CertificatesController.Get"), 302)
-	return
+	// return
 }
 
 // @router /certificates/burn/:key/:serial [get]
@@ -161,18 +161,18 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	cfg := config.New()
 	keysPathCa := filepath.Join(state.GlobalCfg.OVConfigPath, "pki")
 	cfg.ServerAddress = state.GlobalCfg.ServerAddress
-	ca, err := ioutil.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
+	ca, err := os.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
 	if err != nil {
 		return "", err
 	}
 	cfg.Ca = string(ca)
-	cert, err := ioutil.ReadFile(filepath.Join(keysPath, name+".crt"))
+	cert, err := os.ReadFile(filepath.Join(keysPath, name+".crt"))
 	if err != nil {
 		return "", err
 	}
 	cfg.Cert = string(cert)
 	keysPathKey := filepath.Join(state.GlobalCfg.OVConfigPath, "pki/private")
-	key, err := ioutil.ReadFile(filepath.Join(keysPathKey, name+".key"))
+	key, err := os.ReadFile(filepath.Join(keysPathKey, name+".key"))
 	if err != nil {
 		return "", err
 	}
@@ -209,7 +209,7 @@ func GetText(tpl string, c config.Config) (string, error) {
 }
 
 func SaveToFile(tplPath string, c config.Config, destPath string) error {
-	tpl, err := ioutil.ReadFile(tplPath)
+	tpl, err := os.ReadFile(tplPath)
 	if err != nil {
 		return err
 	}
@@ -219,5 +219,5 @@ func SaveToFile(tplPath string, c config.Config, destPath string) error {
 		return err
 	}
 
-	return ioutil.WriteFile(destPath, []byte(str), 0644)
+	return os.WriteFile(destPath, []byte(str), 0644)
 }

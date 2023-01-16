@@ -4,14 +4,13 @@ import (
 	"html/template"
 	"path/filepath"
 
-	"github.com/d3vilh/openvpn-ui/state"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
+	"github.com/d3vilh/openvpn-ui/state"
 )
 
 type OVConfigController struct {

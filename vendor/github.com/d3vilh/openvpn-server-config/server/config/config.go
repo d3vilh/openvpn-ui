@@ -3,7 +3,7 @@ package config
 // html/template changed to text/template
 import (
 	"bytes"
-	"io/ioutil"
+	"os"
 	"text/template"
 )
 
@@ -25,8 +25,8 @@ var defaultConfig = Config{
 	Route:               "10.0.71.0 255.255.255.0",
 	IfconfigPoolPersist: "pki/ipp.txt",
 	PushRoute:           "route \"10.0.60.0 255.255.255.0\"",
-	DNSServer1:          "dhcp-option DNS 8.8.8.8",
-	DNSServer2:          "dhcp-option DNS 1.0.0.1",
+	DNSServer1:          "8.8.8.8",
+	DNSServer2:          "1.0.0.1",
 	Keepalive:           "10 120",
 	MaxClients:          100,
 }
@@ -77,7 +77,7 @@ func GetText(tpl string, c Config) (string, error) {
 
 // SaveToFile reads teamplate and writes result to destination file
 func SaveToFile(tplPath string, c Config, destPath string) error {
-	template, err := ioutil.ReadFile(tplPath)
+	template, err := os.ReadFile(tplPath)
 	if err != nil {
 		return err
 	}
@@ -87,5 +87,5 @@ func SaveToFile(tplPath string, c Config, destPath string) error {
 		return err
 	}
 
-	return ioutil.WriteFile(destPath, []byte(str), 0644)
+	return os.WriteFile(destPath, []byte(str), 0644)
 }
