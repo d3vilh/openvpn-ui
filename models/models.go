@@ -61,11 +61,12 @@ func CreateDefaultUsers() {
 
 func CreateDefaultSettings() (*Settings, error) {
 	s := Settings{
-		Profile:       "default",
-		MIAddress:     beego.AppConfig.String("OpenVpnManagementAddress"),
-		MINetwork:     beego.AppConfig.String("OpenVpnManagementNetwork"),
-		ServerAddress: beego.AppConfig.String("OpenVpnServerAddress"),
-		OVConfigPath:  beego.AppConfig.String("OpenVpnPath"),
+		Profile:           "default",
+		MIAddress:         beego.AppConfig.String("OpenVpnManagementAddress"),
+		MINetwork:         beego.AppConfig.String("OpenVpnManagementNetwork"),
+		ServerAddress:     beego.AppConfig.String("OpenVpnServerAddress"),
+		OpenVpnServerPort: beego.AppConfig.String("OpenVpnServerPort"),
+		OVConfigPath:      beego.AppConfig.String("OpenVpnPath"),
 	}
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {
@@ -88,8 +89,8 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 			Port:                1194,
 			ClientPort:          12235,
 			Proto:               "udp",
-			DNSServer1:          "# push \"dhcp-option DNS 8.8.8.8\"",
-			DNSServer2:          "# push \"dhcp-option DNS 1.0.0.1\"",
+			DNSServer1:          "8.8.8.8",
+			DNSServer2:          "1.0.0.1",
 			Cipher:              "AES-256-CBC",
 			Keysize:             256,
 			Auth:                "SHA512",

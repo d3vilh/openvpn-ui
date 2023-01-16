@@ -1,7 +1,7 @@
 client
 dev {{ .Device }}
 proto {{ .Proto}}
-remote {{ .ServerAddress }} {{ .ClientPort }} {{ .Proto }}
+remote {{ .ServerAddress }} {{ .OpenVpnServerPort }} {{ .Proto }}
 resolv-retry infinite
 user nobody
 group nogroup

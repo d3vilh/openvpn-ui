@@ -2,29 +2,29 @@ package config
 
 import (
 	"bytes"
-	"io/ioutil"
+	"os"
 	"text/template"
 )
 
 var defaultConfig = Config{
-	Device:        "tun",
-	Proto:         "udp",
-	ServerAddress: "127.0.0.1",
-	Port:          1194,
-	ClientPort:    12235,
-	Cipher:        "AES-256-CBC",
-	Keysize:       256,
-	Auth:          "SHA256",
-	Ca:            "ca.crt",
+	Device:            "tun",
+	Proto:             "udp",
+	ServerAddress:     "127.0.0.1",
+	Port:              1194,
+	OpenVpnServerPort: 12235,
+	Cipher:            "AES-256-CBC",
+	Keysize:           256,
+	Auth:              "SHA256",
+	Ca:                "ca.crt",
 }
 
 // Config model
 type Config struct {
-	Device        string
-	ServerAddress string
-	Port          int
-	ClientPort    int
-	Proto         string
+	Device            string
+	ServerAddress     string
+	Port              int
+	OpenVpnServerPort int
+	Proto             string
 
 	Ca   string
 	Cert string
@@ -55,7 +55,7 @@ func GetText(tpl string, c Config) (string, error) {
 
 // SaveToFile reads teamplate and writes result to destination file
 func SaveToFile(tplPath string, c Config, destPath string) error {
-	template, err := ioutil.ReadFile(tplPath)
+	template, err := os.ReadFile(tplPath)
 	if err != nil {
 		return err
 	}
@@ -65,5 +65,5 @@ func SaveToFile(tplPath string, c Config, destPath string) error {
 		return err
 	}
 
-	return ioutil.WriteFile(destPath, []byte(str), 0644)
+	return os.WriteFile(destPath, []byte(str), 0644)
 }
