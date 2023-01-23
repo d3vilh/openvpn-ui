@@ -83,13 +83,6 @@
       </div>
 
       <div class="form-group">
-        <label for="name">External Port (NAT)</label>
-        <input type="text" class="form-control" name="ClientPort" id="ClientPort" placeholder="12235"
-          value="{{ .Settings.ClientPort }}">
-        <span class="help-block">External (NAT) Port for Clients connection. Used for .ovpn config file.</span>
-      </div>
-
-      <div class="form-group">
         <label for="name">Proto</label>
         <input type="text" class="form-control" name="Proto" id="Proto" placeholder="udp"
           value="{{ .Settings.Proto }}">
