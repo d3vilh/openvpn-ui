@@ -11,7 +11,7 @@ var defaultConfig = Config{
 	Proto:             "udp",
 	ServerAddress:     "127.0.0.1",
 	Port:              1194,
-	OpenVpnServerPort: 12235,
+	OpenVpnServerPort: "12235",
 	Cipher:            "AES-256-CBC",
 	Keysize:           256,
 	Auth:              "SHA256",
@@ -23,7 +23,7 @@ type Config struct {
 	Device            string
 	ServerAddress     string
 	Port              int
-	OpenVpnServerPort int
+	OpenVpnServerPort string
 	Proto             string
 
 	Ca   string
