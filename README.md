@@ -28,6 +28,8 @@ It does include 2 different Docker containers:
 * EasyRSA 3.X support
 * Added support for Admin user and password creation via environment variables
 
+[openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a fork of openvpn-ui project build to run on Amazon AWS t2-mini x86-64 enviroment.
+
 ### Run this image using a `docker-compose.yml` file
 
 ```yaml
