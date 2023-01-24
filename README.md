@@ -188,18 +188,7 @@ However you can be desired to share VPN access with your friends and restrict ac
 </p>
 
 To assign desired subnet policy to the specific client, you have to define static IP address for this client after you generate .OVPN profile.
-To define static IP, go to `~/openvpn/staticclients` directory and create text file with the name of your client and insert into this file ifrconfig-push option with the desired static IP and mask: `ifconfig-push 10.0.71.2 255.255.255.0`.
-
-For example, if you would like to restrict Home subnet access to your best friend Slava, you should do this:
-
-```shell
-slava@Ukraini:~/openvpn/staticclients $ pwd
-/home/slava/openvpn/staticclients
-slava@Ukraini:~/openvpn/staticclients $ ls -lrt | grep Slava
--rw-r--r-- 1 slava heroi 38 Nov  9 20:53 Slava
-slava@Ukraini:~/openvpn/staticclients $ cat Slava
-ifconfig-push 10.0.71.2 255.255.255.0
-```
+To do that, just enter `"Static IP (optional)"` field in `"Certificates"` page and press `"Create"` button.
 
 > Keep in mind, by default, all the clients have full access, so you don't need to specifically configure static IP for your own devices, your home devices always will land to **"Trusted"** subnet by default. 
 
