@@ -23,12 +23,12 @@ It does include 2 different Docker containers:
 * Back-End OpenVPN container restart via UI
 * Static IP configuration for clients
 * Secret passfprase for certificates generation
-* Support ARM32v7 and ARM64v8 architecture (Raspberry Pi)
 * Added support for Docker Compose
 * EasyRSA 3.X support
 * Added support for Admin user and password creation via environment variables
-
-[openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a fork of openvpn-ui project build to run on Amazon AWS t2-mini x86-64 enviroment.
+* Added support for OpenVPN configuration file modification via UI
+* Support ARM32v7 and ARM64v8 architecture (Raspberry Pi)
+* [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
 
 ### Run this image using a `docker-compose.yml` file
 
@@ -239,11 +239,6 @@ All the Server and Client configuration located in Docker volume and can be ease
 |   |-- ta.key
 |-- staticclients //Directory where stored all the satic clients configuration
 ```
-
-### OpenVPN activity dashboard
-[Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway/) setup includes Prometheus [OpenVPN-exporter](https://github.com/d3vilh/openvpn_exporter) and OpenVPN [Grafana dashboard](https://github.com/d3vilh/raspberry-gateway/blob/master/templates/openvpn_exporter.json.j2) which you can [enable in](https://github.com/d3vilh/raspberry-gateway/blob/master/example.config.yml#L39) by setting `openvpn_exporter_enable` option to `true`.
-
-![OpenVPN Grafana Dashboard](/images/OVPN_Dashboard.png)
 
 [**OpenVPN**](https://openvpn.net) as a server and **OpenVPN-web-ui** as a WEB UI screenshots:
 
