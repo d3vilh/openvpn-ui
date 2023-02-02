@@ -117,8 +117,10 @@ sudo docker run openvpn \
     --privileged openvpn
 ```
 
-### Build Docker image by itself for Raspberry Pi computer
-To build the image by yourself you'll have to follow [openvpn-ui-docker-build](https://github.com/d3vilh/openvpn-ui-docker-build) instructions.
+### Build Docker image by itself for Raspberry Pi and x86 compatible computers
+To build the image by yoursel for **ARM CPU** you'll have to follow [openvpn-ui-docker-build](https://github.com/d3vilh/openvpn-ui-docker-build) instructions.
+
+To build the image by yoursel for **x86_64 CPU** you'll have to follow [openvpn-ui-docker-build-amd64](https://github.com/d3vilh/openvpn-ui-docker-build-amd64) instructions.
 
 ### Documentation
 Most of documentation can be found in the [main README.md](https://github.com/d3vilh/raspberry-gateway) file, if you want to run it without anything else you'll have to edit the [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L20) (which currently points to the PiHole DNS Server) and
