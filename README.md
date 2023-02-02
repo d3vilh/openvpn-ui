@@ -30,7 +30,7 @@ It does include 2 different Docker containers:
 * Support ARM32v7 and ARM64v8 architecture (Raspberry Pi)
 * [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
 
-### Run this image using a `docker-compose.yml` file
+## Run this image using a `docker-compose.yml` file
 
 ```yaml
     openvpn-ui:
@@ -80,16 +80,15 @@ services:
        cap_add:
            - NET_ADMIN
        restart: always
-       depends_on:
-           - "openvpn-ui"
 ``` 
 
-### Run this image using the Docker itself
+## Run this image using the Docker itself
 
-First, build the images:
-```shell
-sudo docker build -t openvpn-ui .
-```
+### First, build the images:
+
+To build the image for **ARM CPU** you'll have to follow [openvpn-ui-docker-build](https://github.com/d3vilh/openvpn-ui-docker-build) instructions.
+
+To build the image for **x86_64 CPU** you'll have to follow [openvpn-ui-docker-build-amd64](https://github.com/d3vilh/openvpn-ui-docker-build-amd64) instructions.
 
 Run the OpenVPN-UI image
 ```shell
@@ -97,6 +96,8 @@ docker run \
 -v /home/pi/openvpn:/etc/openvpn \
 -v /home/pi/openvpn/db:/opt/openvpn-gui/db \
 -v /home/pi/openvpn/pki:/usr/share/easy-rsa/pki \
+-v /home/pi/openvpn/log:/var/log/openvpn \
+-v /var/run/docker.sock:/var/run/docker.sock \
 -e OPENVPN_ADMIN_USERNAME='admin' \
 -e OPENVPN_ADMIN_PASSWORD='gagaZush' \
 -p 8080:8080/tcp \
@@ -117,12 +118,7 @@ sudo docker run openvpn \
     --privileged openvpn
 ```
 
-### Build Docker image by itself for Raspberry Pi and x86 compatible computers
-To build the image by yoursel for **ARM CPU** you'll have to follow [openvpn-ui-docker-build](https://github.com/d3vilh/openvpn-ui-docker-build) instructions.
-
-To build the image by yoursel for **x86_64 CPU** you'll have to follow [openvpn-ui-docker-build-amd64](https://github.com/d3vilh/openvpn-ui-docker-build-amd64) instructions.
-
-### Documentation
+## Documentation
 Most of documentation can be found in the [main README.md](https://github.com/d3vilh/raspberry-gateway) file, if you want to run it without anything else you'll have to edit the [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L20) (which currently points to the PiHole DNS Server) and
 if you don't want to use a custom dns-resolve at all you may also want to comment out [this line](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L39).
 
