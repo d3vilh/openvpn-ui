@@ -1,1 +1,3 @@
 data.db
+.DS_Store
+build/.DS_Store
