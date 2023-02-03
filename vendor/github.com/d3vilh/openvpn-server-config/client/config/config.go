@@ -12,6 +12,7 @@ var defaultConfig = Config{
 	ServerAddress:     "127.0.0.1",
 	Port:              1194,
 	OpenVpnServerPort: "12235",
+	OVConfigLogV:      "1",
 	Cipher:            "AES-256-CBC",
 	Keysize:           256,
 	Auth:              "SHA256",
@@ -24,6 +25,7 @@ type Config struct {
 	ServerAddress     string
 	Port              int
 	OpenVpnServerPort string
+	OVConfigLogV      string
 	Proto             string
 
 	Ca   string

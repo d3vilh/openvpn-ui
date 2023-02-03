@@ -63,129 +63,140 @@
         <span id="helpBlock" class="help-block">The maximum number of concurrently connected
             clients we want to allow.</span>
       </div>
-
-      <div class="box-header with-border">
-        <h3 class="box-title">Expert configuration</h3>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Dev</label>
-        <input type="text" class="form-control" name="Device" id="Device" placeholder="tun"
-          value="{{ .Settings.Device }}">
-        <span class="help-block">Which tunnel(tun) or bridge(tap) should OpenVPN use</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Port</label>
-        <input type="text" class="form-control" name="Port" id="Port" placeholder="1194"
-          value="{{ .Settings.Port }}">
-        <span class="help-block">Which TCP/UDP port should OpenVPN listen on</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Proto</label>
-        <input type="text" class="form-control" name="Proto" id="Proto" placeholder="udp"
-          value="{{ .Settings.Proto }}">
-        <span class="help-block">TCP or UDP server</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Redirect-gateway to bypass DHCP (Enabled by default)</label>
-        <input type="text" class="form-control" name="RedirectGW" id="RedirectGW" placeholder="push &quot;redirect-gateway def1 bypass-dhcp&quot;"
-          value="{{ .Settings.RedirectGW }}">
-        <span class="help-block">When this option uncommented, the OpenVPN server pushes a default route to the client, which tells the client to route all Internet traffic through the VPN tunnel.</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">CA cert</label>
-        <input type="text" class="form-control" name="Ca" id="Ca" placeholder="pki/ca.crt"
-          value="{{ .Settings.Ca }}">
-      </div>
-
-      <div class="form-group">
-        <label for="name">Server certificate</label>
-        <input type="text" class="form-control" name="Cert" id="Cert" placeholder="pki/issued/server.crt"
-          value="{{ .Settings.Cert }}">
-        <span id="helpBlock" class="help-block"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Server Private key</label>
-        <input type="text" class="form-control" name="Key" id="Key" placeholder="pki/private/server.key"
-          value="{{ .Settings.Key }}">
-        <span id="helpBlock" class="help-block"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Cipher</label>
-        <input type="text" class="form-control" name="Cipher" id="Cipher" placeholder="AES-256-CBC"
-          value="{{ .Settings.Cipher }}">
-        <span id="helpBlock" class="help-block"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Keysize</label>
-        <input type="text" class="form-control" name="Keysize" id="Keysize" placeholder="256"
-          value="{{ .Settings.Keysize }}">
-        <span id="helpBlock" class="help-block"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Auth</label>
-        <input type="text" class="form-control" name="Auth" id="Auth" placeholder="SHA512"
-          value="{{ .Settings.Auth }}">
-        <span id="helpBlock" class="help-block"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Dh</label>
-        <input type="text" class="form-control" name="Dh" id="Dh" placeholder="pki/dh.pem"
-          value="{{ .Settings.Dh }}">
-        <span id="helpBlock" class="help-block">Diffie hellman parameters</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Keepalive</label>
-        <input type="text" class="form-control" name="Keepalive" id="Keepalive" placeholder="10 120"
-          value="{{ .Settings.Keepalive }}">
-        <span id="helpBlock" class="help-block">The keepalive directive causes ping-like
-          messages to be sent back and forth over
-          the link so that each side knows when
-          the other side has gone down.
-          Ping every 10 seconds, assume that remote
-          peer is down if no ping received during
-          a 120 second time period.</span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">IfconfigPoolPersist</label>
-        <input type="text" class="form-control" name="IfconfigPoolPersist" id="IfconfigPoolPersist" placeholder="pki/ipp.txt"
-          value="{{ .Settings.IfconfigPoolPersist }}">
-        <span id="helpBlock" class="help-block">
-          Maintain a record of client <-> virtual IP address
-            associations in this file.  If OpenVPN goes down or
-            is restarted, reconnecting clients can be assigned
-            the same virtual IP address from the pool that was
-            previously assigned.</span>
-      </div>
-
-   <!-- Commented for now as not used
-      <div class="form-group">
-        <label for="name">Management</label>
-        <input type="text" class="form-control" name="Management" id="Management" placeholder="0.0.0.0 2080"
-          value="{{ .Settings.Management }}">
-        <span id="helpBlock" class="help-block"></span>
-      </div>
-    -->
-
       {{ .xsrfdata }}
     </div>
     <!-- /.box-body -->
-
     <div class="box-footer">
-      <button type="submit" class="btn btn-primary">Save and apply</button>
+      <button type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>
+</div>
+  <!-- /.box-body -->
+   <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Expert configuration</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    {{template "common/alert.html" .}}
+    <form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
+      <div class="box-body">
+        <div class="form-group">
+          <label for="name">Dev</label>
+          <input type="text" class="form-control" name="Device" id="Device" placeholder="tun"
+            value="{{ .Settings.Device }}">
+          <span class="help-block">Which tunnel(tun) or bridge(tap) should OpenVPN use</span>
+        </div>
+
+       <div class="form-group">
+         <label for="name">Port</label>
+         <input type="text" class="form-control" name="Port" id="Port" placeholder="1194"
+           value="{{ .Settings.Port }}">
+         <span class="help-block">Which TCP/UDP port should OpenVPN listen on</span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Proto</label>
+         <input type="text" class="form-control" name="Proto" id="Proto" placeholder="udp"
+           value="{{ .Settings.Proto }}">
+         <span class="help-block">TCP or UDP server</span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Redirect-gateway to bypass DHCP (Enabled by default)</label>
+         <input type="text" class="form-control" name="RedirectGW" id="RedirectGW" placeholder="push &quot;redirect-gateway def1 bypass-dhcp&quot;"
+           value="{{ .Settings.RedirectGW }}">
+         <span class="help-block">When this option uncommented, the OpenVPN server pushes a default route to the client, which tells the client to route all Internet traffic through the VPN tunnel.</span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">CA cert</label>
+         <input type="text" class="form-control" name="Ca" id="Ca" placeholder="pki/ca.crt"
+           value="{{ .Settings.Ca }}">
+       </div>
+
+       <div class="form-group">
+         <label for="name">Server certificate</label>
+         <input type="text" class="form-control" name="Cert" id="Cert" placeholder="pki/issued/server.crt"
+           value="{{ .Settings.Cert }}">
+         <span id="helpBlock" class="help-block"></span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Server Private key</label>
+         <input type="text" class="form-control" name="Key" id="Key" placeholder="pki/private/server.key"
+           value="{{ .Settings.Key }}">
+         <span id="helpBlock" class="help-block"></span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Cipher</label>
+         <input type="text" class="form-control" name="Cipher" id="Cipher" placeholder="AES-256-CBC"
+           value="{{ .Settings.Cipher }}">
+         <span id="helpBlock" class="help-block"></span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Keysize</label>
+         <input type="text" class="form-control" name="Keysize" id="Keysize" placeholder="256"
+           value="{{ .Settings.Keysize }}">
+         <span id="helpBlock" class="help-block"></span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Auth</label>
+         <input type="text" class="form-control" name="Auth" id="Auth" placeholder="SHA512"
+           value="{{ .Settings.Auth }}">
+         <span id="helpBlock" class="help-block"></span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Dh</label>
+         <input type="text" class="form-control" name="Dh" id="Dh" placeholder="pki/dh.pem"
+           value="{{ .Settings.Dh }}">
+         <span id="helpBlock" class="help-block">Diffie hellman parameters</span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">Keepalive</label>
+         <input type="text" class="form-control" name="Keepalive" id="Keepalive" placeholder="10 120"
+           value="{{ .Settings.Keepalive }}">
+         <span id="helpBlock" class="help-block">The keepalive directive causes ping-like
+           messages to be sent back and forth over
+           the link so that each side knows when
+           the other side has gone down.
+           Ping every 10 seconds, assume that remote
+           peer is down if no ping received during
+           a 120 second time period.</span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">IfconfigPoolPersist</label>
+         <input type="text" class="form-control" name="IfconfigPoolPersist" id="IfconfigPoolPersist" placeholder="pki/ipp.txt"
+           value="{{ .Settings.IfconfigPoolPersist }}">
+         <span id="helpBlock" class="help-block">
+           Maintain a record of client <-> virtual IP address
+             associations in this file.  If OpenVPN goes down or
+             is restarted, reconnecting clients can be assigned
+             the same virtual IP address from the pool that was
+             previously assigned.</span>
+        </div>
+
+        <!-- Commented for now as not used
+        <div class="form-group">
+         <label for="name">Management</label>
+         <input type="text" class="form-control" name="Management" id="Management" placeholder="0.0.0.0 2080"
+           value="{{ .Settings.Management }}">
+         <span id="helpBlock" class="help-block"></span>
+        </div>
+        -->
+       {{ .xsrfdata }}
+      </div>
+     <!-- /.box-body -->
+     <div class="box-footer">
+       <button type="submit" class="btn btn-primary">Save and apply</button>
+     </div>
+   </form>
 
 </div>
 <!-- /.box -->

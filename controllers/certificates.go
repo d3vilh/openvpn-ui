@@ -162,6 +162,7 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	keysPathCa := filepath.Join(state.GlobalCfg.OVConfigPath, "pki")
 	cfg.ServerAddress = state.GlobalCfg.ServerAddress
 	cfg.OpenVpnServerPort = state.GlobalCfg.OpenVpnServerPort
+	cfg.OVConfigLogV = state.GlobalCfg.OVConfigLogV
 	ca, err := os.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
 	if err != nil {
 		return "", err

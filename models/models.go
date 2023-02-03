@@ -66,6 +66,7 @@ func CreateDefaultSettings() (*Settings, error) {
 		MINetwork:         beego.AppConfig.String("OpenVpnManagementNetwork"),
 		ServerAddress:     beego.AppConfig.String("OpenVpnServerAddress"),
 		OpenVpnServerPort: beego.AppConfig.String("OpenVpnServerPort"),
+		OVConfigLogV:      beego.AppConfig.String("OpenVpnLogV"),
 		OVConfigPath:      beego.AppConfig.String("OpenVpnPath"),
 	}
 	o := orm.NewOrm()

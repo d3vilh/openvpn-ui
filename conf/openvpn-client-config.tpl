@@ -13,9 +13,9 @@ keysize {{ .Keysize }}
 auth {{ .Auth }}
 auth-nocache
 tls-client
-redirect-gateway def1
+#redirect-gateway def1
 comp-lzo
-verb 3
+verb {{ .OVConfigLogV }}
 <ca>
 {{ .Ca }}
 </ca>
