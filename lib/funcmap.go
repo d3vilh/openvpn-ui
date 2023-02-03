@@ -8,21 +8,21 @@ import (
 	"github.com/astaxie/beego"
 )
 
-//AddFuncMaps .
+// AddFuncMaps .
 func AddFuncMaps() {
-	_ = beego.AddFuncMap("field_error_message", func(v map[string]map[string]string, key string) map[string]string {
+	beego.AddFuncMap("field_error_message", func(v map[string]map[string]string, key string) map[string]string {
 		if val, ok := v[key]; ok {
 			return val
 		}
 		return make(map[string]string)
 	})
-	_ = beego.AddFuncMap("field_error_exist", func(v map[string]map[string]string, key string) bool {
+	beego.AddFuncMap("field_error_exist", func(v map[string]map[string]string, key string) bool {
 		if _, ok := v[key]; ok {
 			return true
 		}
 		return false
 	})
-	_ = beego.AddFuncMap("printkb", func(i interface{}) string {
+	beego.AddFuncMap("printkb", func(i interface{}) string {
 		switch v := i.(type) {
 		case uint64:
 			return num2str(int64(i.(uint64)/1024), '\u00A0')
@@ -33,7 +33,7 @@ func AddFuncMaps() {
 		}
 		return "Mapping error"
 	})
-	_ = beego.AddFuncMap("printmb", func(i interface{}) string {
+	beego.AddFuncMap("printmb", func(i interface{}) string {
 		switch v := i.(type) {
 		case uint64:
 			return num2str(int64(i.(uint64)/1024/1024), '\u00A0')
@@ -44,13 +44,13 @@ func AddFuncMaps() {
 		}
 		return "Mapping error"
 	})
-	_ = beego.AddFuncMap("printmbold", func(i uint64) string {
+	beego.AddFuncMap("printmbold", func(i uint64) string {
 		return num2str(int64(i/1024/1024), ' ')
 	})
-	_ = beego.AddFuncMap("printgb", func(i uint64) string {
+	beego.AddFuncMap("printgb", func(i uint64) string {
 		return num2str(int64(i/1024/1024/1024), ' ')
 	})
-	_ = beego.AddFuncMap("percent", func(x, y interface{}) string {
+	beego.AddFuncMap("percent", func(x, y interface{}) string {
 		beego.Notice("Percent", x, y)
 		zValue := "0"
 		switch v := x.(type) {

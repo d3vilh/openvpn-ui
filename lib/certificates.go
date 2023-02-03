@@ -3,7 +3,7 @@ package lib
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -40,7 +40,7 @@ type Details struct {
 
 func ReadCerts(path string) ([]*Cert, error) {
 	certs := make([]*Cert, 0)
-	text, err := ioutil.ReadFile(path)
+	text, err := os.ReadFile(path)
 	if err != nil {
 		return certs, err
 	}
