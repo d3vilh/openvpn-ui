@@ -15,7 +15,7 @@ auth-nocache
 tls-client
 #redirect-gateway def1
 comp-lzo
-verb {{ .OVConfigLogV }}
+verb 3
 <ca>
 {{ .Ca }}
 </ca>

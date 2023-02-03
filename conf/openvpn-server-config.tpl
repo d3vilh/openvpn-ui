@@ -29,7 +29,8 @@ persist-key
 persist-tun
 
 log         /var/log/openvpn/openvpn.log
-verb 4
+verb {{ .OVConfigLogV }}
+
 topology subnet
 
 client-config-dir /etc/openvpn/staticclients

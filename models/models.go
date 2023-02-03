@@ -66,7 +66,6 @@ func CreateDefaultSettings() (*Settings, error) {
 		MINetwork:         beego.AppConfig.String("OpenVpnManagementNetwork"),
 		ServerAddress:     beego.AppConfig.String("OpenVpnServerAddress"),
 		OpenVpnServerPort: beego.AppConfig.String("OpenVpnServerPort"),
-		OVConfigLogV:      beego.AppConfig.String("OpenVpnLogV"),
 		OVConfigPath:      beego.AppConfig.String("OpenVpnPath"),
 	}
 	o := orm.NewOrm()
@@ -100,6 +99,7 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 			Dh:                  "pki/dh.pem",
 			Keepalive:           "10 120",
 			IfconfigPoolPersist: "pki/ipp.txt",
+			OVConfigLogV:        3,
 			Management:          fmt.Sprintf("%s %s", address, network),
 			MaxClients:          100,
 			Server:              "10.0.70.0 255.255.255.0",
