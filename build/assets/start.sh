@@ -26,7 +26,11 @@ cd /opt/openvpn-gui
 
 # Create the database directory if it does not exist
 mkdir -p db
+echo "db dir created on this local path:"
+pwd
+echo "db dir contents:"
+ls -lrt
 
 # Start the OpenVPN GUI
+echo "Starting openvpn-ui!"
 ./openvpn-ui
-echo "Starting!"
