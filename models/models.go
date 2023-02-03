@@ -61,8 +61,9 @@ func CreateDefaultUsers() {
 
 func CreateDefaultSettings() (*Settings, error) {
 	s := Settings{
-		Profile:           "default",
-		MIAddress:         beego.AppConfig.String("OpenVpnManagementAddress"),
+		Profile: "default",
+		//		MIAddress:         beego.AppConfig.String("OpenVpnManagementAddress"),
+		MIAddress:         "openvpn:2080",
 		MINetwork:         beego.AppConfig.String("OpenVpnManagementNetwork"),
 		ServerAddress:     beego.AppConfig.String("OpenVpnServerAddress"),
 		OpenVpnServerPort: beego.AppConfig.String("OpenVpnServerPort"),

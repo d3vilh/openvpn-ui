@@ -11,6 +11,7 @@ import (
 var defaultConfig = Config{
 	Management:          "0.0.0.0 2080",
 	Port:                1194,
+	ClientPort:          12235,
 	Proto:               "udp",
 	Device:              "tun",
 	Ca:                  "pki/ca.crt",
@@ -36,6 +37,7 @@ var defaultConfig = Config{
 type Config struct {
 	Management string
 	Port       int
+	ClientPort int
 	Proto      string
 	Device     string
 
