@@ -77,7 +77,8 @@
                     </td>
                     <td>
                       <span class="label label-warning">CN: {{ .Details.CN }}</span>
-                      <span class="label label-warning">Email: {{ .Details.Email }}</span>
+                <!--  Comented until bypass of client email to DB will be implemented 
+                      <span class="label label-warning">Email: {{ .Details.Email }}</span>  -->
                     </td>
                   {{ if eq .Revocation ""}}
                     <td>
@@ -159,10 +160,10 @@
         <tbody>
           <tr>
             <td class="form-group">
-              <span class="help-block">Common name of the certificate.&nbsp;<span>
+              <span class="help-block">Common name of the certificate.&nbsp;&nbsp;&nbsp;<span>
             </td>
             <td class="form-group">
-              <span class="help-block">Passphrase is used for privte key protection.&nbsp;</span>
+              <span class="help-block">Passphrase is used for privte key protection.&nbsp;&nbsp;&nbsp;</span>
             </td>
             <td class="form-group">
               <span class="help-block">Client Static IP used as a local Client IP for subnet split.</span>
