@@ -24,7 +24,7 @@ func (c *OVConfigController) NestPrepare() {
 		return
 	}
 	c.Data["breadcrumbs"] = &BreadCrumbs{
-		Title: "OpenVPN config",
+		Title: "OpenVPN server configuration",
 	}
 }
 

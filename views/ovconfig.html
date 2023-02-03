@@ -78,7 +78,6 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    {{template "common/alert.html" .}}
     <form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
       <div class="box-body">
         <div class="form-group">
@@ -203,14 +202,13 @@
               and data channel encryption/decryption, among others. 
               This level of verbosity can be helpful for troubleshooting 
               purposes, but can also result in a large amount of log output.</span>
-           </div>
         </div>
        {{ .xsrfdata }}
       </div>
-     <!-- /.box-body -->
      <div class="box-footer">
        <button type="submit" class="btn btn-primary">Save and apply</button>
      </div>
+        <!-- /.box-body -->
    </form>
 
 </div>
