@@ -90,6 +90,7 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 			Proto:               "udp",
 			DNSServer1:          "8.8.8.8",
 			DNSServer2:          "1.0.0.1",
+			RedirectGW:          "push \"redirect-gateway def1 bypass-dhcp\"",
 			PushRoute:           "10.0.60.0 255.255.255.0",
 			Route:               "10.0.71.0 255.255.255.0",
 			Cipher:              "AES-256-CBC",

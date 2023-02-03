@@ -57,6 +57,13 @@
       </div>
 
       <div class="form-group">
+        <label for="name">Redirect-gateway to bypass DHCP (Enabled by default)</label>
+        <input type="text" class="form-control" name="RedirectGW" id="RedirectGW" placeholder="Redirect all traffic through the VPN tunnel."
+          value="{{ .Settings.RedirectGW }}">
+        <span class="help-block">When this option uncommented, the OpenVPN server pushes a default route to the client, which tells the client to route all Internet traffic through the VPN tunnel.</span>
+      </div>
+
+      <div class="form-group">
         <label for="name">MaxClients</label>
         <input type="text" class="form-control" name="MaxClients" id="MaxClients" placeholder="100"
           value="{{ .Settings.MaxClients }}">
