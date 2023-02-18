@@ -10,7 +10,7 @@ cert {{ .Cert }}
 key {{ .Key }}
 
 cipher {{ .Cipher }}
-keysize {{ .Keysize }}
+#keysize {{ .Keysize }}  # depricated in version 2.4
 auth {{ .Auth }}
 dh {{ .Dh }}
 
@@ -22,7 +22,7 @@ push "dhcp-option DNS {{ .DNSServer1 }}"
 push "dhcp-option DNS {{ .DNSServer2 }}"
 
 keepalive {{ .Keepalive }}
-comp-lzo
+#comp-lzo  # depricated in version 2.4
 max-clients {{ .MaxClients }}
 
 persist-key

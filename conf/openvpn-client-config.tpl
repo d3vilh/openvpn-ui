@@ -9,12 +9,12 @@ persist-tun
 persist-key
 remote-cert-tls server
 cipher {{ .Cipher }}
-keysize {{ .Keysize }}
+# keysize {{ .Keysize }}  # depricated in version 2.4
 auth {{ .Auth }}
 auth-nocache
 tls-client
 #redirect-gateway def1
-comp-lzo
+#comp-lzo  # depricated in version 2.4
 verb 3
 <ca>
 {{ .Ca }}
