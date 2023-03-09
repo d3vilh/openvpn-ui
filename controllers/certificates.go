@@ -184,7 +184,6 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	cfg.Proto = serverConfig.Proto
 	cfg.Auth = serverConfig.Auth
 	cfg.Cipher = serverConfig.Cipher
-	//cfg.Keysize = serverConfig.Keysize
 
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients", name+".ovpn")
 	if err := SaveToFile(filepath.Join(c.ConfigDir, "openvpn-client-config.tpl"), cfg, destPath); err != nil {

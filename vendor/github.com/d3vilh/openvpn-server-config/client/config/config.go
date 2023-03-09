@@ -13,9 +13,8 @@ var defaultConfig = Config{
 	Port:              1194,
 	OpenVpnServerPort: "12235",
 	Cipher:            "AES-256-CBC",
-	//Keysize:           256,
-	Auth: "SHA256",
-	Ca:   "ca.crt",
+	Auth:              "SHA256",
+	Ca:                "ca.crt",
 }
 
 // Config model
@@ -32,8 +31,7 @@ type Config struct {
 	Ta   string
 
 	Cipher string
-	//Keysize int
-	Auth string
+	Auth   string
 }
 
 // New returns config object with default values

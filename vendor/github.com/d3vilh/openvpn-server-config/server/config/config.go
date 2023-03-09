@@ -9,16 +9,15 @@ import (
 
 // Don't think these defaults are ever used -- see models/models.go
 var defaultConfig = Config{
-	Management: "0.0.0.0 2080",
-	Port:       1194,
-	ClientPort: 12235,
-	Proto:      "udp",
-	Device:     "tun",
-	Ca:         "pki/ca.crt",
-	Cert:       "pki/issued/server.crt",
-	Key:        "pki/private/server.key",
-	Cipher:     "AES-256-CBC",
-	//Keysize:             256,
+	Management:          "0.0.0.0 2080",
+	Port:                1194,
+	ClientPort:          12235,
+	Proto:               "udp",
+	Device:              "tun",
+	Ca:                  "pki/ca.crt",
+	Cert:                "pki/issued/server.crt",
+	Key:                 "pki/private/server.key",
+	Cipher:              "AES-256-CBC",
 	Auth:                "SHA512",
 	Dh:                  "pki/dh.pem",
 	Server:              "10.0.70.0 255.255.255.0",
@@ -46,9 +45,8 @@ type Config struct {
 	Key  string
 
 	Cipher string
-	//Keysize int
-	Auth string
-	Dh   string
+	Auth   string
+	Dh     string
 
 	Server              string
 	Route               string
