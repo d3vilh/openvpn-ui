@@ -3,7 +3,7 @@ package config
 // html/template changed to text/template
 import (
 	"bytes"
-	"io/ioutil"
+	"os"
 	"text/template"
 )
 
@@ -11,22 +11,22 @@ import (
 var defaultConfig = Config{
 	Management:          "0.0.0.0 2080",
 	Port:                1194,
-	ClientPort:          12235,
 	Proto:               "udp",
 	Device:              "tun",
 	Ca:                  "pki/ca.crt",
 	Cert:                "pki/issued/server.crt",
 	Key:                 "pki/private/server.key",
 	Cipher:              "AES-256-CBC",
-	Keysize:             256,
 	Auth:                "SHA512",
 	Dh:                  "pki/dh.pem",
 	Server:              "10.0.70.0 255.255.255.0",
 	Route:               "10.0.71.0 255.255.255.0",
 	IfconfigPoolPersist: "pki/ipp.txt",
-	PushRoute:           "route \"10.0.60.0 255.255.255.0\"",
-	DNSServer1:          "dhcp-option DNS 8.8.8.8",
-	DNSServer2:          "dhcp-option DNS 1.0.0.1",
+	OVConfigLogV:        3,
+	PushRoute:           "10.0.60.0 255.255.255.0",
+	DNSServer1:          "8.8.8.8",
+	DNSServer2:          "1.0.0.1",
+	RedirectGW:          "push \"redirect-gateway def1 bypass-dhcp\"",
 	Keepalive:           "10 120",
 	MaxClients:          100,
 }
@@ -35,7 +35,6 @@ var defaultConfig = Config{
 type Config struct {
 	Management string
 	Port       int
-	ClientPort int
 	Proto      string
 	Device     string
 
@@ -43,17 +42,18 @@ type Config struct {
 	Cert string
 	Key  string
 
-	Cipher  string
-	Keysize int
-	Auth    string
-	Dh      string
+	Cipher string
+	Auth   string
+	Dh     string
 
 	Server              string
 	Route               string
 	IfconfigPoolPersist string
+	OVConfigLogV        int
 	PushRoute           string
 	DNSServer1          string
 	DNSServer2          string
+	RedirectGW          string
 	Keepalive           string
 	MaxClients          int
 }
@@ -77,7 +77,7 @@ func GetText(tpl string, c Config) (string, error) {
 
 // SaveToFile reads teamplate and writes result to destination file
 func SaveToFile(tplPath string, c Config, destPath string) error {
-	template, err := ioutil.ReadFile(tplPath)
+	template, err := os.ReadFile(tplPath)
 	if err != nil {
 		return err
 	}
@@ -87,5 +87,5 @@ func SaveToFile(tplPath string, c Config, destPath string) error {
 		return err
 	}
 
-	return ioutil.WriteFile(destPath, []byte(str), 0644)
+	return os.WriteFile(destPath, []byte(str), 0644)
 }
