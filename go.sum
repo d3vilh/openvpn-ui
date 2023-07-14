@@ -32,8 +32,8 @@ github.com/couchbase/go-couchbase v0.0.0-20201216133707-c04035124b17/go.mod h1:+
 github.com/couchbase/gomemcached v0.1.2-0.20201224031647-c432ccf49f32/go.mod h1:mxliKQxOv84gQ0bJWbI+w9Wxdpt9HjDvgW9MjCym5Vo=
 github.com/couchbase/goutils v0.0.0-20210118111533-e33d3ffb5401/go.mod h1:BQwMFlJzDjFDG3DJUdU0KORxn88UlsOULuxLExMh3Hs=
 github.com/cupcake/rdb v0.0.0-20161107195141-43ba34106c76/go.mod h1:vYwsqCOLxGiisLwp9rITslkFNpZD5rz43tf41QFkTWY=
-github.com/d3vilh/openvpn-server-config v0.1.0 h1:MTa2QMlrEny3fVN/AssnSiwoVq7vxxElOi00QpSQ0NQ=
-github.com/d3vilh/openvpn-server-config v0.1.0/go.mod h1:ffSSt9V7IqI+70Nl/l0TrubHEI/xPtJIU0N0BmMQXv4=
+github.com/d3vilh/openvpn-server-config v0.2.0 h1:wwqvdAh5YQx8E7wuAzAKJztng9Cybk7TQo8QcMVfM7I=
+github.com/d3vilh/openvpn-server-config v0.2.0/go.mod h1:ffSSt9V7IqI+70Nl/l0TrubHEI/xPtJIU0N0BmMQXv4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

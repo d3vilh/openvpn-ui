@@ -6,7 +6,7 @@ require (
 	github.com/beego/beego v1.12.12
 	github.com/beego/beego/v2 v2.1.0
 	github.com/cloudfoundry/gosigar v1.3.17
-	github.com/d3vilh/openvpn-server-config v0.1.0
+	github.com/d3vilh/openvpn-server-config v0.2.0
 	github.com/go-ldap/ldap/v3 v3.4.5
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	gopkg.in/hlandau/passlib.v1 v1.0.11

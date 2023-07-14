@@ -6,6 +6,7 @@ import (
 	passlib "gopkg.in/hlandau/passlib.v1"
 
 	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/lib"
@@ -40,7 +41,7 @@ func (c *ProfileController) Post() {
 
 	user := models.User{}
 	if err := c.ParseForm(&user); err != nil {
-		web.Error(err)
+		logs.Error(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		return
@@ -75,7 +76,7 @@ func validateUser(user models.User) map[string]map[string]string {
 	valid := validation.Validation{}
 	b, err := valid.Valid(&user)
 	if err != nil {
-		web.Error(err)
+		logs.Error(err)
 		return nil
 	}
 	if !b {

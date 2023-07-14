@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-//ParsePid gets pid from string
+// ParsePid gets pid from string
 func ParsePid(input string) (int64, error) {
 	a := strings.Split(trim(input), "\n")
 	if len(a) != 1 {
@@ -19,7 +19,7 @@ func ParsePid(input string) (int64, error) {
 	return strconv.ParseInt(stripPrefix(a[0], "SUCCESS: pid="), 10, 64)
 }
 
-//ParseVersion gets version information from string
+// ParseVersion gets version information from string
 func ParseVersion(input string) (*Version, error) {
 	v := Version{}
 	a := strings.Split(trim(input), "\n")
@@ -32,7 +32,7 @@ func ParseVersion(input string) (*Version, error) {
 	return &v, nil
 }
 
-//ParseStats gets stats from string
+// ParseStats gets stats from string
 func ParseStats(input string) (*LoadStats, error) {
 	ls := LoadStats{}
 	a := strings.Split(trim(input), "\n")
@@ -63,7 +63,7 @@ func ParseStats(input string) (*LoadStats, error) {
 	return &ls, nil
 }
 
-//ParseStatus gets status information from string
+// ParseStatus gets status information from string
 func ParseStatus(input string) (*Status, error) {
 	s := Status{}
 	s.ClientList = make([]*OVClient, 0, 0)
@@ -102,7 +102,7 @@ func ParseStatus(input string) (*Status, error) {
 				Username:        fields[9],
 				ClientID:        fields[10],
 				PeerID:          fields[11],
-				DataCipher:      fields[12],
+				//DataCipher:      fields[12],
 			}
 			s.ClientList = append(s.ClientList, item)
 		}
@@ -110,7 +110,7 @@ func ParseStatus(input string) (*Status, error) {
 	return &s, nil
 }
 
-//ParseSignal checks for error in response string
+// ParseSignal checks for error in response string
 func ParseSignal(input string) error {
 	a := strings.Split(trim(input), "\n")
 	if len(a) != 1 {
@@ -122,7 +122,7 @@ func ParseSignal(input string) error {
 	return nil
 }
 
-//ParseKillSession gets kill command result from string
+// ParseKillSession gets kill command result from string
 func ParseKillSession(input string) (string, error) {
 	a := strings.Split(trim(input), "\n")
 

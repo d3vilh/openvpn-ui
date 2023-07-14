@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
-	"github.com/beego/beego/v2/server/web"
 )
 
 // CreateValidationMap ranslates validation structure to map
@@ -23,7 +23,7 @@ func CreateValidationMap(valid validation.Validation) map[string]map[string]stri
 		  }
 	*/
 	for _, err := range valid.Errors {
-		web.Notice(err.Key, err.Message)
+		logs.Notice(err.Key, err.Message)
 		k := strings.Split(err.Key, ".")
 		var field, errorType string
 		if len(k) > 1 {
@@ -33,7 +33,7 @@ func CreateValidationMap(valid validation.Validation) map[string]map[string]stri
 			field = err.Key
 			errorType = " "
 		}
-		web.Error(field)
+		logs.Error(field)
 		if _, ok := v[field]; !ok {
 			v[field] = make(map[string]string)
 		}
@@ -46,5 +46,5 @@ func CreateValidationMap(valid validation.Validation) map[string]map[string]stri
 // Dump any structure as json string
 func Dump(obj interface{}) {
 	result, _ := json.MarshalIndent(obj, "", "\t")
-	web.Debug(string(result))
+	logs.Debug(string(result))
 }

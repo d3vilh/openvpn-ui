@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-//SendCommand passes command to a given connection (adds logging and EOL character)
+// SendCommand passes command to a given connection (adds logging and EOL character)
 func SendCommand(conn net.Conn, cmd string) error {
 	log.Debug("Sending command: " + cmd)
 	if _, err := fmt.Fprintf(conn, cmd+"\n"); err != nil {
@@ -19,7 +19,7 @@ func SendCommand(conn net.Conn, cmd string) error {
 	return nil
 }
 
-//ReadResponse .
+// ReadResponse .
 func ReadResponse(reader *bufio.Reader) (string, error) {
 	var finished = false
 	var result = ""

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
 
@@ -29,7 +30,7 @@ func AddFuncMaps() {
 		case int64:
 			return num2str(i.(int64)/1024, '\u00A0')
 		default:
-			web.Error("Unknown type:", v)
+			logs.Error("Unknown type:", v)
 		}
 		return "Mapping error"
 	})
@@ -40,7 +41,7 @@ func AddFuncMaps() {
 		case int64:
 			return num2str(i.(int64)/1024/1024, '\u00A0')
 		default:
-			web.Error("Unknown type:", v)
+			logs.Error("Unknown type:", v)
 		}
 		return "Mapping error"
 	})
@@ -51,11 +52,11 @@ func AddFuncMaps() {
 		return num2str(int64(i/1024/1024/1024), ' ')
 	})
 	_ = web.AddFuncMap("percent", func(x, y interface{}) string {
-		web.Notice("Percent", x, y)
+		logs.Notice("Percent", x, y)
 		zValue := "0"
 		switch v := x.(type) {
 		case string:
-			web.Error("Not implemented")
+			logs.Error("Not implemented")
 		case int32:
 			if x.(int32) == 0 || y.(int32) == 0 {
 				return zValue
@@ -78,7 +79,7 @@ func AddFuncMaps() {
 			b := float64(y.(uint64))
 			return fmt.Sprintf("%d", int((a/b)*float64(100)))
 		default:
-			web.Error("Unknown type:", v)
+			logs.Error("Unknown type:", v)
 		}
 		return "Mapping error"
 	})

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	"gopkg.in/hlandau/passlib.v1"
@@ -31,7 +32,7 @@ func InitDB() {
 
 	err = orm.RunSyncdb("default", false, true)
 	if err != nil {
-		web.Error(err)
+		logs.Error(err)
 		return
 	}
 }
@@ -39,7 +40,7 @@ func InitDB() {
 func CreateDefaultUsers() {
 	hash, err := passlib.Hash(os.Getenv("OPENVPN_ADMIN_PASSWORD"))
 	if err != nil {
-		web.Error("Unable to hash password", err)
+		logs.Error("Unable to hash password", err)
 	}
 	user := User{
 		Id:       1,
@@ -51,9 +52,9 @@ func CreateDefaultUsers() {
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&user, "Name"); err == nil {
 		if created {
-			web.Info("Default admin account created")
+			logs.Info("Default admin account created")
 		} else {
-			web.Debug(user)
+			logs.Debug(user)
 		}
 	}
 
@@ -72,9 +73,9 @@ func CreateDefaultSettings() (*Settings, error) {
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {
 		if created {
-			web.Info("New settings profile created")
+			logs.Info("New settings profile created")
 		} else {
-			web.Debug(s)
+			logs.Debug(s)
 		}
 		return &s, nil
 	} else {
@@ -111,17 +112,17 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&c, "Profile"); err == nil {
 		if created {
-			web.Info("New settings profile created")
+			logs.Info("New settings profile created")
 		} else {
-			web.Debug(c)
+			logs.Debug(c)
 		}
 		serverConfig := filepath.Join(ovConfigPath, "config/server.conf")
 		if _, err = os.Stat(serverConfig); os.IsNotExist(err) {
 			if err = config.SaveToFile(filepath.Join(configDir, "openvpn-server-config.tpl"), c.Config, serverConfig); err != nil {
-				web.Error(err)
+				logs.Error(err)
 			}
 		}
 	} else {
-		web.Error(err)
+		logs.Error(err)
 	}
 }
