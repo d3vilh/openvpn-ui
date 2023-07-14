@@ -1,4 +1,4 @@
-module github.com/your-username/openvpn-ui
+module github.com/d3vilh/openvpn-ui
 
 go 1.19
 
@@ -7,7 +7,6 @@ require (
 	github.com/beego/beego/v2 v2.1.0
 	github.com/cloudfoundry/gosigar v1.3.17
 	github.com/d3vilh/openvpn-server-config v0.1.0
-	github.com/d3vilh/openvpn-ui v0.0.0-20230309191534-67efb223732e
 	github.com/go-ldap/ldap/v3 v3.4.5
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	gopkg.in/hlandau/passlib.v1 v1.0.11
@@ -15,7 +14,6 @@ require (
 
 require (
 	github.com/Azure/go-ntlmssp v0.0.0-20221128193559-754e69321358 // indirect
-	github.com/astaxie/beego v1.12.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.4 // indirect

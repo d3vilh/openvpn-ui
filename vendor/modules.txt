@@ -1,19 +1,6 @@
 # github.com/Azure/go-ntlmssp v0.0.0-20221128193559-754e69321358
 ## explicit
 github.com/Azure/go-ntlmssp
-# github.com/astaxie/beego v1.12.3
-## explicit; go 1.13
-github.com/astaxie/beego
-github.com/astaxie/beego/config
-github.com/astaxie/beego/context
-github.com/astaxie/beego/context/param
-github.com/astaxie/beego/grace
-github.com/astaxie/beego/logs
-github.com/astaxie/beego/orm
-github.com/astaxie/beego/session
-github.com/astaxie/beego/toolbox
-github.com/astaxie/beego/utils
-github.com/astaxie/beego/validation
 # github.com/beego/beego v1.12.12
 ## explicit; go 1.13
 github.com/beego/beego
@@ -45,13 +32,6 @@ github.com/cloudfoundry/gosigar/sys/windows
 github.com/d3vilh/openvpn-server-config/client/config
 github.com/d3vilh/openvpn-server-config/server/config
 github.com/d3vilh/openvpn-server-config/server/mi
-# github.com/d3vilh/openvpn-ui v0.0.0-20230309191534-67efb223732e
-## explicit; go 1.19
-github.com/d3vilh/openvpn-ui/controllers
-github.com/d3vilh/openvpn-ui/lib
-github.com/d3vilh/openvpn-ui/models
-github.com/d3vilh/openvpn-ui/routers
-github.com/d3vilh/openvpn-ui/state
 # github.com/go-asn1-ber/asn1-ber v1.5.4
 ## explicit; go 1.13
 github.com/go-asn1-ber/asn1-ber
