@@ -1,3 +1,4 @@
 data.db
 .DS_Store
 build/.DS_Store
+vendor/.DS_Store
