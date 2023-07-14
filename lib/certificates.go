@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/beego/beego"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/state"
 )
 
@@ -96,7 +96,7 @@ func parseDetails(d string) *Details {
 			case "LocalIP":
 				details.LocalIP = fields[1]
 			default:
-				beego.Warn(fmt.Sprintf("Undefined entry: %s", line))
+				web.Warn(fmt.Sprintf("Undefined entry: %s", line))
 			}
 		}
 	}
@@ -120,8 +120,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 	}
 	certs, err := ReadCerts(path)
 	if err != nil {
-		//		beego.Debug(string(output))
-		beego.Error(err)
+		//		web.Debug(string(output))
+		web.Error(err)
 		//		return err
 	}
 	Dump(certs)
@@ -142,8 +142,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
-				beego.Debug(string(output))
-				beego.Error(err)
+				web.Debug(string(output))
+				web.Error(err)
 				return err
 			}
 			return nil
@@ -158,8 +158,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
-				beego.Debug(string(output))
-				beego.Error(err)
+				web.Debug(string(output))
+				web.Error(err)
 				return err
 			}
 			return nil
@@ -176,8 +176,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
-				beego.Debug(string(output))
-				beego.Error(err)
+				web.Debug(string(output))
+				web.Error(err)
 				return err
 			}
 			return nil
@@ -192,8 +192,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
-				beego.Debug(string(output))
-				beego.Error(err)
+				web.Debug(string(output))
+				web.Error(err)
 				return err
 			}
 			return nil
@@ -211,8 +211,8 @@ func RevokeCertificate(name string) error {
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		beego.Debug(string(output))
-		beego.Error(err)
+		web.Debug(string(output))
+		web.Error(err)
 		return err
 	}
 	return nil
@@ -226,8 +226,8 @@ func Restart() error {
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		beego.Debug(string(output))
-		beego.Error(err)
+		web.Debug(string(output))
+		web.Error(err)
 		return err
 	}
 	return nil
@@ -241,8 +241,8 @@ func BurnCertificate(CN string, serial string) error {
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		beego.Debug(string(output))
-		beego.Error(err)
+		web.Debug(string(output))
+		web.Error(err)
 		return err
 	}
 	return nil

@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"github.com/beego/beego"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/models"
 )
 
 type BaseController struct {
-	beego.Controller
+	web.Controller
 
 	Userinfo *models.User
 	IsLogin  bool
