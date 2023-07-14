@@ -1,19 +1,19 @@
 package mi
 
-// Version .
+//Version .
 type Version struct {
 	OpenVPN    string
 	Management string
 }
 
-// LoadStats .
+//LoadStats .
 type LoadStats struct {
 	NClients int64
 	BytesIn  int64
 	BytesOut int64
 }
 
-// Status .
+//Status .
 type Status struct {
 	Title        string
 	Time         string
@@ -22,7 +22,7 @@ type Status struct {
 	RoutingTable []*RoutingPath
 }
 
-// OVClient .
+//OVClient .
 type OVClient struct {
 	CommonName      string
 	RealAddress     string
@@ -35,10 +35,10 @@ type OVClient struct {
 	Username        string
 	ClientID        string
 	PeerID          string
-	// DataCipher      string
+	DataCipher      string
 }
 
-// RoutingPath .
+//RoutingPath .
 type RoutingPath struct {
 	VirtualAddress string
 	CommonName     string

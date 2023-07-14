@@ -3,8 +3,8 @@ package models
 import (
 	"time"
 
-	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego/validation"
+	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/core/validation"
 
 	//Sqlite driver
 	_ "github.com/mattn/go-sqlite3"
@@ -35,7 +35,7 @@ func (u *User) Insert() error {
 	return nil
 }
 
-//Read wrapper
+// Read wrapper
 func (u *User) Read(fields ...string) error {
 	if err := orm.NewOrm().Read(u, fields...); err != nil {
 		return err
@@ -43,7 +43,7 @@ func (u *User) Read(fields ...string) error {
 	return nil
 }
 
-//Update wrapper
+// Update wrapper
 func (u *User) Update(fields ...string) error {
 	if _, err := orm.NewOrm().Update(u, fields...); err != nil {
 		return err
@@ -51,7 +51,7 @@ func (u *User) Update(fields ...string) error {
 	return nil
 }
 
-//Delete wrapper
+// Delete wrapper
 func (u *User) Delete() error {
 	if _, err := orm.NewOrm().Delete(u); err != nil {
 		return err

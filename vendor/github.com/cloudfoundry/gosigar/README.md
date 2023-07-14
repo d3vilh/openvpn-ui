@@ -9,13 +9,16 @@ in pure go/cgo, rather than cgo bindings for libsigar.
 
 ## Test drive
 
-    $ go get github.com/cloudfoundry/gosigar
-    $ cd $GOPATH/src/github.com/cloudfoundry/gosigar/examples
+    $ git clone https://github.com/cloudfoundry/gosigar.git
+    $ cd gosigar/examples
     $ go run uptime.go
+    $ go run df.go
+    $ go run free.go
+    $ go run ps.go
 
 ## Supported platforms
 
-Currently targeting modern flavors of darwin and linux.
+Currently targeting modern flavors of macOS (Darwin), Windows and Linux.
 
 ## License
 

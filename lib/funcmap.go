@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego"
 )
 
 // AddFuncMaps .

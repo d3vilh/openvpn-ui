@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego/orm"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 )
 

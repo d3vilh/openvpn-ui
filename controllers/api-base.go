@@ -1,12 +1,12 @@
 package controllers
 
-import "github.com/astaxie/beego"
+import "github.com/beego/beego"
 
 type APIBaseController struct {
 	BaseController
 }
 
-//JSONResponse http://stackoverflow.com/a/12979961
+// JSONResponse http://stackoverflow.com/a/12979961
 type JSONResponse struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`

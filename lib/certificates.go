@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego"
 	"github.com/d3vilh/openvpn-ui/state"
 )
 

@@ -5,9 +5,9 @@ import (
 
 	passlib "gopkg.in/hlandau/passlib.v1"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego/validation"
+	"github.com/beego/beego"
+	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/core/validation"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
 )

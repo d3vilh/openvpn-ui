@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/state"

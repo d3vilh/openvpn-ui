@@ -4,8 +4,8 @@ import (
 	"html/template"
 	"path/filepath"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego"
+	"github.com/beego/beego/orm"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"

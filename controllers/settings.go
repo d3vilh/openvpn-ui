@@ -5,8 +5,8 @@ import (
 
 	"github.com/d3vilh/openvpn-ui/state"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego"
+	"github.com/beego/beego/orm"
 	"github.com/d3vilh/openvpn-ui/models"
 )
 

@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego/orm"
 	//Sqlite driver
 	_ "github.com/mattn/go-sqlite3"
 )
