@@ -27,7 +27,7 @@ It does include 2 different Docker containers:
 * EasyRSA 3.X support
 * Added support for Admin user and password creation via environment variables
 * Added support for OpenVPN configuration file modification via UI
-* Support ARM32v7 and ARM64v8 architecture (Raspberry Pi)
+* Support AMD64 and ARM64v8 architecture (Raspberry Pi)
 * [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
 
 ## Run this image using a `docker-compose.yml` file
@@ -35,7 +35,7 @@ It does include 2 different Docker containers:
 ```yaml
     openvpn-ui:
        container_name: openvpn-ui
-       image: d3vilh/openvpn-ui-arm32v7:latest
+       image: d3vilh/openvpn-ui:latest
        # image: d3vilh/openvpn-ui-amd64:latest
        environment:
            - OPENVPN_ADMIN_USERNAME={{ ovpnui_user }}
