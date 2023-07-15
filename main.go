@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
 	"github.com/d3vilh/openvpn-ui/routers"
@@ -19,7 +19,7 @@ func main() {
 	configFile := filepath.Join(*configDir, "app.conf")
 	fmt.Println("Config file:", configFile)
 
-	if err := web.LoadAppConfig("ini", configFile); err != nil {
+	if err := beego.LoadAppConfig("ini", configFile); err != nil {
 		panic(err)
 	}
 
@@ -37,5 +37,5 @@ func main() {
 	routers.Init(*configDir)
 
 	lib.AddFuncMaps()
-	web.Run()
+	beego.Run()
 }

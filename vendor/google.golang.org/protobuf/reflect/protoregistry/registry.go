@@ -30,11 +30,9 @@ import (
 // conflictPolicy configures the policy for handling registration conflicts.
 //
 // It can be over-written at compile time with a linker-initialized variable:
-//
 //	go build -ldflags "-X google.golang.org/protobuf/reflect/protoregistry.conflictPolicy=warn"
 //
 // It can be over-written at program execution with an environment variable:
-//
 //	GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn ./main
 //
 // Neither of the above are covered by the compatibility promise and
@@ -46,7 +44,7 @@ var conflictPolicy = "panic" // "panic" | "warn" | "ignore"
 // It is a variable so that the behavior is easily overridden in another file.
 var ignoreConflict = func(d protoreflect.Descriptor, err error) bool {
 	const env = "GOLANG_PROTOBUF_REGISTRATION_CONFLICT"
-	const faq = "https://protobuf.dev/reference/go/faq#namespace-conflict"
+	const faq = "https://developers.google.com/protocol-buffers/docs/reference/go/faq#namespace-conflict"
 	policy := conflictPolicy
 	if v := os.Getenv(env); v != "" {
 		policy = v
@@ -96,8 +94,7 @@ type Files struct {
 	// Note that enum values are in the top-level since that are in the same
 	// scope as the parent enum.
 	descsByName map[protoreflect.FullName]interface{}
-	filesByPath map[string][]protoreflect.FileDescriptor
-	numFiles    int
+	filesByPath map[string]protoreflect.FileDescriptor
 }
 
 type packageDescriptor struct {
@@ -120,16 +117,17 @@ func (r *Files) RegisterFile(file protoreflect.FileDescriptor) error {
 		r.descsByName = map[protoreflect.FullName]interface{}{
 			"": &packageDescriptor{},
 		}
-		r.filesByPath = make(map[string][]protoreflect.FileDescriptor)
+		r.filesByPath = make(map[string]protoreflect.FileDescriptor)
 	}
 	path := file.Path()
-	if prev := r.filesByPath[path]; len(prev) > 0 {
+	if prev := r.filesByPath[path]; prev != nil {
 		r.checkGenProtoConflict(path)
 		err := errors.New("file %q is already registered", file.Path())
-		err = amendErrorWithCaller(err, prev[0], file)
-		if !(r == GlobalFiles && ignoreConflict(file, err)) {
-			return err
+		err = amendErrorWithCaller(err, prev, file)
+		if r == GlobalFiles && ignoreConflict(file, err) {
+			err = nil
 		}
+		return err
 	}
 
 	for name := file.Package(); name != ""; name = name.Parent() {
@@ -170,8 +168,7 @@ func (r *Files) RegisterFile(file protoreflect.FileDescriptor) error {
 	rangeTopLevelDescriptors(file, func(d protoreflect.Descriptor) {
 		r.descsByName[d.FullName()] = d
 	})
-	r.filesByPath[path] = append(r.filesByPath[path], file)
-	r.numFiles++
+	r.filesByPath[path] = file
 	return nil
 }
 
@@ -311,7 +308,6 @@ func (s *nameSuffix) Pop() (name protoreflect.Name) {
 // FindFileByPath looks up a file by the path.
 //
 // This returns (nil, NotFound) if not found.
-// This returns an error if multiple files have the same path.
 func (r *Files) FindFileByPath(path string) (protoreflect.FileDescriptor, error) {
 	if r == nil {
 		return nil, NotFound
@@ -320,19 +316,13 @@ func (r *Files) FindFileByPath(path string) (protoreflect.FileDescriptor, error)
 		globalMutex.RLock()
 		defer globalMutex.RUnlock()
 	}
-	fds := r.filesByPath[path]
-	switch len(fds) {
-	case 0:
-		return nil, NotFound
-	case 1:
-		return fds[0], nil
-	default:
-		return nil, errors.New("multiple files named %q", path)
+	if fd, ok := r.filesByPath[path]; ok {
+		return fd, nil
 	}
+	return nil, NotFound
 }
 
-// NumFiles reports the number of registered files,
-// including duplicate files with the same name.
+// NumFiles reports the number of registered files.
 func (r *Files) NumFiles() int {
 	if r == nil {
 		return 0
@@ -341,11 +331,10 @@ func (r *Files) NumFiles() int {
 		globalMutex.RLock()
 		defer globalMutex.RUnlock()
 	}
-	return r.numFiles
+	return len(r.filesByPath)
 }
 
 // RangeFiles iterates over all registered files while f returns true.
-// If multiple files have the same name, RangeFiles iterates over all of them.
 // The iteration order is undefined.
 func (r *Files) RangeFiles(f func(protoreflect.FileDescriptor) bool) {
 	if r == nil {
@@ -355,11 +344,9 @@ func (r *Files) RangeFiles(f func(protoreflect.FileDescriptor) bool) {
 		globalMutex.RLock()
 		defer globalMutex.RUnlock()
 	}
-	for _, files := range r.filesByPath {
-		for _, file := range files {
-			if !f(file) {
-				return
-			}
+	for _, file := range r.filesByPath {
+		if !f(file) {
+			return
 		}
 	}
 }

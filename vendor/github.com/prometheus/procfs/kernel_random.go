@@ -11,7 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build !windows
 // +build !windows
 
 package procfs
@@ -26,7 +25,7 @@ import (
 type KernelRandom struct {
 	// EntropyAvaliable gives the available entropy, in bits.
 	EntropyAvaliable *uint64
-	// PoolSize gives the size of the entropy pool, in bits.
+	// PoolSize gives the size of the entropy pool, in bytes.
 	PoolSize *uint64
 	// URandomMinReseedSeconds is the number of seconds after which the DRNG will be reseeded.
 	URandomMinReseedSeconds *uint64

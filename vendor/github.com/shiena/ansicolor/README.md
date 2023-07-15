@@ -1,5 +1,4 @@
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/shiena/ansicolor)](https://pkg.go.dev/github.com/shiena/ansicolor)
-[![Go Report Card](https://goreportcard.com/badge/github.com/shiena/ansicolor)](https://goreportcard.com/report/github.com/shiena/ansicolor)
+[![GoDoc](https://godoc.org/github.com/shiena/ansicolor?status.svg)](https://godoc.org/github.com/shiena/ansicolor)
 
 # ansicolor
 

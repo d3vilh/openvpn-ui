@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego"
 	"github.com/d3vilh/openvpn-ui/models"
 )
 
@@ -30,14 +30,14 @@ func (c *LogsController) Get() {
 	settings.Read("Profile")
 
 	if err := settings.Read("OVConfigPath"); err != nil {
-		logs.Error(err)
+		beego.Error(err)
 		return
 	}
 
 	fName := settings.OVConfigPath + "/log/openvpn.log"
 	file, err := os.Open(fName)
 	if err != nil {
-		logs.Error(err)
+		beego.Error(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)

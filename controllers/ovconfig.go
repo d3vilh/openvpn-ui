@@ -4,9 +4,8 @@ import (
 	"html/template"
 	"path/filepath"
 
+	"github.com/beego/beego"
 	"github.com/beego/beego/orm"
-	"github.com/beego/beego/v2/core/logs"
-	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"
@@ -40,11 +39,11 @@ func (c *OVConfigController) Get() {
 
 func (c *OVConfigController) Post() {
 	c.TplName = "ovconfig.html"
-	flash := web.NewFlash()
+	flash := beego.NewFlash()
 	cfg := models.OVConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
 	if err := c.ParseForm(&cfg); err != nil {
-		logs.Warning(err)
+		beego.Warning(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		return
@@ -55,7 +54,7 @@ func (c *OVConfigController) Post() {
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
 	err := config.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-server-config.tpl"), cfg.Config, destPath)
 	if err != nil {
-		logs.Warning(err)
+		beego.Warning(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		return

@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/state"
@@ -29,9 +29,9 @@ func (c *MainController) Get() {
 	client := mi.NewClient(state.GlobalCfg.MINetwork, state.GlobalCfg.MIAddress)
 	status, err := client.GetStatus()
 	if err != nil {
-		logs.Error(err)
-		logs.Warn(fmt.Sprintf("passed client line: %s", client))
-		logs.Warn(fmt.Sprintf("error: %s", err))
+		beego.Error(err)
+		beego.Warn(fmt.Sprintf("passed client line: %s", client))
+		beego.Warn(fmt.Sprintf("error: %s", err))
 	} else {
 		c.Data["ovstatus"] = status
 	}
@@ -39,7 +39,7 @@ func (c *MainController) Get() {
 
 	version, err := client.GetVersion()
 	if err != nil {
-		logs.Error(err)
+		beego.Error(err)
 	} else {
 		c.Data["ovversion"] = version.OpenVPN
 	}
@@ -47,7 +47,7 @@ func (c *MainController) Get() {
 
 	pid, err := client.GetPid()
 	if err != nil {
-		logs.Error(err)
+		beego.Error(err)
 	} else {
 		c.Data["ovpid"] = pid
 	}
@@ -55,7 +55,7 @@ func (c *MainController) Get() {
 
 	loadStats, err := client.GetLoadStats()
 	if err != nil {
-		logs.Error(err)
+		beego.Error(err)
 	} else {
 		c.Data["ovstats"] = loadStats
 	}
