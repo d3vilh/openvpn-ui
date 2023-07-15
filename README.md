@@ -60,6 +60,7 @@ version: "3.5"
 services:
     openvpn:
        container_name: openvpn
+       # image: d3vilh/openvpn-server:latest
        build: ./openvpn-docker
        privileged: true
        ports: 
