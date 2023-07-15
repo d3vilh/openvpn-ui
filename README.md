@@ -49,7 +49,7 @@ It does include 2 different Docker containers:
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
 ```
-This image is compatible with the [openvpn](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn/openvpn-docker) image of [Raspberyy-Gateway](https://github.com/d3vilh/raspberry-gateway) project. 
+This image is compatible with the [openvpn](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image of [Raspberyy-Gateway](https://github.com/d3vilh/raspberry-gateway) project. 
 
 You can use them together in a `docker-compose.yml` file like this:
 
