@@ -36,7 +36,6 @@ It does include 2 different Docker containers:
     openvpn-ui:
        container_name: openvpn-ui
        image: d3vilh/openvpn-ui:latest
-       # image: d3vilh/openvpn-ui-amd64:latest
        environment:
            - OPENVPN_ADMIN_USERNAME={{ ovpnui_user }}
            - OPENVPN_ADMIN_PASSWORD={{ ovpnui_password }}
