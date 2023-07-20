@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"time"
 
-	"github.com/beego/beego"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/lib"
 )
 
@@ -24,11 +24,17 @@ func (c *LoginController) Login() {
 		return
 	}
 
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 	login := c.GetString("login")
 	password := c.GetString("password")
 
-	user, err := lib.Authenticate(login, password, beego.AppConfig.String("AuthType"))
+	authType, err := web.AppConfig.String("AuthType")
+	if err != nil {
+		flash.Warning(err.Error())
+		flash.Store(&c.Controller)
+		return
+	}
+	user, err := lib.Authenticate(login, password, authType)
 
 	if err != nil {
 		flash.Warning(err.Error())
@@ -52,7 +58,7 @@ func (c *LoginController) Login() {
 
 func (c *LoginController) Logout() {
 	c.DelLogin()
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 	flash.Success("Success logged out")
 	flash.Store(&c.Controller)
 

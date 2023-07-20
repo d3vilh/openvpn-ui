@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
+//go:build windows
 // +build windows
 
 package ansicolor
@@ -409,7 +410,7 @@ func (cw *ansiColorWriter) Write(p []byte) (int, error) {
 	}
 
 	if cw.mode != DiscardNonColorEscSeq || cw.state == outsideCsiCode {
-		nw, err = cw.w.Write(p[first:len(p)])
+		nw, err = cw.w.Write(p[first:])
 		r += nw
 	}
 
