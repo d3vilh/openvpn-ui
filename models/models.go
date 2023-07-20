@@ -5,8 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/beego/beego"
-	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	"gopkg.in/hlandau/passlib.v1"
 )
@@ -16,7 +17,11 @@ func InitDB() {
 	if err != nil {
 		panic(err)
 	}
-	dbSource := "file:" + beego.AppConfig.String("dbPath")
+	dbPath, err := web.AppConfig.String("dbPath")
+	if err != nil {
+		panic(err)
+	}
+	dbSource := "file:" + dbPath
 
 	err = orm.RegisterDataBase("default", "sqlite3", dbSource)
 	if err != nil {
@@ -31,7 +36,7 @@ func InitDB() {
 
 	err = orm.RunSyncdb("default", false, true)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return
 	}
 }
@@ -39,7 +44,7 @@ func InitDB() {
 func CreateDefaultUsers() {
 	hash, err := passlib.Hash(os.Getenv("OPENVPN_ADMIN_PASSWORD"))
 	if err != nil {
-		beego.Error("Unable to hash password", err)
+		logs.Error("Unable to hash password", err)
 	}
 	user := User{
 		Id:       1,
@@ -51,30 +56,51 @@ func CreateDefaultUsers() {
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&user, "Name"); err == nil {
 		if created {
-			beego.Info("Default admin account created")
+			logs.Info("Default admin account created")
 		} else {
-			beego.Debug(user)
+			logs.Debug(user)
 		}
 	}
 
 }
 
 func CreateDefaultSettings() (*Settings, error) {
-	s := Settings{
-		Profile:   "default",
-		MIAddress: beego.AppConfig.String("OpenVpnManagementAddress"),
-		//MIAddress:         "openvpn:2080",
-		MINetwork:         beego.AppConfig.String("OpenVpnManagementNetwork"),
-		ServerAddress:     beego.AppConfig.String("OpenVpnServerAddress"),
-		OpenVpnServerPort: beego.AppConfig.String("OpenVpnServerPort"),
-		OVConfigPath:      beego.AppConfig.String("OpenVpnPath"),
+	miAddress, err := web.AppConfig.String("OpenVpnManagementAddress")
+	if err != nil {
+		return nil, err
 	}
+	miNetwork, err := web.AppConfig.String("OpenVpnManagementNetwork")
+	if err != nil {
+		return nil, err
+	}
+	serverAddress, err := web.AppConfig.String("OpenVpnServerAddress")
+	if err != nil {
+		return nil, err
+	}
+	serverPort, err := web.AppConfig.String("OpenVpnServerPort")
+	if err != nil {
+		return nil, err
+	}
+	ovConfigPath, err := web.AppConfig.String("OpenVpnPath")
+	if err != nil {
+		return nil, err
+	}
+
+	s := Settings{
+		Profile:           "default",
+		MIAddress:         miAddress,
+		MINetwork:         miNetwork,
+		ServerAddress:     serverAddress,
+		OpenVpnServerPort: serverPort,
+		OVConfigPath:      ovConfigPath,
+	}
+
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {
 		if created {
-			beego.Info("New settings profile created")
+			logs.Info("New settings profile created")
 		} else {
-			beego.Debug(s)
+			logs.Debug(s)
 		}
 		return &s, nil
 	} else {
@@ -111,17 +137,17 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&c, "Profile"); err == nil {
 		if created {
-			beego.Info("New settings profile created")
+			logs.Info("New settings profile created")
 		} else {
-			beego.Debug(c)
+			logs.Debug(c)
 		}
 		serverConfig := filepath.Join(ovConfigPath, "config/server.conf")
 		if _, err = os.Stat(serverConfig); os.IsNotExist(err) {
 			if err = config.SaveToFile(filepath.Join(configDir, "openvpn-server-config.tpl"), c.Config, serverConfig); err != nil {
-				beego.Error(err)
+				logs.Error(err)
 			}
 		}
 	} else {
-		beego.Error(err)
+		logs.Error(err)
 	}
 }

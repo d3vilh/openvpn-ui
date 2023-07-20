@@ -3,8 +3,9 @@ package controllers
 import (
 	"html/template"
 
-	"github.com/beego/beego"
-	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/models"
 	"github.com/d3vilh/openvpn-ui/state"
 )
@@ -34,11 +35,11 @@ func (c *SettingsController) Get() {
 func (c *SettingsController) Post() {
 	c.TplName = "settings.html"
 
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 	settings := models.Settings{Profile: "default"}
 	_ = settings.Read("Profile")
 	if err := c.ParseForm(&settings); err != nil {
-		beego.Warning(err)
+		logs.Warning(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		return

@@ -8,38 +8,38 @@
 package routers
 
 import (
-	"github.com/beego/beego"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/controllers"
 )
 
 func Init(configDir string) {
-	beego.SetStaticPath("/swagger", "swagger")
-	beego.Router("/", &controllers.MainController{})
-	beego.Router("/login", &controllers.LoginController{}, "get,post:Login")
-	beego.Router("/logout", &controllers.LoginController{}, "get:Logout")
-	beego.Router("/profile", &controllers.ProfileController{})
-	beego.Router("/settings", &controllers.SettingsController{})
-	beego.Router("/ov/config", &controllers.OVConfigController{ConfigDir: configDir})
-	beego.Router("/logs", &controllers.LogsController{})
+	web.SetStaticPath("/swagger", "swagger")
+	web.Router("/", &controllers.MainController{})
+	web.Router("/login", &controllers.LoginController{}, "get,post:Login")
+	web.Router("/logout", &controllers.LoginController{}, "get:Logout")
+	web.Router("/profile", &controllers.ProfileController{})
+	web.Router("/settings", &controllers.SettingsController{})
+	web.Router("/ov/config", &controllers.OVConfigController{ConfigDir: configDir})
+	web.Router("/logs", &controllers.LogsController{})
 
-	beego.Include(&controllers.CertificatesController{ConfigDir: configDir})
+	web.Include(&controllers.CertificatesController{ConfigDir: configDir})
 
-	ns := beego.NewNamespace("/api/v1",
-		beego.NSNamespace("/session",
-			beego.NSInclude(
+	ns := web.NewNamespace("/api/v1",
+		web.NSNamespace("/session",
+			web.NSInclude(
 				&controllers.APISessionController{},
 			),
 		),
-		beego.NSNamespace("/sysload",
-			beego.NSInclude(
+		web.NSNamespace("/sysload",
+			web.NSInclude(
 				&controllers.APISysloadController{},
 			),
 		),
-		beego.NSNamespace("/signal",
-			beego.NSInclude(
+		web.NSNamespace("/signal",
+			web.NSInclude(
 				&controllers.APISignalController{},
 			),
 		),
 	)
-	beego.AddNamespace(ns)
+	web.AddNamespace(ns)
 }

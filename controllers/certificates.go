@@ -7,8 +7,9 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/beego/beego"
-	"github.com/beego/beego/validation"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/core/validation"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-server-config/client/config"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
@@ -48,16 +49,16 @@ func (c *CertificatesController) Download() {
 
 	cfgPath, err := c.saveClientConfig(keysPath, name)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return
 	}
 	data, err := os.ReadFile(cfgPath)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return
 	}
 	if _, err = c.Controller.Ctx.ResponseWriter.Write(data); err != nil {
-		beego.Error(err)
+		logs.Error(err)
 	}
 }
 
@@ -71,7 +72,7 @@ func (c *CertificatesController) showCerts() {
 	path := filepath.Join(state.GlobalCfg.OVConfigPath, "pki/index.txt")
 	certs, err := lib.ReadCerts(path)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 	}
 	lib.Dump(certs)
 	c.Data["certificates"] = &certs
@@ -80,11 +81,11 @@ func (c *CertificatesController) showCerts() {
 // @router /certificates [post]
 func (c *CertificatesController) Post() {
 	c.TplName = "certificates.html"
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	cParams := NewCertParams{}
 	if err := c.ParseForm(&cParams); err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
@@ -92,7 +93,7 @@ func (c *CertificatesController) Post() {
 			c.Data["validation"] = vMap
 		} else {
 			if err := lib.CreateCertificate(cParams.Name, cParams.Staticip, cParams.Passphrase); err != nil {
-				beego.Error(err)
+				logs.Error(err)
 				flash.Error(err.Error())
 				flash.Store(&c.Controller)
 			} else {
@@ -107,10 +108,10 @@ func (c *CertificatesController) Post() {
 // @router /certificates/revoke/:key [get]
 func (c *CertificatesController) Revoke() {
 	c.TplName = "certificates.html"
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 	name := c.GetString(":key")
 	if err := lib.RevokeCertificate(name); err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
@@ -130,11 +131,11 @@ func (c *CertificatesController) Restart() {
 // @router /certificates/burn/:key/:serial [get]
 func (c *CertificatesController) Burn() {
 	c.TplName = "certificates.html"
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 	CN := c.GetString(":key")
 	serial := c.GetString(":serial")
 	if err := lib.BurnCertificate(CN, serial); err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
@@ -148,7 +149,7 @@ func validateCertParams(cert NewCertParams) map[string]map[string]string {
 	valid := validation.Validation{}
 	b, err := valid.Valid(&cert)
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return nil
 	}
 	if !b {
@@ -187,7 +188,7 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients", name+".ovpn")
 	if err := SaveToFile(filepath.Join(c.ConfigDir, "openvpn-client-config.tpl"), cfg, destPath); err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return "", err
 	}
 

@@ -5,8 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/beego/beego"
-	"github.com/beego/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/models"
 	"github.com/go-ldap/ldap/v3"
 	"gopkg.in/hlandau/passlib.v1"
@@ -19,7 +20,7 @@ func init() {
 }
 
 func Authenticate(login string, password string, authType string) (*models.User, error) {
-	beego.Info("auth type: ", authType)
+	logs.Info("auth type: ", authType)
 	if authType == "ldap" {
 		return authenticateLdap(login, password)
 	} else {
@@ -31,28 +32,28 @@ func authenticateSimple(login string, password string) (*models.User, error) {
 	user := &models.User{Login: login}
 	err := user.Read("Login")
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return nil, authError
 	}
 	if user.Id < 1 {
-		beego.Error(err)
+		logs.Error(err)
 		return nil, authError
 	}
 	if _, err := passlib.Verify(password, user.Password); err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return nil, authError
 	}
 	return user, nil
 }
 
 func authenticateLdap(login string, password string) (*models.User, error) {
-	address := beego.AppConfig.String("LdapAddress")
+	address, _ := web.AppConfig.String("LdapAddress")
 	var connection *ldap.Conn
 	var err error
-	ldapTransport := beego.AppConfig.String("LdapTransport")
-	skipVerify, err := beego.AppConfig.Bool("LdapInsecureSkipVerify")
+	ldapTransport, _ := web.AppConfig.String("LdapTransport")
+	skipVerify, err := web.AppConfig.Bool("LdapInsecureSkipVerify")
 	if err != nil {
-		beego.Error("LDAP Dial:", err)
+		logs.Error("LDAP Dial:", err)
 		return nil, authError
 	}
 
@@ -63,25 +64,25 @@ func authenticateLdap(login string, password string) (*models.User, error) {
 	}
 
 	if err != nil {
-		beego.Error("LDAP Dial:", err)
+		logs.Error("LDAP Dial:", err)
 		return nil, authError
 	}
 
 	if ldapTransport == "starttls" {
 		err = connection.StartTLS(&tls.Config{InsecureSkipVerify: skipVerify})
 		if err != nil {
-			beego.Error("LDAP Start TLS:", err)
+			logs.Error("LDAP Start TLS:", err)
 			return nil, authError
 		}
 	}
 
 	defer connection.Close()
 
-	bindDn := beego.AppConfig.String("LdapBindDn")
+	bindDn, _ := web.AppConfig.String("LdapBindDn")
 
 	err = connection.Bind(fmt.Sprintf(bindDn, login), password)
 	if err != nil {
-		beego.Error("LDAP Bind:", err)
+		logs.Error("LDAP Bind:", err)
 		return nil, authError
 	}
 
@@ -91,7 +92,7 @@ func authenticateLdap(login string, password string) (*models.User, error) {
 		err = user.Insert()
 	}
 	if err != nil {
-		beego.Error(err)
+		logs.Error(err)
 		return nil, authError
 	}
 
