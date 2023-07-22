@@ -33,7 +33,7 @@ Part of following cool projects:
 * [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
 * [Raspberry-gateway](https://github.com/d3vilh/raspberry-gateway) simple yet powerful home gateway environment with Pi-Hole +Unbound, VPN, Torrent client and Internet monitoring, all managed by Portainer.
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
+<img src="https://raw.githubusercontent.com/d3vilh/raspberry-gateway/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
 
 
 ## Run this image using a `docker-compose.yml` file
