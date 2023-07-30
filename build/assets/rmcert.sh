@@ -14,15 +14,15 @@ if [[ ! -f $DEST_FILE_PATH ]]; then
 fi
 
 # Define key serial number by keyname
-
-STATUS_CH=$(grep ${1} ${INDEX_PATH} | awk '{print $1}' | tr -d '\n')
+# Fix for https://github.com/d3vilh/openvpn-ui/issues/5 by shuricksumy@github
+STATUS_CH=$(grep -e ${1}$ -e${1}/ ${INDEX_PATH} | awk '{print $1}' | tr -d '\n')
 if [[ $STATUS_CH = "V" ]]; then
     echo "Cert is VALID"
-    CERT_SERIAL=$(grep ${1} ${INDEX_PATH} | awk '{print $3}' | tr -d '\n')
+    CERT_SERIAL=$(grep ${1}/ ${INDEX_PATH} | awk '{print $3}' | tr -d '\n')
     echo "Will remove: ${CERT_SERIAL}"
 else
     echo "Cert is REVOKED"
-    CERT_SERIAL=$(grep ${1} ${INDEX_PATH} | awk '{print $4}' | tr -d '\n')
+    CERT_SERIAL=$(grep ${1}$ ${INDEX_PATH} | awk '{print $4}' | tr -d '\n')
     echo "Will remove: ${CERT_SERIAL}"
 fi
 
