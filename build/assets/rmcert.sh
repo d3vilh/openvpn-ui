@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION 1.0
+#VERSION 1.1
 # Exit immediately if a command exits with a non-zero status
 set -e
 
