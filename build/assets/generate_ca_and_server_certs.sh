@@ -7,7 +7,7 @@
 #mkdir -p /etc/openvpn/keys
 #touch /etc/openvpn/keys/index.txt
 #echo 01 > /etc/openvpn/keys/serial
-cp -f /opt/scripts/vars.template /etc/openvpn/pki/vars
+#cp -f /opt/scripts/vars.template /etc/openvpn/pki/vars
 
 #$EASY_RSA/clean-all
 #source /etc/openvpn/keys/vars

@@ -16,12 +16,14 @@ fi
 
 export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
 
+echo 'Patching easy-rsa.3.1.1 openssl-easyrsa.cnf...' 
+sed -i '/serialNumber_default/d' /usr/share/easy-rsa/pki/openssl-easyrsa.cnf
 
 echo 'Generate client certificate...'
 
 # Copy easy-rsa variables
 cd /usr/share/easy-rsa
-cp /etc/openvpn/config/easy-rsa.vars ./vars
+#cp /etc/openvpn/config/easy-rsa.vars ./vars
 printf "KEY_COUNTRY=$KEY_COUNTRY\n"
 
 # Generate certificates
@@ -47,6 +49,9 @@ CA="$(cat ./pki/ca.crt )"
 CERT="$(cat ./pki/issued/${1}.crt | grep -zEo -e '-----BEGIN CERTIFICATE-----(\n|.)*-----END CERTIFICATE-----' | tr -d '\0')"
 KEY="$(cat ./pki/private/${1}.key)"
 TLS_AUTH="$(cat ./pki/ta.key)"
+
+echo 'Permissions fix for pki/issued...'
+chmod +r ./pki/issued
 
 #echo 'Sync pki directory...'
 #cp -r ./pki/. /etc/openvpn/pki
