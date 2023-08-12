@@ -2,7 +2,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-PLATFORM="linux/arm64/v8" # amd64 - "linux/amd64", arm32v5 - "linux/arm/v5", arm32v7 - "linux/arm/v7"
+PLATFORM="linux/amd64" # arm64v8 = "linux/arm64/v8", arm32v5 - "linux/arm/v5", arm32v7 - "linux/arm/v7", amd64 - "linux/amd64"
 # Set the current directory
 #OD=$PWD
 
