@@ -66,8 +66,7 @@ version: "3.5"
 services:
     openvpn:
        container_name: openvpn
-       # image: d3vilh/openvpn-server:latest
-       build: ./openvpn-docker
+       image: d3vilh/openvpn-server:latest
        privileged: true
        ports: 
           - "1194:1194/udp"
@@ -78,24 +77,22 @@ services:
            REQ_ORG: CopyleftCertificateCo
            REQ_OU: ShantiShanti
            REQ_CN: MyOpenVPN
+           TRUST_SUB: 10.0.70.0/24
+           GUEST_SUB: 10.0.71.0/24
+           HOME_SUB: 192.168.88.0/24
        volumes:
            - ./pki:/etc/openvpn/pki
            - ./clients:/etc/openvpn/clients
            - ./config:/etc/openvpn/config
            - ./staticclients:/etc/openvpn/staticclients
            - ./log:/var/log/openvpn
+           - ./fw-rules.sh:/opt/app/fw-rules.sh
        cap_add:
            - NET_ADMIN
        restart: always
 ``` 
 
 ## Run this image using the Docker itself
-
-### First, build the images:
-
-To build the image for **ARM CPU** you'll have to follow [openvpn-ui-docker-build](https://github.com/d3vilh/openvpn-ui-docker-build) instructions.
-
-To build the image for **x86_64 CPU** you'll have to follow [openvpn-ui-docker-build-amd64](https://github.com/d3vilh/openvpn-ui-docker-build-amd64) instructions.
 
 Run the OpenVPN-UI image
 ```shell
@@ -108,22 +105,60 @@ docker run \
 -e OPENVPN_ADMIN_USERNAME='admin' \
 -e OPENVPN_ADMIN_PASSWORD='gagaZush' \
 -p 8080:8080/tcp \
---privileged local/openvpn-ui
+--privileged d3vilh/openvpn-ui:latest
 ```
 
 Run the OpenVPN image:
 ```shell
-sudo docker run openvpn \
-    --expose 1194:1194/udp \
-    --mount type=bind,src=./openvpn/pki,dst=/etc/openvpn/pki \
-    --mount type=bind,src=./openvpn/clients,dst=/etc/openvpn/clients \
-    --mount type=bind,src=./openvpn/config,dst=/etc/openvpn/config \
-    --mount type=bind,src=./openvpn/staticclients,dst=/etc/openvpn/staticclients \
-    --mount type=bind,src=./openvpn/log,dst=/var/log/openvpn \
-    --cap-add=NET_ADMIN \
-    --restart=unless-stopped
-    --privileged openvpn
+cd ~/openvpn-server/ && 
+docker run  --interactive --tty --rm \
+  --name=openvpn-server \
+  --cap-add=NET_ADMIN \
+  -p 1194:1194/udp \
+  -e REQ_COUNTRY=UA \
+  -e REQ_PROVINCE=Kyiv \
+  -e REQ_CITY=Chayka \
+  -e REQ_ORG=CopyleftCertificateCo \
+  -e REQ_OU=ShantiShanti \
+  -e REQ_CN=MyOpenVPN \
+  -e TRUST_SUB=10.0.70.0/24 \
+  -e GUEST_SUB=10.0.71.0/24 \
+  -e HOME_SUB=192.168.88.0/24 \
+  -v ./pki:/etc/openvpn/pki \
+  -v ./clients:/etc/openvpn/clients \
+  -v ./config:/etc/openvpn/config \
+  -v ./staticclients:/etc/openvpn/staticclients \
+  -v ./log:/var/log/openvpn \
+  -v ./fw-rules.sh:/opt/app/fw-rules.sh \
+  --privileged d3vilh/openvpn-server:latest
 ```
+
+## Build the image
+### Prerequisites
+As prerequisite, you need to have Docker and GoLang to be installed and running:
+```
+sudo apt-get install docker.io -y
+sudo systemctl restart docker
+```
+
+To install Golang go to [https://go.dev/dl](https://go.dev/dl/) and copy download URL for Go1.20.X version of your arch and follow the instructions below.
+
+For example for ARM64:
+
+```shell
+wget https://golang.org/dl/go1.20.linux-arm64.tar.gz
+sudo tar -C /usr/local -xzf go1.20.linux-arm64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+source /etc/profile
+go version 
+```
+
+### Building the image
+To build the OpenVPN-UI image:
+```shell
+cd build; ./build_openvpn-ui.sh
+```
+The new image will have `openvpn-ui` name.
 
 ## Documentation
 Most of documentation can be found in the [main README.md](https://github.com/d3vilh/raspberry-gateway) file, if you want to run it without anything else you'll have to edit the [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L20) (which currently points to the PiHole DNS Server) and
