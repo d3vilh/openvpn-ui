@@ -7,9 +7,13 @@ OpenVPN server web administration interface.
 
 Goal: create quick to deploy and easy to use solution that makes work with small OpenVPN environments a breeze.
 
-It does include 2 different Docker containers:
+Its designed for Docker enviroment including 2 different containers:
  - OpenVPN Back-End container (openvpn) and 
  - OpenVPN UI WEB based Front-End container (openvpn-ui) for managing OpenVPN server.
+
+However it works fine as standalone application as well.
+
+<img src="https://raw.githubusercontent.com/d3vilh/raspberry-gateway/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
 
 ## Features
 
@@ -32,9 +36,6 @@ It does include 2 different Docker containers:
 Part of following cool projects:
 * [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
 * [Raspberry-gateway](https://github.com/d3vilh/raspberry-gateway) simple yet powerful home gateway environment with Pi-Hole +Unbound, VPN, Torrent client and Internet monitoring, all managed by Portainer.
-
-<img src="https://raw.githubusercontent.com/d3vilh/raspberry-gateway/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
-
 
 ## Run this image using a `docker-compose.yml` file
 

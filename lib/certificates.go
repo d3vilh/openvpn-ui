@@ -133,7 +133,7 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 	}
 	if !pass {
 		if !exists && !haveip {
-			staticip = "not.defined"
+			staticip = "dynamic.pool"
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -167,7 +167,7 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 		return existsError
 	} else {
 		if !exists && !haveip {
-			staticip = "not.defined"
+			staticip = "dynamic.pool"
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+

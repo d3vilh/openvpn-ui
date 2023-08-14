@@ -133,37 +133,55 @@
         <thead>
           <tr>
             <th>
-              <label for="name">Name</label>
+              <label for="name" title="Name should not have spaces.">Name</label>
+            </th>
+            <th>
+              <input type="checkbox" style="visibility: hidden;" disabled>
             </th>
             <th>
               <label for="name">Passphrase (Optional)</label>
             </th>
             <th>
-              <label for="name">Static IP (Optional)</label>
+              <input type="checkbox" style="visibility: hidden;" disabled>
+            </th>
+            <th>
+              <label for="name" title="IPv4 without subnet">Static IP (Optional)</label>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}">
-              <input type="text" class="form-control" placeholder="Enter name" id="Name" name="Name">
+              <input type="text" class="form-control" pattern="^[^\s]+$" placeholder="Certificate Name" id="Name" name="Name">
+            </td>
+            <td>
+              <input type="checkbox" style="visibility: hidden;" disabled>
             </td>
             <td class="form-group">
               <input type="password" class="form-control" placeholder="Enter Password" id="password-input" id="passphrase" name="passphrase">
               <a href="#" class="password-control" title="Show or Hide Password"></a>
             </td>
+            <td>
+              <input type="checkbox" style="visibility: hidden;" disabled>
+            </td>
             <td class="form-group">
-              <input type="text" class="form-control" placeholder="Enter Static IP" id="staticip" name="staticip">
+              <input type="text" class="form-control" placeholder="Enter Static IP" pattern="^(\d{1,3}\.){3}\d{1,3}$" id="staticip" name="staticip">
             </td>
           </tr>
         </tbody>
         <tbody>
           <tr>
             <td class="form-group">
-              <span class="help-block">Common name of the certificate.&nbsp;&nbsp;&nbsp;<span>
+              <span class="help-block" title="Name should not have spaces.">Common name of the certificate.<span>
+            </td>
+            <td>
+              <input type="checkbox" style="visibility: hidden;" disabled>
             </td>
             <td class="form-group">
-              <span class="help-block">Passphrase is used for privte key protection.&nbsp;&nbsp;&nbsp;</span>
+              <span class="help-block">Passphrase is used for privte key protection.</span>
+            </td>
+            <td>
+              <input type="checkbox" style="visibility: hidden;" disabled>
             </td>
             <td class="form-group">
               <span class="help-block">Client Static IP used as a local Client IP for subnet split.</span>
@@ -176,21 +194,24 @@
     <!-- /.box-body -->
 
     <div class="box-footer">
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary" style="width: 125px;">Create</button>
     </div>
   </form>
 </div>
 
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Restart OpenVPN</h3>
+    <h3 class="box-title">OpenVPN Server Control</h3>
   </div>
   <!-- /.box-header -->
   <div class="box-body">
-    <span id="helpBlock" class="help-block">If you are revoking Certificate, don't forget to restart your OpenVPN container to disconnect all active client sessions and make revocation to take the effect.<br/></span>
+    <span id="helpBlock" class="help-block">If you are revoking Certificate, don't forget to restart OpenVPN Server to disconnect all active client sessions and make revocation to take the effect.<br/></span>
   </div>
   <div class="box-footer">
-    <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger" title="Restart OpenVPN container">Restart</a> &nbsp; &nbsp; Restart can take up to the 7 seconds.
+    <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 125px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
+    &nbsp; OpenVPN Server Conditional Restart to reinitiate all active client sessions. <br><br>
+    <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Restart OpenVPN container">Restart Container</a> 
+    &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
   </div>
   <div class="box-footer clearfix">
   </div>

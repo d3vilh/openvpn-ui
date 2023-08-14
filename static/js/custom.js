@@ -18,6 +18,24 @@ $.MyAPP.Disconnect = function (cname){
   });
 }
 
+$.MyAPP.Restart = function (sname){
+  console.log(sname)
+  $.ajax({
+    type: "DELETE",
+    dataType: "json",
+    url: "/signal",
+    data: JSON.stringify({ "sname": sname }),
+    success: function(data) {
+      location.reload();
+      console.log(data);
+    },
+    error: function(a,b,c) {
+      console.log(a,b,c)
+      location.reload();
+    }
+  });
+}
+
 $(function() {
   new Clipboard('.button-copy');
 
