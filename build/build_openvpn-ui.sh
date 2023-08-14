@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 # Exit immediately if a command exits with a non-zero status
 set -e
 
@@ -30,9 +30,9 @@ esac
 
 echo "Building for $ARCH ($PLATFORM) with UI Image $UIIMAGE and BeeGo Image $BEEIMAGE"
 # Update Dockerfile based on platform
-sed -i "s/FROM DEFINE-YOUR-ARCH/$(echo $UIIMAGE)/g" Dockerfile
+sed -i "s#FROM DEFINE-YOUR-ARCH#$UIIMAGE#g" Dockerfile
 # Update Dockerfile-beego based on platform
-sed -i "s/FROM DEFINE-YOUR-ARCH/$(echo $BEEIMAGE)/g" Dockerfile-beego
+sed -i "s#FROM DEFINE-YOUR-ARCH#$BEEIMAGE#g" Dockerfile-beego
 echo "Dockerfiles updated \n Building Golang and Bee enviroment."
 
 # Build golang & bee environment
