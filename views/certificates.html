@@ -164,8 +164,8 @@
             <td>
               <input type="checkbox" style="visibility: hidden;" disabled>
             </td>
-            <td class="form-group {{if field_error_exist .validation "Staticip" }}has-error{{end}}">
-              <input type="text" class="form-control" placeholder="Enter Static IP" id="Staticip" name="staticip">
+            <td class="form-group">
+              <input type="text" class="form-control" placeholder="Enter Static IP" pattern="^(\d{1,3}\.){3}\d{1,3}$" id="staticip" name="staticip">
             </td>
           </tr>
         </tbody>
@@ -189,7 +189,6 @@
           </tr>
         </tbody>
       </table>
-      <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Staticip" }}</span>
       <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
     </div>
     <!-- /.box-body -->
