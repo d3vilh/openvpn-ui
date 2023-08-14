@@ -23,7 +23,7 @@ $.MyAPP.Restart = function (sname){
   $.ajax({
     type: "DELETE",
     dataType: "json",
-    url: "api/v1/session",
+    url: "/signal",
     data: JSON.stringify({ "sname": sname }),
     success: function(data) {
       location.reload();
@@ -35,8 +35,6 @@ $.MyAPP.Restart = function (sname){
     }
   });
 }
-
-
 
 $(function() {
   new Clipboard('.button-copy');
