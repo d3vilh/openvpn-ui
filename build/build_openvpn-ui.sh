@@ -28,22 +28,23 @@ case $ARCH in
     ;;
 esac
 
-echo "Building for $ARCH ($PLATFORM) with UI Image $UIIMAGE and BeeGo Image $BEEIMAGE"
+printf "\033[1;34mBuilding for\033[0m $ARCH ($PLATFORM) with: \n  \033[1;34mUI Image:\033[0m $UIIMAGE \n  \033[1;34mBeeGo Image:\033[0m $BEEIMAGE \n"
 # Update Dockerfile based on platform
 sed -i "s#FROM DEFINE-YOUR-ARCH#$UIIMAGE#g" Dockerfile
 # Update Dockerfile-beego based on platform
 sed -i "s#FROM DEFINE-YOUR-ARCH#$BEEIMAGE#g" Dockerfile-beego
-echo "Dockerfiles updated \n Building Golang and Bee enviroment."
+printf "Dockerfiles updated \n\033[1;34mBuilding Golang and Bee enviroment.\033[0m\n"
 
 # Build golang & bee environment
 docker build --platform=$PLATFORM -f Dockerfile-beego -t local/beego-v8 -t local/beego-v8:latest .
-echo "Golang and Bee enviroment built \n Building OpenVPN-UI."
+printf "\033[1;34mBuilding OpenVPN-UI binary.\033[0m\n"
 ./openvpn-ui-pack2.sh
 
-echo "OpenVPN-UI built \n Building OpenVPN-UI image."
+printf "OpenVPN-UI built \n\033[1;34mBuilding OpenVPN-UI image.\033[0m\n"
 # Build OpenVPN-UI image
 PKGFILE="openvpn-ui.tar.gz"
 cp -f ../$PKGFILE ./
 
 docker build -t local/openvpn-ui .
 rm -f $PKGFILE; rm -f $(basename $PKGFILE)
+printf "\033[1;34mAll done.\033[0m\n"
