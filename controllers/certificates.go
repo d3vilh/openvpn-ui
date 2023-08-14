@@ -18,7 +18,7 @@ import (
 
 type NewCertParams struct {
 	Name       string `form:"Name" valid:"Required;"`
-	Staticip   string `form:"staticip"`
+	Staticip   string `form:"staticip" valid:"IP;"`
 	Passphrase string `form:"passphrase"`
 }
 
