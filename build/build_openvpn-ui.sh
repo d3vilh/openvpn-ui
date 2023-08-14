@@ -62,4 +62,4 @@ minutes=$((execution_time / 60))
 seconds=$((execution_time % 60))
 
 # Print the execution time in mm:ss format
-printf "\033[1;34mExecution time: %02d:%02d\033[0m\n" $minutes $seconds
+printf "\033[1;34mExecution time: %02d:%02d\033[0m (%02d sec)\n" $minutes $seconds $execution_time
