@@ -5,7 +5,7 @@
 # armv8l raspberry pi 3/4 64bit:
 # FROM arm64v8/golang:1.20
 # amd64 64bit:
-FROM golang:1.20
+FROM DEFINE-YOUR-ARCH
 
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 

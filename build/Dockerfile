@@ -5,11 +5,12 @@
 #FROM arm32v5/debian:stable-slim 
 
 # amd64 64bit
-FROM debian:stable-slim
+#FROM debian:stable-slim
 
 # arm64v8 64bit
 #FROM arm64v8/debian:stable-slim
 
+FROM DEFINE-YOUR-ARCH
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 WORKDIR /opt
 EXPOSE 8080
