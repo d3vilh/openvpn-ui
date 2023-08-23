@@ -23,6 +23,7 @@ var defaultConfig = Config{
 	Route:               "10.0.71.0 255.255.255.0",
 	IfconfigPoolPersist: "pki/ipp.txt",
 	OVConfigLogV:        3,
+	OVConfigLogVersion:  2,
 	PushRoute:           "10.0.60.0 255.255.255.0",
 	DNSServer1:          "8.8.8.8",
 	DNSServer2:          "1.0.0.1",
@@ -50,6 +51,7 @@ type Config struct {
 	Route               string
 	IfconfigPoolPersist string
 	OVConfigLogV        int
+	OVConfigLogVersion  int
 	PushRoute           string
 	DNSServer1          string
 	DNSServer2          string

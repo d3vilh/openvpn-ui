@@ -40,7 +40,7 @@ ncp-ciphers AES-256-GCM:AES-192-GCM:AES-128-GCM
 user nobody
 group nogroup
 
-status-version 2
+status-version {{ .OVConfigLogVersion }}
 status /var/log/openvpn/openvpn-status.log
 
 explicit-exit-notify 1

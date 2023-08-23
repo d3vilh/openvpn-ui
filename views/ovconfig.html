@@ -185,6 +185,13 @@
         </div>
         -->
         <div class="form-group">
+          <label for="name">OpenVPN Server Status Logging version</label>
+          <input type="text" class="form-control" name="OVConfigLogVersion" id="OVConfigLogVersion" placeholder="2"
+            value="{{ .Settings.OVConfigLogVersion }}">
+          <span id="helpBlock" class="help-block">Version of OpenVPN Status report file. Used for openvpn-exporters.</span>
+        </div>
+
+        <div class="form-group">
           <label for="name">OpenVPN server logging vergose level</label>
           <input type="text" class="form-control" id="OVConfigLogV" name="OVConfigLogV" placeholder="3"
             value="{{ .Settings.OVConfigLogV }}">
