@@ -32,6 +32,7 @@ func InitDB() {
 		new(User),
 		new(Settings),
 		new(OVConfig),
+		new(OVClientConfig),
 	)
 
 	err = orm.RunSyncdb("default", false, true)

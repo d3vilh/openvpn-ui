@@ -19,6 +19,10 @@
         <a href="{{urlfor "OVConfigController.Get"}}"><b>OpenVPN Server</b> Settings</a>
       </li>
 
+      <li {{if compare .RouterPattern "/ov/clientconfig"}}class="active"{{end}}>
+        <a href="{{urlfor "OVClientConfigController.Get"}}"><b>OpenVPN Client</b> Settings</a>
+      </li>
+
     </ul>
   </li>
 
