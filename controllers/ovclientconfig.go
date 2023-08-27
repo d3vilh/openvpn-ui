@@ -7,7 +7,7 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/d3vilh/openvpn-server-config/client/config"
+	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
@@ -53,7 +53,7 @@ func (c *OVClientConfigController) Post() {
 	c.Data["Settings"] = &cfg
 
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/client.conf")
-	err := config.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-client-config.tpl"), cfg.Config, destPath)
+	err := clientconfig.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-client-config.tpl"), cfg.Config, destPath)
 	if err != nil {
 		logs.Warning(err)
 		flash.Error(err.Error())

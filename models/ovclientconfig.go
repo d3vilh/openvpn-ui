@@ -2,14 +2,14 @@ package models
 
 import (
 	"github.com/beego/beego/v2/client/orm"
-	"github.com/d3vilh/openvpn-server-config/client/config"
+	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
 )
 
 // OVConfig holds values for OpenVPN Client config file
 type OVClientConfig struct {
 	Id      int
 	Profile string `orm:"size(64);unique" valid:"Required;"`
-	config.Config
+	clientconfig.Config
 }
 
 // Insert wrapper
