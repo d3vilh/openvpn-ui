@@ -12,11 +12,15 @@
 
     <ul class="dropdown-menu" role="menu">
       <li {{if compare .RouterPattern "/settings"}}class="active"{{end}}>
-        <a href="{{urlfor "SettingsController.Get"}}"><b>OpenVPN UI</b> Settings</a>
+        <a href="{{urlfor "SettingsController.Get"}}">OpenVPN <b>UI</b></a>
       </li>
 
       <li {{if compare .RouterPattern "/ov/config"}}class="active"{{end}}>
-        <a href="{{urlfor "OVConfigController.Get"}}"><b>OpenVPN Server</b> Settings</a>
+        <a href="{{urlfor "OVConfigController.Get"}}">OpenVPN <b>Server</b></a>
+      </li>
+
+      <li {{if compare .RouterPattern "/ov/clientconfig"}}class="active"{{end}}>
+        <a href="{{urlfor "OVClientConfigController.Get"}}">OpenVPN <b>Client</b></a>
       </li>
 
     </ul>

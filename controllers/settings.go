@@ -20,7 +20,7 @@ func (c *SettingsController) NestPrepare() {
 		return
 	}
 	c.Data["breadcrumbs"] = &BreadCrumbs{
-		Title: "Settings",
+		Title: "OpenVPN UI Settings",
 	}
 }
 

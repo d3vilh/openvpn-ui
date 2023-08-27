@@ -73,6 +73,8 @@ func (c *BaseController) SetParams() {
 	input, err := c.Input()
 	if err != nil {
 		// handle the error
+		// log.Println("Error getting input:", err)
+		return
 	}
 	for k, v := range input {
 		c.Data["Params"].(map[string]string)[k] = v[0]

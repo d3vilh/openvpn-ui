@@ -1,0 +1,76 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>Client Settings</title>
+{{end}}
+
+{{define "body"}}
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Client .ovpn profile configuration</h3>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+  <form role="form" action="{{urlfor "OVClientConfigController.Post"}}" method="post">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="name">Profile</label>
+        <input type="text" class="form-control" name="Profile" id="Profile" disabled
+          value="{{ .Settings.Profile }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Connection Address</label>
+        <input type="text" class="form-control" id="ServerAddress" name="ServerAddress" placeholder="Enter server address"
+          value="{{ .Settings.ServerAddress }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Connection Port</label>
+        <input type="text" class="form-control" id="OpenVpnServerPort" name="OpenVpnServerPort" placeholder="Enter external server port"
+          value="{{ .Settings.OpenVpnServerPort }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Connection Proto</label>
+        <input type="text" class="form-control" id="OpenVpnProto" name="OpenVpnProto" placeholder="Enter external server protocol"
+          value="{{ .Settings.Proto }}">
+      </div>
+<!--  comented out to avoid client/server confusion
+      <div class="form-group">
+        <label for="name">Device type</label>
+        <input type="text" class="form-control" id="Device" name="Device" placeholder="tun"
+          value="{{ .Settings.Device }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Protocol</label>
+        <input type="text" class="form-control" id="Proto" name="Proto" placeholder="udp"
+          value="{{ .Settings.Proto }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Cipher</label>
+        <input type="text" class="form-control" id="Cipher" name="Cipher" placeholder="AES-256-CBC"
+          value="{{ .Settings.Cipher }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Auth</label>
+        <input type="text" class="form-control" id="Auth" name="Auth" placeholder="SHA512"
+          value="{{ .Settings.Auth }}">
+      </div>
+-->
+      {{ .xsrfdata }}
+    </div>
+    <div class="box-footer">
+      <button type="submit" style="width: 125px;" class="btn btn-primary">Save Config</button> &nbsp; <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart">Restart Server</a>
+      &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
+    </div>
+        <!-- /.box-body -->
+  </form>
+
+</div>
+<!-- /.box -->
+{{end}}

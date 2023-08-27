@@ -1,13 +1,13 @@
 {{ template "layout/base.html" . }}
 
 {{define "head"}}
-<title>OpenVPN - Settings</title>
+<title>UI Settings</title>
 {{end}}
 
 {{define "body"}}
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Edit settings</h3>
+    <h3 class="box-title">Edit UI settings</h3>
   </div>
   <!-- /.box-header -->
   <!-- form start -->
@@ -22,31 +22,19 @@
 
       <div class="form-group">
         <label for="name">Management interface address</label>
-        <input type="text" class="form-control" id="MIAddress" name="MIAddress" placeholder="Enter address"
+        <input type="text" class="form-control" id="MIAddress" title="OpenVPN management interface address."  name="MIAddress" placeholder="openvpn:2080"
           value="{{ .Settings.MIAddress }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Management interface network</label>
-        <input type="text" class="form-control" id="MINetwork" name="MINetwork" placeholder="Enter network name"
+        <label for="name">Management interface protocol</label>
+        <input type="text" class="form-control" id="MINetwork" title="OpenVPN management interface protocol." name="MINetwork" placeholder="tcp"
           value="{{ .Settings.MINetwork }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Server Address (external)</label>
-        <input type="text" class="form-control" id="ServerAddress" name="ServerAddress" placeholder="Enter server address"
-          value="{{ .Settings.ServerAddress }}">
-      </div>
-
-      <div class="form-group">
-        <label for="name">Server connection Port (external)</label>
-        <input type="text" class="form-control" id="OpenVpnServerPort" name="OpenVpnServerPort" placeholder="Enter external server port"
-          value="{{ .Settings.OpenVpnServerPort }}">
-      </div>
-
-      <div class="form-group">
-        <label for="name">ConfigPath</label>
-        <input type="text" class="form-control" id="OVConfigPath" name="OVConfigPath" placeholder="Enter config path"
+        <label for="name">OpenVPN ConfigPath</label>
+        <input type="text" class="form-control" id="OVConfigPath" name="OVConfigPath" title="OpenVPN configuration path." placeholder="/etc/openvpn"
           value="{{ .Settings.OVConfigPath }}">
       </div>
 

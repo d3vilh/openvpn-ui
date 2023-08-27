@@ -56,21 +56,22 @@ chmod +r ./pki/issued
 #echo 'Sync pki directory...'
 #cp -r ./pki/. /etc/openvpn/pki
 
-echo 'Generate .ovpn file...'
-echo "$(cat /etc/openvpn/config/client.conf)
-<ca>
-$CA
-</ca>
-<cert>
-$CERT
-</cert>
-<key>
-$KEY
-</key>
-<tls-auth>
-$TLS_AUTH
-</tls-auth>
-" > "$DEST_FILE_PATH"
+#Deprecated:
+#echo 'Generate .ovpn file...'
+#echo "$(cat /etc/openvpn/config/client.conf)
+#<ca>
+#$CA
+#</ca>
+#<cert>
+#$CERT
+#</cert>
+#<key>
+#$KEY
+#</key>
+#<tls-auth>
+#$TLS_AUTH
+#</tls-auth>
+#" > "$DEST_FILE_PATH"
 
-echo 'OpenVPN Client configuration successfully generated!'
-echo "Checkout openvpn/clients/$1.ovpn"
+#echo 'OpenVPN Client configuration successfully generated!'
+#echo "Checkout openvpn/clients/$1.ovpn"

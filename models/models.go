@@ -8,6 +8,7 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
+	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	"gopkg.in/hlandau/passlib.v1"
 )
@@ -32,6 +33,7 @@ func InitDB() {
 		new(User),
 		new(Settings),
 		new(OVConfig),
+		new(OVClientConfig),
 	)
 
 	err = orm.RunSyncdb("default", false, true)
@@ -73,26 +75,18 @@ func CreateDefaultSettings() (*Settings, error) {
 	if err != nil {
 		return nil, err
 	}
-	serverAddress, err := web.AppConfig.String("OpenVpnServerAddress")
-	if err != nil {
-		return nil, err
-	}
-	serverPort, err := web.AppConfig.String("OpenVpnServerPort")
-	if err != nil {
-		return nil, err
-	}
 	ovConfigPath, err := web.AppConfig.String("OpenVpnPath")
 	if err != nil {
 		return nil, err
 	}
 
 	s := Settings{
-		Profile:           "default",
-		MIAddress:         miAddress,
-		MINetwork:         miNetwork,
-		ServerAddress:     serverAddress,
-		OpenVpnServerPort: serverPort,
-		OVConfigPath:      ovConfigPath,
+		Profile:      "default",
+		MIAddress:    miAddress,
+		MINetwork:    miNetwork,
+		OVConfigPath: ovConfigPath,
+		//	ServerAddress:     serverAddress,
+		//	OpenVpnServerPort: serverPort,
 	}
 
 	o := orm.NewOrm()
@@ -145,6 +139,40 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 		serverConfig := filepath.Join(ovConfigPath, "config/server.conf")
 		if _, err = os.Stat(serverConfig); os.IsNotExist(err) {
 			if err = config.SaveToFile(filepath.Join(configDir, "openvpn-server-config.tpl"), c.Config, serverConfig); err != nil {
+				logs.Error(err)
+			}
+		}
+	} else {
+		logs.Error(err)
+	}
+}
+
+func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address string, network string) {
+	c := OVClientConfig{
+		Profile: "default",
+		Config: clientconfig.Config{
+			Device:            "tun",
+			Port:              1194,
+			Proto:             "udp",
+			ServerAddress:     "127.0.0.1",
+			OpenVpnServerPort: "12235",
+			Cipher:            "AES-256-CBC",
+			Auth:              "SHA512",
+			Ca:                "pki/ca.crt",
+			Cert:              "pki/issued/server.crt",
+			Key:               "pki/private/server.key",
+		},
+	}
+	o := orm.NewOrm()
+	if created, _, err := o.ReadOrCreate(&c, "Profile"); err == nil {
+		if created {
+			logs.Info("New settings profile created")
+		} else {
+			logs.Debug(c)
+		}
+		clientConfig := filepath.Join(ovConfigPath, "config/client.conf")
+		if _, err = os.Stat(clientConfig); os.IsNotExist(err) {
+			if err = clientconfig.SaveToFile(filepath.Join(configDir, "openvpn-client-config.tpl"), c.Config, clientConfig); err != nil {
 				logs.Error(err)
 			}
 		}

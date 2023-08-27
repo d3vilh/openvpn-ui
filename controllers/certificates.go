@@ -10,7 +10,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/d3vilh/openvpn-server-config/client/config"
+	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
 	"github.com/d3vilh/openvpn-ui/state"
@@ -159,10 +159,15 @@ func validateCertParams(cert NewCertParams) map[string]map[string]string {
 }
 
 func (c *CertificatesController) saveClientConfig(keysPath string, name string) (string, error) {
-	cfg := config.New()
+	cfg := clientconfig.New()
 	keysPathCa := filepath.Join(state.GlobalCfg.OVConfigPath, "pki")
-	cfg.ServerAddress = state.GlobalCfg.ServerAddress
-	cfg.OpenVpnServerPort = state.GlobalCfg.OpenVpnServerPort
+	ServerAddress := models.OVClientConfig{Profile: "default"}
+	_ = ServerAddress.Read("Profile")
+	cfg.ServerAddress = ServerAddress.ServerAddress
+	OpenVpnServerPort := models.OVClientConfig{Profile: "default"}
+	_ = OpenVpnServerPort.Read("Profile")
+	cfg.OpenVpnServerPort = OpenVpnServerPort.OpenVpnServerPort
+
 	ca, err := os.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
 	if err != nil {
 		return "", err
@@ -195,7 +200,7 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	return destPath, nil
 }
 
-func GetText(tpl string, c config.Config) (string, error) {
+func GetText(tpl string, c clientconfig.Config) (string, error) {
 	t := template.New("config")
 	t, err := t.Parse(tpl)
 	if err != nil {
@@ -209,7 +214,7 @@ func GetText(tpl string, c config.Config) (string, error) {
 	return buf.String(), nil
 }
 
-func SaveToFile(tplPath string, c config.Config, destPath string) error {
+func SaveToFile(tplPath string, c clientconfig.Config, destPath string) error {
 	tpl, err := os.ReadFile(tplPath)
 	if err != nil {
 		return err

@@ -7,41 +7,41 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/d3vilh/openvpn-server-config/server/config"
+	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
 	mi "github.com/d3vilh/openvpn-server-config/server/mi"
 	"github.com/d3vilh/openvpn-ui/lib"
 	"github.com/d3vilh/openvpn-ui/models"
 	"github.com/d3vilh/openvpn-ui/state"
 )
 
-type OVConfigController struct {
+type OVClientConfigController struct {
 	BaseController
 	ConfigDir string
 }
 
-func (c *OVConfigController) NestPrepare() {
+func (c *OVClientConfigController) NestPrepare() {
 	if !c.IsLogin {
 		c.Ctx.Redirect(302, c.LoginPath())
 		return
 	}
 	c.Data["breadcrumbs"] = &BreadCrumbs{
-		Title: "OpenVPN Server configuration",
+		Title: "OpenVPN Client configuration",
 	}
 }
 
-func (c *OVConfigController) Get() {
-	c.TplName = "ovconfig.html"
+func (c *OVClientConfigController) Get() {
+	c.TplName = "ovclient.html"
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
-	cfg := models.OVConfig{Profile: "default"}
+	cfg := models.OVClientConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
 	c.Data["Settings"] = &cfg
 
 }
 
-func (c *OVConfigController) Post() {
-	c.TplName = "ovconfig.html"
+func (c *OVClientConfigController) Post() {
+	c.TplName = "ovclient.html"
 	flash := web.NewFlash()
-	cfg := models.OVConfig{Profile: "default"}
+	cfg := models.OVClientConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
 	if err := c.ParseForm(&cfg); err != nil {
 		logs.Warning(err)
@@ -52,8 +52,8 @@ func (c *OVConfigController) Post() {
 	lib.Dump(cfg)
 	c.Data["Settings"] = &cfg
 
-	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
-	err := config.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-server-config.tpl"), cfg.Config, destPath)
+	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/client.conf")
+	err := clientconfig.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-client-config.tpl"), cfg.Config, destPath)
 	if err != nil {
 		logs.Warning(err)
 		flash.Error(err.Error())
