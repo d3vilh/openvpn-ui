@@ -161,10 +161,13 @@ func validateCertParams(cert NewCertParams) map[string]map[string]string {
 func (c *CertificatesController) saveClientConfig(keysPath string, name string) (string, error) {
 	cfg := clientconfig.New()
 	keysPathCa := filepath.Join(state.GlobalCfg.OVConfigPath, "pki")
-	// cfg.ServerAddress = state.GlobalCfg.ServerAddress
-	//	cfg.OpenVpnServerPort = state.GlobalCfg.OpenVpnServerPort
-	cfg.ServerAddress = models.OVClientConfig{Profile: "default"}.ServerAddress
-	cfg.OpenVpnServerPort = models.OVClientConfig{Profile: "default"}.OpenVpnServerPort
+	ServerAddress := models.OVClientConfig{Profile: "default"}
+	_ = ServerAddress.Read("Profile")
+	cfg.ServerAddress = ServerAddress.ServerAddress
+	OpenVpnServerPort := models.OVClientConfig{Profile: "default"}
+	_ = OpenVpnServerPort.Read("Profile")
+	cfg.OpenVpnServerPort = OpenVpnServerPort.OpenVpnServerPort
+
 	ca, err := os.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
 	if err != nil {
 		return "", err
