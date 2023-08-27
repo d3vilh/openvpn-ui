@@ -33,9 +33,33 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Connection Proto (external)</label>
+        <label for="name">Connection Proto</label>
         <input type="text" class="form-control" id="OpenVpnProto" name="OpenVpnProto" placeholder="Enter external server protocol"
           value="{{ .Settings.Proto }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Device type</label>
+        <input type="text" class="form-control" id="Device" name="Device" placeholder="tun"
+          value="{{ .Settings.Device }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Protocol</label>
+        <input type="text" class="form-control" id="Proto" name="Proto" placeholder="udp"
+          value="{{ .Settings.Proto }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Cipher</label>
+        <input type="text" class="form-control" id="Cipher" name="Cipher" placeholder="AES-256-CBC"
+          value="{{ .Settings.Cipher }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Auth</label>
+        <input type="text" class="form-control" id="Auth" name="Auth" placeholder="SHA512"
+          value="{{ .Settings.Auth }}">
       </div>
 
       {{ .xsrfdata }}

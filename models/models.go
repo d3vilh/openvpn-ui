@@ -75,26 +75,18 @@ func CreateDefaultSettings() (*Settings, error) {
 	if err != nil {
 		return nil, err
 	}
-	serverAddress, err := web.AppConfig.String("OpenVpnServerAddress")
-	if err != nil {
-		return nil, err
-	}
-	serverPort, err := web.AppConfig.String("OpenVpnServerPort")
-	if err != nil {
-		return nil, err
-	}
 	ovConfigPath, err := web.AppConfig.String("OpenVpnPath")
 	if err != nil {
 		return nil, err
 	}
 
 	s := Settings{
-		Profile:           "default",
-		MIAddress:         miAddress,
-		MINetwork:         miNetwork,
-		ServerAddress:     serverAddress,
-		OpenVpnServerPort: serverPort,
-		OVConfigPath:      ovConfigPath,
+		Profile:      "default",
+		MIAddress:    miAddress,
+		MINetwork:    miNetwork,
+		OVConfigPath: ovConfigPath,
+		//	ServerAddress:     serverAddress,
+		//	OpenVpnServerPort: serverPort,
 	}
 
 	o := orm.NewOrm()

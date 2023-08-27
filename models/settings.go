@@ -17,8 +17,8 @@ type Settings struct {
 
 	OVConfigPath string `orm:"size(64);unique" form:"OVConfigPath" valid:"Required;"`
 
-	ServerAddress     string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
-	OpenVpnServerPort string `orm:"size(64);unique" form:"OpenVpnServerPort" valid:"Required;"`
+	//	ServerAddress     string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
+	//	OpenVpnServerPort string `orm:"size(64);unique" form:"OpenVpnServerPort" valid:"Required;"`
 
 	Created time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated time.Time `orm:"auto_now;type(datetime)"`

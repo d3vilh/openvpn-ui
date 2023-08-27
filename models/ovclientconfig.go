@@ -5,10 +5,13 @@ import (
 	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
 )
 
-// OVConfig holds values for OpenVPN Client config file
+// OVClientConfig holds values for OpenVPN Client config file
 type OVClientConfig struct {
 	Id      int
 	Profile string `orm:"size(64);unique" valid:"Required;"`
+	//	ServerAddress     string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
+	//	OpenVpnServerPort string `orm:"size(64);unique" form:"OpenVpnServerPort" valid:"Required;"`
+	//	Proto             string `orm:"size(64);unique" form:"Proto" valid:"Required;"`
 	clientconfig.Config
 }
 
