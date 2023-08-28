@@ -37,4 +37,4 @@ rm -f /etc/openvpn/clients/$1.ovpn
 sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX_PATH
 
 echo 'Remove done!'
-echo 'If you want to disconnect the user please restart the service using docker-compose restart openvpn.'
+echo 'If you want to disconnect the user please restart the OpenVPN service or container.'

@@ -1,25 +1,46 @@
 #!/bin/bash -e
 
-#CA_NAME=LocalCA
-#SERVER_NAME=server
-#EASY_RSA=/usr/share/easy-rsa
+EASY_RSA=/usr/share/easy-rsa
 
-#mkdir -p /etc/openvpn/keys
-#touch /etc/openvpn/keys/index.txt
-#echo 01 > /etc/openvpn/keys/serial
-#cp -f /opt/scripts/vars.template /etc/openvpn/pki/vars
+if [[ ! -f /etc/openvpn/pki/ca.crt ]]; then
+    export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
+    cd $EASY_RSA
+ 
+    # Copy easy-rsa variables
+    cp /etc/openvpn/config/easy-rsa.vars ./vars
 
-#$EASY_RSA/clean-all
-#source /etc/openvpn/keys/vars
-#export KEY_NAME=$CA_NAME
-#echo "Generating CA cert"
-#$EASY_RSA/build-ca
-#export EASY_RSA="${EASY_RSA:-.}"
+    # Listing env parameters:
+    echo "Following EASYRSA variables will be used:"
+    cat $EASY_RSA/vars | awk '{$1=""; print $0}';
 
-#$EASY_RSA/pkitool --initca $*
+    # Building the CA
+    echo 'Setting up public key infrastructure...'
+    $EASY_RSA/easyrsa init-pki
 
-#export KEY_NAME=$SERVER_NAME
+    echo 'Generating ertificate authority...'
+    $EASY_RSA/easyrsa build-ca nopass
 
-#echo "Generating server cert"
-#$EASY_RSA/build-key-server $SERVER_NAME
-#$EASY_RSA/pkitool --server $SERVER_NAME
+    # Creating the Server Certificate, Key, and Encryption Files
+    echo 'Creating the Server Certificate...'
+    $EASY_RSA/easyrsa gen-req server nopass
+
+    echo 'Sign request...'
+    $EASY_RSA/easyrsa sign-req server server
+
+    echo 'Generate Diffie-Hellman key...'
+    $EASY_RSA/easyrsa gen-dh
+
+    echo 'Generate HMAC signature...'
+    openvpn --genkey --secret pki/ta.key
+
+    echo 'Create certificate revocation list (CRL)...'
+    $EASY_RSA/easyrsa gen-crl
+    chmod +r ./pki/crl.pem
+
+    # Copy to mounted volume
+    cp -r ./pki/. /etc/openvpn/pki
+else
+    # Copy from mounted volume
+    cp -r /etc/openvpn/pki /opt/app/easy-rsa
+    echo 'PKI already set up.'
+fi
