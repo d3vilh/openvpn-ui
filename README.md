@@ -72,12 +72,6 @@ services:
        ports: 
           - "1194:1194/udp"
        environment:
-           REQ_COUNTRY: UA
-           REQ_PROVINCE: Kyiv
-           REQ_CITY: Chayka
-           REQ_ORG: CopyleftCertificateCo
-           REQ_OU: ShantiShanti
-           REQ_CN: MyOpenVPN
            TRUST_SUB: 10.0.70.0/24
            GUEST_SUB: 10.0.71.0/24
            HOME_SUB: 192.168.88.0/24
@@ -116,12 +110,6 @@ docker run  --interactive --tty --rm \
   --name=openvpn-server \
   --cap-add=NET_ADMIN \
   -p 1194:1194/udp \
-  -e REQ_COUNTRY=UA \
-  -e REQ_PROVINCE=Kyiv \
-  -e REQ_CITY=Chayka \
-  -e REQ_ORG=CopyleftCertificateCo \
-  -e REQ_OU=ShantiShanti \
-  -e REQ_CN=MyOpenVPN \
   -e TRUST_SUB=10.0.70.0/24 \
   -e GUEST_SUB=10.0.71.0/24 \
   -e HOME_SUB=192.168.88.0/24 \
