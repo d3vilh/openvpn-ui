@@ -12,10 +12,10 @@ cd /opt/
 if [ ! -f $OVDIR/.provisioned ]; then
   #echo "Preparing certificates"
   mkdir -p $OVDIR
-  # Generate CA and server certificates 
+
+  # Uncomment line below to generate CA and server certificates (should be done on the side of OpenVPN container or server however)
   #./scripts/generate_ca_and_server_certs.sh
-  # Uncomment the following line to generate a 2048-bit Diffie-Hellman key
-  #openssl dhparam -dsaparam -out $OVDIR/dh2048.pem 2048
+
   # Create the provisioned file
   touch $OVDIR/.provisioned
   echo "First OpenVPN UI start."

@@ -7,18 +7,21 @@
 {{define "body"}}
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Edit UI settings</h3>
+    <h3 class="box-title">OpenVPN UI settings</h3>
   </div>
   <!-- /.box-header -->
   <!-- form start -->
   {{template "common/alert.html" .}}
   <form role="form" action="{{urlfor "SettingsController.Login"}}" method="post">
     <div class="box-body">
+
+      <!-- Disabled Profile - yet another feature to implement.
       <div class="form-group">
         <label for="name">Profile</label>
         <input type="text" class="form-control" id="Profile" disabled
           value=" {{ .Settings.Profile }} ">
       </div>
+      Disabled profile -->
 
       <div class="form-group">
         <label for="name">Management interface address</label>
@@ -44,6 +47,7 @@
 
     <div class="box-footer">
       <button type="submit" class="btn btn-primary" style="width: 125px;">Save Config</button> &nbsp; <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 125px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
+       &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
     </div>
   </form>
 
