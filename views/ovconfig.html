@@ -14,11 +14,13 @@
   {{template "common/alert.html" .}}
   <form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
     <div class="box-body">
+      <!-- Disabled Profile - yet another feature to implement.
       <div class="form-group">
         <label for="name">Profile</label>
         <input type="text" class="form-control" name="Profile" id="Profile" disabled
           value="{{ .Settings.Profile }}">
       </div>
+      Disabled profile -->
 
       <div class="form-group">
         <label for="name">Your Home subnet</label>
