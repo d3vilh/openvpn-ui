@@ -19,6 +19,7 @@ However it works fine as standalone application as well.
 
 * Status page that shows server statistics and list of connected clients
 * Easy to **generate**, **download**, **revoke** and **delete** client certificates
+* Change predefined EasyRSA vars including certificates and CRL expiration time
 * You can set static IP to clients and
 * Add secret passphrase during client certificate generation
 * Easy to preview OpenVPN Server logs, as well as do
@@ -85,6 +86,22 @@ services:
        cap_add:
            - NET_ADMIN
        restart: always
+
+    openvpn-ui:
+       container_name: openvpn-ui
+       image: d3vilh/openvpn-ui:latest
+       environment:
+           - OPENVPN_ADMIN_USERNAME=admin
+           - OPENVPN_ADMIN_PASSWORD=gagaZush
+       privileged: true
+       ports:
+           - "8080:8080/tcp"
+       volumes:
+           - ./:/etc/openvpn
+           - ./db:/opt/openvpn-gui/db
+           - ./pki:/usr/share/easy-rsa/pki
+           - /var/run/docker.sock:/var/run/docker.sock:ro
+       restart: always
 ``` 
 
 ## Run this image using the Docker itself
@@ -120,6 +137,25 @@ docker run  --interactive --tty --rm \
   -v ./log:/var/log/openvpn \
   -v ./fw-rules.sh:/opt/app/fw-rules.sh \
   --privileged d3vilh/openvpn-server:latest
+```
+
+If you are running OpenVPN-UI with `d3vilh/openvpn-server` please be sure `easy-rsa.vars` is set properly and put in `.config` container volume as `easy-rsa.vars` file. In this case your custom EasyRSA options will be applyied correctly during root CA certificate generation.
+
+Here is `easy-rsa.vars` file example:
+```shell
+set_var EASYRSA_DN           "org"
+set_var EASYRSA_REQ_COUNTRY  "UA"
+set_var EASYRSA_REQ_PROVINCE "KY"
+set_var EASYRSA_REQ_CITY     "Kyiv"
+set_var EASYRSA_REQ_ORG      "SweetHome"
+set_var EASYRSA_REQ_EMAIL    "sweet@home.net"
+set_var EASYRSA_REQ_OU       "MyOrganizationalUnit"
+set_var EASYRSA_REQ_CN       "server"
+set_var EASYRSA_KEY_SIZE     2048
+set_var EASYRSA_CA_EXPIRE    3650
+set_var EASYRSA_CERT_EXPIRE  825
+set_var EASYRSA_CERT_RENEW   30
+set_var EASYRSA_CRL_DAYS     180
 ```
 
 ## Build the image
