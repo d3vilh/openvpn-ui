@@ -6,6 +6,7 @@ set -e
 # .ovpn file path
 DEST_FILE_PATH="/etc/openvpn/clients/$1.ovpn"
 INDEX_PATH="/usr/share/easy-rsa/pki/index.txt"
+CERT_SERIAL=$2
 
 # Check if .ovpn file exists
 if [[ ! -f $DEST_FILE_PATH ]]; then
@@ -13,16 +14,15 @@ if [[ ! -f $DEST_FILE_PATH ]]; then
     exit 1
 fi
 
-# Define key serial number by keyname
-# Fix for https://github.com/d3vilh/openvpn-ui/issues/5 by shuricksumy@github
+echo "Removing user: $1 with Serial: $2"
+
+# Define if cert is valid or revoked
 STATUS_CH=$(grep -e ${1}$ -e${1}/ ${INDEX_PATH} | awk '{print $1}' | tr -d '\n')
 if [[ $STATUS_CH = "V" ]]; then
     echo "Cert is VALID"
-    CERT_SERIAL=$(grep ${1}/ ${INDEX_PATH} | awk '{print $3}' | tr -d '\n')
     echo "Will remove: ${CERT_SERIAL}"
 else
     echo "Cert is REVOKED"
-    CERT_SERIAL=$(grep ${1}$ ${INDEX_PATH} | awk '{print $4}' | tr -d '\n')
     echo "Will remove: ${CERT_SERIAL}"
 fi
 
