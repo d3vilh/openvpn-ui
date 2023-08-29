@@ -9,6 +9,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	clientconfig "github.com/d3vilh/openvpn-server-config/client/client-config"
+	easyrsaconfig "github.com/d3vilh/openvpn-server-config/easyrsa/config"
 	"github.com/d3vilh/openvpn-server-config/server/config"
 	"gopkg.in/hlandau/passlib.v1"
 )
@@ -34,6 +35,7 @@ func InitDB() {
 		new(Settings),
 		new(OVConfig),
 		new(OVClientConfig),
+		new(EasyRSAConfig),
 	)
 
 	err = orm.RunSyncdb("default", false, true)
@@ -179,6 +181,43 @@ func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address 
 		clientConfig := filepath.Join(ovConfigPath, "config/client.conf")
 		if _, err = os.Stat(clientConfig); os.IsNotExist(err) {
 			if err = clientconfig.SaveToFile(filepath.Join(configDir, "openvpn-client-config.tpl"), c.Config, clientConfig); err != nil {
+				logs.Error(err)
+			}
+		}
+	} else {
+		logs.Error(err)
+	}
+}
+
+func CreateDefaultEasyRSAConfig(configDir string, easyRSAPath string, address string, network string) {
+	c := EasyRSAConfig{
+		Profile: "default",
+		Config: easyrsaconfig.Config{
+			EasyRSADN:          "org",
+			EasyRSAReqCountry:  "UA",
+			EasyRSAReqProvince: "KY",
+			EasyRSAReqCity:     "Kyiv",
+			EasyRSAReqOrg:      "SweetHome",
+			EasyRSAReqEmail:    "sweet@home.net",
+			EasyRSAReqOu:       "MyOrganizationalUnit",
+			EasyRSAReqCn:       "server",
+			EasyRSAKeySize:     2048,
+			EasyRSACaExpire:    3650,
+			EasyRSACertExpire:  825,
+			EasyRSACertRenew:   30,
+			EasyRSACrlDays:     180,
+		},
+	}
+	o := orm.NewOrm()
+	if created, _, err := o.ReadOrCreate(&c, "Profile"); err == nil {
+		if created {
+			logs.Info("New settings profile created")
+		} else {
+			logs.Debug(c)
+		}
+		easyRSAConfig := filepath.Join(easyRSAPath, "pki/vars")
+		if _, err = os.Stat(easyRSAConfig); os.IsNotExist(err) {
+			if err = easyrsaconfig.SaveToFile(filepath.Join(configDir, "easyrsa-vars.tpl"), c.Config, easyRSAConfig); err != nil {
 				logs.Error(err)
 			}
 		}

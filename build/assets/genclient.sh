@@ -23,7 +23,7 @@ echo 'Generate client certificate...'
 
 # Copy easy-rsa variables
 cd /usr/share/easy-rsa
-#cp /etc/openvpn/config/easy-rsa.vars ./vars
+#cp /etc/openvpn/config/easy-rsa.vars ./pki/vars  #Cared by OpenVPN UI > Settings > EasyRSA
 printf "KEY_COUNTRY=$KEY_COUNTRY\n"
 
 # Generate certificates
