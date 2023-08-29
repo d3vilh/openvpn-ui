@@ -85,4 +85,20 @@ func init() {
 				Router:           `/certificates/burn/:key/:serial`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"],
+			web.ControllerComments{
+				Method:           "DeletePKI",
+				Router:           `/pki/delete`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"],
+			web.ControllerComments{
+				Method:           "InitPKI",
+				Router:           `/pki/init`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
 }
