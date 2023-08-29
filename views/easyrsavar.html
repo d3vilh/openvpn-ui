@@ -1,0 +1,124 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>EasyRSA Variables</title>
+{{end}}
+
+{{define "body"}}
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">EasyRSA variables</h3>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+  <form role="form" action="{{urlfor "EasyRSAConfigController.Post"}}" method="post">
+    <div class="box-body">
+      <!-- Disabled Profile - yet another feature to implement.
+      <div class="form-group">
+         <label for="name">Profile</label>
+         <input type="text" class="form-control" name="Profile" id="Profile" value="{{ .Settings.Profile }}" style="visibility: hidden;" disabled>
+     </div> -->
+      <div class="form-group">
+        <label for="name">EASYRSA_DN</label>
+        <input type="text" class="form-control" id="EasyRSADN" name="EasyRSADN" placeholder="org"
+          value="{{ .Settings.EasyRSADN }}">
+          <span id="helpBlock" class="help-block">Define X509 Distinguished Name mode. &quot;cn_only&quot; - Use just a commonName value. &quot;org&quot; - Use full DN format: &quot;Country/Province/City/Org/Org.Unit/email/commonName&quot;.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_COUNTRY</label>
+        <input type="text" class="form-control" id="EasyRSAReqCountry" name="EasyRSAReqCountry" placeholder="UA"
+          value="{{ .Settings.EasyRSAReqCountry }}">
+          <span id="helpBlock" class="help-block">The two-letter DN Organisational field for country code (e.g. UA).</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_PROVINCE</label>
+        <input type="text" class="form-control" id="EasyRSAReqProvince" name="EasyRSAReqProvince" placeholder="KY"
+          value="{{ .Settings.EasyRSAReqProvince }}">
+        <span id="helpBlock" class="help-block">The two-letter DN Organisational field for province code (e.g. KY for &quot;Kyiv region&quot;).</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_CITY</label>
+        <input type="text" class="form-control" id="EasyRSAReqCity" name="EasyRSAReqCity" placeholder="Kyiv"
+          value="{{ .Settings.EasyRSAReqCity }}">
+        <span id="helpBlock" class="help-block">The city of DN Organisation.</span>
+
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_ORG</label>
+        <input type="text" class="form-control" id="EasyRSAReqOrg" name="EasyRSAReqOrg" placeholder="SweetHome"
+          value="{{ .Settings.EasyRSAReqOrg }}">
+        <span id="helpBlock" class="help-block">The name of DN Organisation.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_EMAIL</label>
+        <input type="text" class="form-control" id="EasyRSAReqEmail" name="EasyRSAReqEmail" placeholder="sweet@home.ua"
+          value="{{ .Settings.EasyRSAReqEmail }}">
+        <span id="helpBlock" class="help-block">The e-mail address of DN Organisation.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_OU</label>
+        <input type="text" class="form-control" id="EasyRSAReqOu" name="EasyRSAReqOu" placeholder="GarageVPN"
+          value="{{ .Settings.EasyRSAReqOu }}">
+        <span id="helpBlock" class="help-block">The Organisational Unit of DN Organisation.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_REQ_CN</label>
+        <input type="text" class="form-control" id="EasyRSAReqCn" name="EasyRSAReqCn" placeholder="OVPNserver"
+          value="{{ .Settings.EasyRSAReqCn }}">
+        <span id="helpBlock" class="help-block">The Common Name of DN Organisation.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_KEY_SIZE</label>
+        <input type="text" class="form-control" id="EasyRSAKeySize" name="EasyRSAKeySize" placeholder="2048"
+          value="{{ .Settings.EasyRSAKeySize }}">
+        <span id="helpBlock" class="help-block">Size in bits for your keypairs. The recommended value is 2048, leave it as-is. However can be set up to 4096.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_CA_EXPIRE</label>
+        <input type="text" class="form-control" id="EasyRSACaExpire" name="EasyRSACaExpire" placeholder="3650"
+          value="{{ .Settings.EasyRSACaExpire }}">
+        <span id="helpBlock" class="help-block">Number of days until the root CA key expires. The recommended value is 3650.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_CERT_EXPIRE</label>
+        <input type="text" class="form-control" id="EasyRSACertExpire" name="EasyRSACertExpire" placeholder="825"
+          value="{{ .Settings.EasyRSACertExpire }}">
+        <span id="helpBlock" class="help-block">Number of days until Client certificate expire. The recommended value is 825.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_CRL_DAYS</label>
+        <input type="text" class="form-control" id="EasyRSACrlDays" name="EasyRSACrlDays" placeholder="180"
+          value="{{ .Settings.EasyRSACrlDays }}">
+        <span id="helpBlock" class="help-block">Number of days until the CRL expires. The recommended value is 180. However it can be the same as EASYRSA_CERT_EXPIRE value.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">EASYRSA_CERT_RENEW</label>
+        <input type="text" class="form-control" id="EasyRSACertRenew" name="EasyRSACertRenew" placeholder="30"
+          value="{{ .Settings.EasyRSACertRenew }}">
+        <span id="helpBlock" class="help-block">This should be implemented on OpenVPN Server side. Number of days before expiration to automatically renew certificates.</span>
+      </div>
+
+      {{ .xsrfdata }}
+    </div>
+    <div class="box-footer">
+      <button type="submit" style="width: 135px;" class="btn btn-primary">Save EasyRSA Vars</button>
+    </div>
+        <!-- /.box-body -->
+  </form>
+
+</div>
+<!-- /.box -->
+{{end}}

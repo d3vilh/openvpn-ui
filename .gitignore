@@ -2,3 +2,4 @@ data.db
 .DS_Store
 openvpn/
 views/.DS_Store
+easy-rsa/pki/vars

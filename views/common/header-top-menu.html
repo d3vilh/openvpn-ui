@@ -12,15 +12,19 @@
 
     <ul class="dropdown-menu" role="menu">
       <li {{if compare .RouterPattern "/settings"}}class="active"{{end}}>
-        <a href="{{urlfor "SettingsController.Get"}}">OpenVPN <b>UI</b></a>
+        <a href="{{urlfor "SettingsController.Get"}}">OpenVPN UI</a>
       </li>
 
       <li {{if compare .RouterPattern "/ov/config"}}class="active"{{end}}>
-        <a href="{{urlfor "OVConfigController.Get"}}">OpenVPN <b>Server</b></a>
+        <a href="{{urlfor "OVConfigController.Get"}}">OpenVPN Server</a>
       </li>
 
       <li {{if compare .RouterPattern "/ov/clientconfig"}}class="active"{{end}}>
-        <a href="{{urlfor "OVClientConfigController.Get"}}">OpenVPN <b>Client</b></a>
+        <a href="{{urlfor "OVClientConfigController.Get"}}">OpenVPN Client</a>
+      </li>
+
+      <li {{if compare .RouterPattern "/easyrsa/config"}}class="active"{{end}}>
+        <a href="{{urlfor "EasyRSAConfigController.Get"}}">EasyRSA vars</a>
       </li>
 
     </ul>

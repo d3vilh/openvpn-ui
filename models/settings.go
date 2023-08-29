@@ -16,6 +16,7 @@ type Settings struct {
 	MINetwork string `orm:"size(64);unique" form:"MINetwork" valid:"Required;"`
 
 	OVConfigPath string `orm:"size(64);unique" form:"OVConfigPath" valid:"Required;"`
+	EasyRSAPath  string `orm:"size(64);unique" form:"EasyRSAPath" valid:"Required;"`
 
 	//	ServerAddress     string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
 	//	OpenVpnServerPort string `orm:"size(64);unique" form:"OpenVpnServerPort" valid:"Required;"`
