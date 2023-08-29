@@ -80,11 +80,17 @@ func CreateDefaultSettings() (*Settings, error) {
 		return nil, err
 	}
 
+	easyRSAPath, err := web.AppConfig.String("EasyRsaPath")
+	if err != nil {
+		return nil, err
+	}
+
 	s := Settings{
 		Profile:      "default",
 		MIAddress:    miAddress,
 		MINetwork:    miNetwork,
 		OVConfigPath: ovConfigPath,
+		EasyRSAPath:  easyRSAPath,
 		//	ServerAddress:     serverAddress,
 		//	OpenVpnServerPort: serverPort,
 	}
