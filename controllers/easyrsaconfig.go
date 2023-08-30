@@ -61,7 +61,7 @@ func (c *EasyRSAConfigController) Post() {
 		return
 	}
 
-	destPath = filepath.Join(state.GlobalCfg.EasyRSAPath, "easy-rsa.vars")
+	destPath = filepath.Join(state.GlobalCfg.OVConfigPath, "config/easy-rsa.vars")
 	err = easyrsaconfig.SaveToFile(filepath.Join(c.ConfigDir, "easyrsa-vars.tpl"), cfg.Config, destPath)
 	if err != nil {
 		logs.Warning(err)
