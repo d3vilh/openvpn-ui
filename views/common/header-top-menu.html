@@ -27,6 +27,11 @@
         <a href="{{urlfor "EasyRSAConfigController.Get"}}">EasyRSA vars</a>
       </li>
 
+      <li {{if compare .RouterPattern "/dangerzone"}}class="active"{{end}}>
+        <a href="{{urlfor "DangerController.Get"}}">Danger Zone!</a>
+      </li>
+
+
     </ul>
   </li>
 

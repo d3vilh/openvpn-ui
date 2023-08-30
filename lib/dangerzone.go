@@ -37,3 +37,18 @@ func InitPKI() error {
 	}
 	return nil
 }
+
+func RestartContainer() error {
+	cmd := exec.Command("/bin/bash", "-c",
+		fmt.Sprintf(
+			"cd /opt/scripts/ && "+
+				"./restart.sh"))
+	cmd.Dir = state.GlobalCfg.OVConfigPath
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		logs.Debug(string(output))
+		logs.Error(err)
+		return err
+	}
+	return nil
+}

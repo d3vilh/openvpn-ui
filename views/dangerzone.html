@@ -1,0 +1,58 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>Danger Zone</title>
+{{end}}
+
+{{define "body"}}
+
+  <!-- /.box-body -->
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">OpenVPN Server Restart</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    {{template "common/alert.html" .}}
+    <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
+      <div class="box-body">
+        <div class="form-group">
+            <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart">Restart Server</a>
+            &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span>
+        </div>
+
+        <div class="form-group">
+            <a href="{{urlfor "DangerController.RestartContainer"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart OpenVPN container">Restart Container</a> 
+            &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
+        </div>
+        {{ .xsrfdata }} 
+      </div> 
+    <!-- /.box-body -->
+    </form>
+  </div>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">PKI Configuration</h3>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+  <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
+    <div class="box-body">
+      <div class="form-group">
+        <a href="{{urlfor "DangerController.DeletePKI"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="DeletePKI" onclick="return confirm('Are you sure you want to Delete PKI?');">Delete PKI</a>
+        &nbsp; <span> <b>You can't rollback this change!</b> This will delete PKI, all OpenVPN Server keys and Client certificates.</span>
+      </div>
+
+      <div class="form-group">
+        <a href="{{urlfor "DangerController.InitPKI"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Initialize PKI" onclick="return confirm('Are you sure you want to Initialize PKI?');">Initialize PKI</a>
+        &nbsp; <span> <b>You can't rollback this change!</b> This will create PKI, generate root CA and CRL. Be sure that you don't have any PKI in your Server!</span>
+      </div>
+      {{ .xsrfdata }}
+    </div>
+    <!-- /.box-body -->
+  </form>
+</div>
+<!-- /.box -->
+{{end}}

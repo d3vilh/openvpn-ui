@@ -86,19 +86,27 @@ func init() {
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
-	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"] =
-		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"],
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"],
 			web.ControllerComments{
 				Method:           "DeletePKI",
 				Router:           `/pki/delete`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
-	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"] =
-		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerZoneController"],
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"],
 			web.ControllerComments{
 				Method:           "InitPKI",
 				Router:           `/pki/init`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"],
+			web.ControllerComments{
+				Method:           "RestartContainer",
+				Router:           `/container/restart`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 }
