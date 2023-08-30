@@ -15,6 +15,7 @@ ADD assets/genclient.sh /opt/scripts/genclient.sh
 ADD assets/rmclient.sh /opt/scripts/rmclient.sh
 ADD assets/restart.sh /opt/scripts/restart.sh
 ADD assets/rmcert.sh /opt/scripts/rmcert.sh
+ADD assets/remove-pki.sh /opt/scripts/remove-pki.sh
 ADD openvpn-ui.tar.gz /opt/openvpn-gui/
 RUN rm -f /opt/openvpn-gui/data.db
 ADD assets/app.conf /opt/openvpn-gui/conf/app.conf
