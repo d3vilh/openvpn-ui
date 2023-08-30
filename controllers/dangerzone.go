@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/d3vilh/openvpn-ui/lib"
 )
 
@@ -24,21 +26,48 @@ func (c *DangerController) Get() {
 
 // @router /pki/delete [DeletePKI]
 func (c *DangerController) DeletePKI() {
-	lib.DeletePKI()
+	c.TplName = "dangerzone.html"
+	flash := web.NewFlash()
+	if err := lib.DeletePKI(); err != nil {
+		logs.Error(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+	} else {
+		flash.Success("Success! PKI has been deleted.")
+		flash.Store(&c.Controller)
+	}
 	c.Redirect(c.URLFor("DangerController.Get"), 302)
 	// return
 }
 
 // @router /pki/init [InitPKI]
 func (c *DangerController) InitPKI() {
-	lib.InitPKI()
+	c.TplName = "dangerzone.html"
+	flash := web.NewFlash()
+	if err := lib.InitPKI(); err != nil {
+		logs.Error(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+	} else {
+		flash.Success("Success! PKI has been initialized.")
+		flash.Store(&c.Controller)
+	}
 	c.Redirect(c.URLFor("DangerController.Get"), 302)
 	// return
 }
 
 // @router /container/restart [RestartContainer]
 func (c *DangerController) RestartContainer() {
-	lib.RestartContainer()
+	c.TplName = "dangerzone.html"
+	flash := web.NewFlash()
+	if err := lib.RestartContainer(); err != nil {
+		logs.Error(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+	} else {
+		flash.Success("Success! Container has been restarted")
+		flash.Store(&c.Controller)
+	}
 	c.Redirect(c.URLFor("DangerController.Get"), 302)
 	// return
 }
