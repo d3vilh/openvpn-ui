@@ -42,17 +42,18 @@ func (c *DangerController) DeletePKI() {
 	// return
 }
 
-// @router /pki/init [InitPKI]
+// @router /pki/init/:key [InitPKI]
 func (c *DangerController) InitPKI() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
+	name := c.GetString(":key")
 	logs.Info("Controller: Runing PKI init")
-	if err := lib.InitPKI(); err != nil {
+	if err := lib.InitPKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		flash.Success("Success! PKI has been initialized.")
+		flash.Success("Success! The \"" + name + "\" has been initialized.")
 		flash.Store(&c.Controller)
 	}
 	c.Redirect(c.URLFor("DangerController.Get"), 302)

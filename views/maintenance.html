@@ -43,28 +43,28 @@
     <div class="box-body">
       <div class="form-group">
         <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_all"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Remove All" onclick="return confirm('Are you sure you want to Remove ALL?');">DELETE ALL</a>
-        &nbsp; <span>This will delete PKI, all OpenVPN Server keys, Client certificates, &quot;*.ovpn&quot; files and OpenVPN-UI Database.</span>
+        &nbsp; <span>This button will execute all the seteps below, one by one - delete PKI, Server keys, Client certificates, &quot;*.ovpn&quot; files and OpenVPN-UI Database.</span>
       </div>
 
       <div class="box-body">
         <div class="form-group">
           <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_pki"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove PKI" onclick="return confirm('Are you sure you want to Remove PKI?');">Remove PKI</a>
-          &nbsp; <span>This will delete PKI, all OpenVPN Server keys and Client certificates .</span>
+          &nbsp; <span>Delete PKI, all OpenVPN Server keys, and Client certificates. <b>This will prevent clients from connecting using their current certificates!</b></span>
         </div>
 
         <div class="form-group">
           <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_ovpn"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove All *.ovpn files" onclick="return confirm('Are you sure you want to Remove all *.ovpn files?');">Remove .ovpn</a>
-          &nbsp; <span>This will remove &quot;*.ovpn&quot; files from &quot;/etc/openvpn/clients&quot; directory.</span>
+          &nbsp; <span>Remove &quot;*.ovpn&quot; files from the &quot;/etc/openvpn/clients&quot; directory.</span>
         </div>
 
         <div class="form-group">
           <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_static_clients"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Static IP reservations" onclick="return confirm('Are you sure you want to Remove all *.ovpn files?');">Remove Static</a>
-          &nbsp; <span>This will remove all static IP reservations from &quot;/etc/openvpn/staticclients&quot; directory.</span>
+          &nbsp; <span>Remove all static IP reservations from the &quot;/etc/openvpn/staticclients&quot; directory.</span>
         </div>
 
         <div class="form-group">
           <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_ovpn_db"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove OpenVPN-UI Database" onclick="return confirm('Are you sure you want to Remove OVPN DB?');">Remove DB</a>
-          &nbsp; <span>This will delete OpenVPN-UI Database.</span>
+          &nbsp; <span>Delete the OpenVPN-UI Database.</span>
         </div>
       </div>
 
@@ -78,7 +78,7 @@
     <div class="box-header with-border">
       <h3 class="box-title">PKI Initialisation</h3><br>
       <span> <b>DANGER ZONE!</b> You can't rollback any actions of this section!</span><br>
-      <span> Be sure you don't have any PKI exists, before running this.</span>
+      <span> Be sure you don't have any PKI, before running this.</span>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
@@ -86,10 +86,46 @@
     <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
       <div class="box-body">
         <div class="form-group">
-          <a href="{{urlfor "DangerController.InitPKI"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Initialize PKI" onclick="return confirm('Are you sure you want to Initialize PKI?');">INITIALIZE ALL</a>
-          &nbsp; <span>This will copy your easy-rsa.vars, create PKI (init-pki), generate root CA (build-ca, gen-req, sign-req, gen-dh), HMAC signature for openvpn (ta.key) and create CRL (gen-crl).</span>
+          <a href="{{urlfor "DangerController.InitPKI" ":key" "init_all"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Initialize PKI" onclick="return confirm('Are you sure you want to Initialize ALL?');">INITIALIZE ALL</a>
+          &nbsp; <span>This button will execute all the steps below one by one - copy EasyRSA vars and create PKI, CA, Server, DH, TA and CRL.</span>
         </div>
 
+        <div class="box-body">
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "copy_vars"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Copy EasyRSA VARs" onclick="return confirm('Are you sure you want to Copy EasyRSA VARs?');">EasyRSA VARs</a>
+            &nbsp; <span>Copy EasyRSA vars from &quot;./openvpn/config/easy-rsa.vars to ./easy-rsa/pki/vars&quot;.</span>
+          </div>
+
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "init-pki"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Initialize PKI" onclick="return confirm('Are you sure you want to Initialize PKI?');">Init PKI</a>
+            &nbsp; <span>Initialize PKI by running &quot;easyrsa init-pki&quot;.</span>
+          </div>          
+
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "build_ca"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Build CA" onclick="return confirm('Are you sure you want to build CA?');">Build CA</a>
+            &nbsp; <span>Build CA by running &quot;easyrsa build-ca nopass&quot;.</span>
+          </div>     
+
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_req"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Build Server" onclick="return confirm('Are you sure you want to build Server?');">Build Server</a>
+            &nbsp; <span>Generate a new Server Certificate, Key, and Encryption Files by running &quot;easyrsa gen-req&sign-req server nopas&quot;.</span>
+          </div>     
+
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_dh"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Generate Diffie-Hellman key" onclick="return confirm('Are you sure you want to generate DH key?');">Generate DH</a>
+            &nbsp; <span>Generate a new Diffie-Hellman key by running &quot;easyrsa gen-dh&quot;. This step may take up to 10 minutes.</span>
+          </div>    
+
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_ta"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Generate TA key for openvpn" onclick="return confirm('Are you sure you want to generate TA key?');">Generate TA</a>
+            &nbsp; <span>Generate a new openvpn TA key by running &quot;openvpn --genkey --secret ta.key&quot;.</span>
+          </div>    
+
+          <div class="form-group">
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_crl"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Generate TA key for openvpn" onclick="return confirm('Are you sure you want to generate CRL?');">Generate CRL</a>
+            &nbsp; <span>Generate a new Certificate Revocation List (CRL) by running &quot;easyrsa gen-crl&quot;.</span>
+          </div>    
+        </div>
         {{ .xsrfdata }}
       </div>
       <!-- /.box-body -->

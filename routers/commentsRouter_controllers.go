@@ -98,7 +98,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"],
 			web.ControllerComments{
 				Method:           "InitPKI",
-				Router:           `/pki/init`,
+				Router:           `/pki/init/:key`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 

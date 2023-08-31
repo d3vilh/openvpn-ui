@@ -24,12 +24,12 @@ func DeletePKI(name string) error {
 	return nil
 }
 
-func InitPKI() error {
-	logs.Info("Lib: Runing PKI init")
+func InitPKI(name string) error {
+	logs.Info("Lib: Runing init for", name)
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
-				"./generate_ca_and_server_certs.sh"))
+				"./generate_ca_and_server_certs.sh %s", name))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
