@@ -11,7 +11,7 @@ var defaultConfig = Config{
 	Proto:             "udp",
 	ServerAddress:     "127.0.0.1",
 	Port:              1194,
-	OpenVpnServerPort: "12235",
+	OpenVpnServerPort: "1194",
 	Cipher:            "AES-256-CBC",
 	Auth:              "SHA256",
 	Ca:                "ca.crt",
