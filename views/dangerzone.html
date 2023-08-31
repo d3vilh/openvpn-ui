@@ -41,7 +41,7 @@
   <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
     <div class="box-body">
       <div class="form-group">
-        <a href="{{urlfor "DangerController.DeletePKI"}}" class="btn btn-danger btn-primary" value="delete_pki" style="width: 125px;" title="DeletePKI" onclick="return confirm('Are you sure you want to Delete PKI?');">Delete PKI</a>
+        <a href="{{urlfor "DangerController.DeletePKI"}}" class="btn btn-danger btn-primary" value="remove_all" style="width: 125px;" title="DeletePKI" onclick="return confirm('Are you sure you want to Delete PKI?');">Delete PKI</a>
         &nbsp; <span> <b>You can't rollback this change!</b> This will delete PKI, all OpenVPN Server keys and Client certificates.</span>
       </div>
 
