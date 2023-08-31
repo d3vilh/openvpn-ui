@@ -18,17 +18,18 @@ func (c *DangerController) NestPrepare() {
 }
 
 func (c *DangerController) Get() {
-	c.TplName = "dangerzone.html"
+	c.TplName = "maintenance.html"
 	c.Data["breadcrumbs"] = &BreadCrumbs{
-		Title: "Danger Zone!",
+		Title: "Maintenance",
 	}
 }
 
-// @router /pki/delete:key [DeletePKI]
+// @router /pki/delete/:key [DeletePKI]
 func (c *DangerController) DeletePKI() {
-	c.TplName = "dangerzone.html"
+	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
+	logs.Info("Controller: Deleting with the name:", name)
 	if err := lib.DeletePKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
@@ -43,8 +44,9 @@ func (c *DangerController) DeletePKI() {
 
 // @router /pki/init [InitPKI]
 func (c *DangerController) InitPKI() {
-	c.TplName = "dangerzone.html"
+	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
+	logs.Info("Controller: Runing PKI init")
 	if err := lib.InitPKI(); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
@@ -59,7 +61,7 @@ func (c *DangerController) InitPKI() {
 
 // @router /container/restart [RestartContainer]
 func (c *DangerController) RestartContainer() {
-	c.TplName = "dangerzone.html"
+	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	if err := lib.RestartContainer(); err != nil {
 		logs.Error(err)

@@ -1,0 +1,105 @@
+{{ template "layout/base.html" . }}
+
+{{define "head"}}
+<title>Maintenance</title>
+{{end}}
+
+{{define "body"}}
+
+  <!-- /.box-body -->
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">OpenVPN Server Restart</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    {{template "common/alert.html" .}}
+    <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
+      <div class="box-body">
+        <div class="form-group">
+            <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart">Restart Server</a>
+            &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span>
+        </div>
+
+        <div class="form-group">
+            <a href="{{urlfor "DangerController.RestartContainer"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart OpenVPN container">Restart Container</a> 
+            &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
+        </div>
+        {{ .xsrfdata }} 
+      </div> 
+    <!-- /.box-body -->
+    </form>
+  </div>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">PKI Remove</h3><br>
+    <span> <b>DANGER ZONE!</b> You can't rollback any actions of this section!</span>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+  <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
+    <div class="box-body">
+      <div class="form-group">
+        <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_all"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Remove All" onclick="return confirm('Are you sure you want to Remove ALL?');">DELETE ALL</a>
+        &nbsp; <span>This will delete PKI, all OpenVPN Server keys, Client certificates, &quot;*.ovpn&quot; files and OpenVPN-UI Database.</span>
+      </div>
+
+      <div class="box-body">
+        <div class="form-group">
+          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_pki"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove PKI" onclick="return confirm('Are you sure you want to Remove PKI?');">Remove PKI</a>
+          &nbsp; <span>This will delete PKI, all OpenVPN Server keys and Client certificates .</span>
+        </div>
+
+        <div class="form-group">
+          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_ovpn"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove All *.ovpn files" onclick="return confirm('Are you sure you want to Remove all *.ovpn files?');">Remove .ovpn</a>
+          &nbsp; <span>This will remove &quot;*.ovpn&quot; files from &quot;/etc/openvpn/clients&quot; directory.</span>
+        </div>
+
+        <div class="form-group">
+          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_static_clients"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Static IP reservations" onclick="return confirm('Are you sure you want to Remove all *.ovpn files?');">Remove Static</a>
+          &nbsp; <span>This will remove all static IP reservations from &quot;/etc/openvpn/staticclients&quot; directory.</span>
+        </div>
+
+        <div class="form-group">
+          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_ovpn_db"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove OpenVPN-UI Database" onclick="return confirm('Are you sure you want to Remove OVPN DB?');">Remove DB</a>
+          &nbsp; <span>This will delete OpenVPN-UI Database.</span>
+        </div>
+      </div>
+
+      {{ .xsrfdata }}
+    </div>
+    <!-- /.box-body -->
+  </form>
+</div>
+
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">PKI Initialisation</h3><br>
+      <span> <b>DANGER ZONE!</b> You can't rollback any actions of this section!</span><br>
+      <span> Be sure you don't have any PKI exists, before running this.</span>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    {{template "common/alert.html" .}}
+    <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
+      <div class="box-body">
+        <div class="form-group">
+          <a href="{{urlfor "DangerController.InitPKI"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Initialize PKI" onclick="return confirm('Are you sure you want to Initialize PKI?');">INITIALIZE ALL</a>
+          &nbsp; <span>This will copy your easy-rsa.vars, create PKI (init-pki), generate root CA (build-ca, gen-req, sign-req, gen-dh), HMAC signature for openvpn (ta.key) and create CRL (gen-crl).</span>
+        </div>
+
+        {{ .xsrfdata }}
+      </div>
+      <!-- /.box-body -->
+    </form>
+
+
+
+
+
+
+</div>
+<!-- /.box -->
+{{end}}

@@ -22,7 +22,7 @@ if [[ ! -f $OPENVPN_DIR/pki/ca.crt ]]; then
     echo 'Moving PKI directory...'
     mv $TEMP_PKI_DIR/* ./pki/
 
-    echo 'Generating ertificate authority...'
+    echo 'Generating Certificate authority...'
     $EASY_RSA/easyrsa build-ca nopass
 
     # Creating the Server Certificate, Key, and Encryption Files
