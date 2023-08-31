@@ -9,7 +9,7 @@ import (
 )
 
 func DeletePKI(name string) error {
-	logs.Info("Lib: Deleting with the name:", name)
+	logs.Info("Lib: Deleting:", name)
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
@@ -25,7 +25,7 @@ func DeletePKI(name string) error {
 }
 
 func InitPKI(name string) error {
-	logs.Info("Lib: Runing init for", name)
+	logs.Info("Lib: Runing init for:", name)
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+

@@ -29,7 +29,7 @@ func (c *DangerController) DeletePKI() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
-	logs.Info("Controller: Deleting with the name:", name)
+	logs.Info("Controller: Deleting:", name)
 	if err := lib.DeletePKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
@@ -47,7 +47,7 @@ func (c *DangerController) InitPKI() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
-	logs.Info("Controller: Runing PKI init")
+	logs.Info("Controller: Runing init for:", name)
 	if err := lib.InitPKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
