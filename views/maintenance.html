@@ -39,7 +39,6 @@
   </div>
   <!-- /.box-header -->
   <!-- form start -->
-  {{template "common/alert.html" .}}
   <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
     <div class="box-body">
       <div class="form-group">
@@ -77,7 +76,7 @@
 
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Initialisation Actions</h3><br>
+      <h3 class="box-title">Initialization Actions</h3><br>
       <span> <b>DANGER ZONE!</b> You can't rollback any actions of this section!</span><br>
       <span>Be cautious, high expertise level is essential! <a href="https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md" target="_blank">EasyRSA Quick Guide</a>, <a href="https://github.com/OpenVPN/easy-rsa/tree/master/doc" target="_blank">EasyRSA detailed Guide</a>.</span>
     </div>
@@ -131,11 +130,6 @@
       </div>
       <!-- /.box-body -->
     </form>
-
-
-
-
-
 
 </div>
 <!-- /.box -->

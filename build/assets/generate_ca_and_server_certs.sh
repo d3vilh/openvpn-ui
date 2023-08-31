@@ -28,6 +28,7 @@ if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt 
 
       echo 'Moving PKI directory...'
       mv $TEMP_PKI_DIR/* ./pki/
+      cp $OPENVPN_DIR/config/easy-rsa.vars ./pki/vars
 
     elif [[ "$1" = "build_ca" && ! -f $OPENVPN_DIR/pki/ca.crt ]]; then
       echo 'Generating Certificate authority...'
@@ -81,6 +82,8 @@ if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt 
 
       echo 'Moving PKI directory...'
       mv $TEMP_PKI_DIR/* ./pki/
+
+      cp $OPENVPN_DIR/config/easy-rsa.vars ./pki/vars
 
       echo 'Generating Certificate authority...'
       $EASY_RSA/easyrsa build-ca nopass
