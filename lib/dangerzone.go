@@ -8,11 +8,11 @@ import (
 	"github.com/d3vilh/openvpn-ui/state"
 )
 
-func DeletePKI() error {
+func DeletePKI(name string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
-				"./remove-pki.sh"))
+				"./remove.sh %s", name))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

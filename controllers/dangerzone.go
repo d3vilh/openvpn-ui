@@ -24,16 +24,17 @@ func (c *DangerController) Get() {
 	}
 }
 
-// @router /pki/delete [DeletePKI]
+// @router /pki/delete:key [DeletePKI]
 func (c *DangerController) DeletePKI() {
 	c.TplName = "dangerzone.html"
 	flash := web.NewFlash()
-	if err := lib.DeletePKI(); err != nil {
+	name := c.GetString(":key")
+	if err := lib.DeletePKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		flash.Success("Success! PKI has been deleted.")
+		flash.Warning("Success! The \"" + name + "\" has been deleted")
 		flash.Store(&c.Controller)
 	}
 	c.Redirect(c.URLFor("DangerController.Get"), 302)
