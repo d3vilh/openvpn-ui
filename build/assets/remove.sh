@@ -35,6 +35,6 @@ elif [ "$1" = "remove_all" ]; then
   echo -e 'Static clients remover.\nRemoving Openvpn-UI DB.\n'
   rm -rf $OVPN_DB_DIR/data.db
 else
-  echo "Invalid argument: $1"
+  echo "Invalid input argument: $1"
   exit 1
 fi
