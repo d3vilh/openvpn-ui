@@ -1,25 +1,26 @@
 #!/bin/bash -e
 EASY_RSA=/usr/share/easy-rsa
-PKI_DIR=/tmp/pki
-mkdir -p $PKI_DIR
+OPENVPN_DIR=/etc/openvpn
+TEMP_PKI_DIR=/tmp/pki
+mkdir -p $TEMP_PKI_DIR
 
-if [[ ! -f /etc/openvpn/pki/ca.crt ]]; then
+if [[ ! -f $OPENVPN_DIR/pki/ca.crt ]]; then
     export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
     cd $EASY_RSA
  
     # Copy easy-rsa variables
-    cp /etc/openvpn/config/easy-rsa.vars ./pki/vars
+    cp $OPENVPN_DIR/config/easy-rsa.vars ./pki/vars
 
     # Listing env parameters:
     echo "Following EASYRSA variables will be used:"
-    cat $EASY_RSA/vars | awk '{$1=""; print $0}';
+    cat $EASY_RSA/pki/vars | awk '{$1=""; print $0}';
 
-    # Building the CA
+    # Building the CA with WA to avoid issues with .pki container volume which not possible to remove due to its origin
     echo 'Setting up public key infrastructure...'
-    $EASY_RSA/easyrsa --pki-dir=$PKI_DIR init-pki
+    $EASY_RSA/easyrsa --pki-dir=$TEMP_PKI_DIR init-pki
 
     echo 'Moving PKI directory...'
-    mv $PKI_DIR/* ./pki/
+    mv $TEMP_PKI_DIR/* ./pki/
 
     echo 'Generating ertificate authority...'
     $EASY_RSA/easyrsa build-ca nopass
@@ -34,21 +35,30 @@ if [[ ! -f /etc/openvpn/pki/ca.crt ]]; then
     echo 'Generate Diffie-Hellman key...'
     $EASY_RSA/easyrsa gen-dh
 
-    # Generate HMAC signature in "openvpn" container with Docker API to strengthen server certificate.
+    # Generate HMAC signature in "openvpn" container with Docker API or in host
     echo 'Generate HMAC signature...'
-    nohup sh -c 'curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '\''{  "Cmd": ["openvpn", "--genkey", "--secret", "/etc/openvpn/pki/ta.key"]}'\'' -X POST http://$DOCKER_HOST_IP/containers/$CONTAINER_ID/exec | jq -r '\''{.Id}'\'' | xargs curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '\''{"Detach": false, "Tty": false}'\'' -X POST http://$DOCKER_HOST_IP/exec/{}/start' > /dev/null 2>&1 &
+    # Check if the "openvpn" command exists
+    if ! command -v openvpn &> /dev/null
+    then 
+      echo 'Running in Docker container...'
+      # Get the container ID of the "openvpn" container
+      CONTAINER_ID=$(curl --unix-socket /var/run/docker.sock "http://v1.40/containers/json?filters=%7B%22name%22%3A%5B%22%5Eopenvpn$%22%5D%7D" | jq -r '.[0].Id')
 
-    # curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '{  "Cmd": ["openvpn", "--genkey", "--secret", "/etc/openvpn/pki/ta.key"] }' -X POST http://$DOCKER_HOST_IP/containers/$CONTAINER_ID/exec | jq -r '.Id' | xargs curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '{"Detach": false, "Tty": false}' -X POST http://$DOCKER_HOST_IP/exec/{}/start
+      # Create the exec instance
+      EXEC_ID=$(curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '{"AttachStdin": true, "AttachStdout": true, "AttachStderr": true, "Cmd": ["openvpn", "--genkey", "--secret", "'"$OPENVPN_DIR"'/pki/ta.key"], "DetachKeys": "ctrl-p,ctrl-q", "Tty": true}' -X POST "http://v1.40/containers/$CONTAINER_ID/exec" | jq -r '.Id')
 
+      # Start the exec instance
+      curl --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '{"Detach": false, "Tty": true}' -X POST "http://v1.40/exec/$EXEC_ID/start"
+    else
+       # Run the "openvpn --genkey --secret pki/ta.key" command on localhost
+       echo 'Running in host...'
+       openvpn --genkey --secret $OPENVPN_DIR/pki/ta.key
+    fi
     echo 'Create certificate revocation list (CRL)...'
     $EASY_RSA/easyrsa gen-crl
     chmod +r ./pki/crl.pem
 
     echo 'All done.'
-    # Copy to mounted volume
-    # cp -r ./pki/. /etc/openvpn/pki
 else
-    # Copy from mounted volume
-    # cp -r /etc/openvpn/pki /opt/app/easy-rsa
     echo 'PKI already set up.'
 fi
