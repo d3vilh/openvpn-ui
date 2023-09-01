@@ -20,7 +20,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Restart OpenVPN Server and OpenVPN UI from web interface
 * OpenVPN-UI Admin user and password can be passed via environment variables to container
 * Updated infrustracture:
-  * Beego 2.1 with all vulnerabilities fixed (more than 100 CVEs)
+  * Beego 2.1 with all vulnerabilities fixed (more than 200 CVEs)
   * Easy-rsa 3.X
   * Openssl 3.X
   * OpenVPN 2.5.8 Server is fully compatible
