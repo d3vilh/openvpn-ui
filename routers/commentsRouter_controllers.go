@@ -106,7 +106,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"],
 			web.ControllerComments{
 				Method:           "RestartContainer",
-				Router:           `/container/restart`,
+				Router:           `/container/restart/:key`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 }

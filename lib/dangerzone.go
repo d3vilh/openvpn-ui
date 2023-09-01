@@ -40,11 +40,12 @@ func InitPKI(name string) error {
 	return nil
 }
 
-func RestartContainer() error {
+func RestartContainer(name string) error {
+	logs.Info("Lib: Restarting:", name)
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
-				"./restart.sh"))
+				"./restart.sh %s", name))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

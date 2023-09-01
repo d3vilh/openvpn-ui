@@ -64,12 +64,14 @@ func (c *DangerController) InitPKI() {
 func (c *DangerController) RestartContainer() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
-	if err := lib.RestartContainer(); err != nil {
+	name := c.GetString(":key")
+	logs.Info("Controller: Restarting:", name)
+	if err := lib.RestartContainer(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		flash.Success("Success! Container has been restarted")
+		flash.Success("Success! Container \"" + name + "\" has been restarted")
 		flash.Store(&c.Controller)
 	}
 	c.Redirect(c.URLFor("DangerController.Get"), 302)
