@@ -1,6 +1,7 @@
 # OpenVPN UI
 
 OpenVPN server web administration interface.
+
 Quick to deploy and easy to use, makes work with small OpenVPN environments a breeze.
 
 <img src="https://raw.githubusercontent.com/d3vilh/raspberry-gateway/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
@@ -11,23 +12,24 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 
 * Status page that shows server statistics and list of connected clients
 * Easy to **generate**, **download**, **revoke** and **delete** client certificates
+* Client can have secret passphrase and static IP assigned during client certificate generation
 * Change predefined EasyRSA vars including certificates and CRL expiration time
-* You can set static IP to clients and
-* Add secret passphrase during client certificate generation
-* Easy to preview OpenVPN Server logs, as well as do
-* Chaneing of OpenVPN Server configuration via web interface
-* You can restart OpenVPN Server Back-End container via Web UI
-* Web-UI Admin user and password can be passed via environment variables to container
-* Support any architecture, AMD64 and ARM64v8 [available on Docker Hub](https://hub.docker.com/r/d3vilh/openvpn-ui).
-* Easy-rsa 3.X
-* Openssl 3.X
-* Beego 2.1 with all vulnerabilities fixed
-* OpenVPN 2.5.8 Server is fully compatible
-* Compatible OpenVPN Server images can be found on Docker Hub - [d3vilh/openvpn-server:latest](https://hub.docker.com/r/d3vilh/openvpn-server)
-* As well as Openvpn-UI itself - [d3vilh/openvpn-ui:latest](https://hub.docker.com/r/d3vilh/openvpn-ui)
+* Maintain EasyRSA PKI infrastructure (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
+* Change OpenVPN Server configuration via web interface
+* Easy to preview OpenVPN Server logs
+* Restart OpenVPN Server and OpenVPN UI from web interface
+* OpenVPN-UI Admin user and password can be passed via environment variables to container
+* Updated infrustracture:
+  * Beego 2.1 with all vulnerabilities fixed (more than 100 CVEs)
+  * Easy-rsa 3.X
+  * Openssl 3.X
+  * OpenVPN 2.5.8 Server is fully compatible
+    * Compatible OpenVPN Server images can be found on Docker Hub - [d3vilh/openvpn-server:latest](https://hub.docker.com/r/d3vilh/openvpn-server)
+    * As well as Openvpn-UI itself - [d3vilh/openvpn-ui:latest](https://hub.docker.com/r/d3vilh/openvpn-ui)
+* Support any architecture, ready images for AMD64 and ARM [available on Docker Hub](https://hub.docker.com/r/d3vilh/openvpn-ui).
 
-Part of following cool projects:
-* [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
+Part of following projects:
+* [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) OpenVPN and OpenVPN-UI for any Cloud, VM or x86 bare metal server.
 * [Raspberry-gateway](https://github.com/d3vilh/raspberry-gateway) simple yet powerful home gateway environment with Pi-Hole +Unbound, VPN, Torrent client and Internet monitoring, all managed by Portainer.
 
 ## Installation
