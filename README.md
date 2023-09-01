@@ -352,22 +352,21 @@ All the Server and Client configuration located in Docker volume and can be ease
 
 ### Generating .OVPN client profiles
 
-Before client cert. generation you need to update the external IP address to your OpenVPN server in OVPN-UI GUI.
+You can update external client IP and port address anytime under `"Configuration > OpenVPN Client"` menue. 
 
-For this go to `"Configuration > Settings"`:
+For this go to `"Configuration > OpenVPN Client"` (don't trust what you see, this picture is outdated):
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
 
-And then update `"Server Address (external)"` field with your external Internet IP. Then go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
+And then update `"Connection Address"` and `"Connection Port"` fields with your external Internet IP and Port. 
+
+To generate new Client Certificate go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client.png" alt="Create Certificate" width="350" border="1" />
 
 To download .OVPN client configuration file, press on the `Client Name` you just created:
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client_download.png" alt="download OVPN" width="350" border="1" />
-
-If you use NAT and different port for all the external connections on your network router, you may need to change server port in .OVPN file. For that, just open it in any text editor (emax?) and update `1194` port with the desired one in this line: `remote 178.248.232.12 1194 udp`.
-This line also can be [preconfigured in](https://github.com/d3vilh/raspberry-gateway/blob/master/example.config.yml#L23) `config.yml` file in var `ovpn_remote`.
 
 Install [Official OpenVPN client](https://openvpn.net/vpn-client/) to your client device.
 
@@ -382,11 +381,13 @@ You can do it via OpenVPN UI `"Certificates"` menue, by pressing "Revoke" amber 
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
 
-Revoked certificates won't kill active connections, you'll have to restart the service if you want the user to immediately disconnect. It can be done via Portainer or OpenVPN UI from the same `"Certificates"` page, by pressing Restart red button:
+Certificate revoke won't kill active VPN connections, you'll have to restart the service if you want the user to immediately disconnect. It can be done from the same `"Certificates"` page, by pressing Restart red button:
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
 
-After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press "Remove" red button.
+You can do the same from the `"Maintenance"` page.
+
+After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press "Remove" button.
 
 ### Screenshots:
 
