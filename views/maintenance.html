@@ -98,7 +98,7 @@
 
         <div class="box-body">
           <div class="form-group">
-            <a href="{{urlfor "DangerController.InitPKI" ":key" "copy_vars"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Copy EasyRSA VARs" onclick="return confirm('Are you sure you want to Copy EasyRSA VARs?');">EasyRSA VARs</a>
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "copy_vars"}}" class="btn btn-primary" style="width: 125px;" title="Copy EasyRSA VARs" onclick="return confirm('Are you sure you want to Copy EasyRSA VARs?');">EasyRSA VARs</a>
             &nbsp; <span>Copy EasyRSA vars from &quot;./openvpn/config/easy-rsa.vars to ./easy-rsa/pki/vars&quot;.</span>
           </div>
 
@@ -128,7 +128,7 @@
           </div>    
 
           <div class="form-group">
-            <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_crl"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Generate TA key for openvpn" onclick="return confirm('Are you sure you want to generate CRL?');">Generate CRL</a>
+            <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_crl"}}" class="btn btn-primary" style="width: 125px;" title="Generate TA key for openvpn" onclick="return confirm('Are you sure you want to generate CRL?');">Generate CRL</a>
             &nbsp; <span>Generate a new Certificate Revocation List (CRL) by running &quot;easyrsa gen-crl&quot;.</span>
           </div>    
         </div>
