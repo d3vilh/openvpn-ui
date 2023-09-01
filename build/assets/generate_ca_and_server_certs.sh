@@ -12,7 +12,7 @@ if [ "$1" = "copy_vars" ]; then
   echo 'New vars applied.'
 fi
 
-if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt || ! -f $OPENVPN_DIR/pki/issued/server.crt || ! -f $OPENVPN_DIR/pki/dh.pem || ! -f $OPENVPN_DIR/pki/ta.key || ! -f $OPENVPN_DIR/pki/crl.pem || "$1" = "init_all" ]] && ! [[ "$1" = "copy_vars" ]]; then
+if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt || ! -f $OPENVPN_DIR/pki/issued/server.crt || ! -f $OPENVPN_DIR/pki/dh.pem || ! -f $OPENVPN_DIR/pki/ta.key || ! -f $OPENVPN_DIR/pki/crl.pem || "$1" = "init_all" || "$1" = "gen_crl" ]] && ! [[ "$1" = "copy_vars" ]]; then
     export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
 
     # Copy easy-rsa variables
@@ -65,7 +65,7 @@ if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt 
          openvpn --genkey --secret $OPENVPN_DIR/pki/ta.key
       fi
 
-    elif [[ "$1" = "gen_crl" && ! -f $OPENVPN_DIR/pki/crl.pem ]]; then
+    elif [ "$1" = "gen_crl" ]; then
       echo 'Create certificate revocation list (CRL)...'
       $EASY_RSA/easyrsa gen-crl
       chmod +r ./pki/crl.pem
