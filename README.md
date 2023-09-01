@@ -13,8 +13,8 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Status page that shows server statistics and list of connected clients
 * Easy to **generate**, **download**, **revoke** and **delete** client certificates
 * Client can have secret passphrase and static IP assigned during client certificate generation
-* Change predefined EasyRSA vars including certificates and CRL expiration time
-* Maintain EasyRSA PKI infrastructure (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
+* **Change predefined EasyRSA vars** including certificates and CRL expiration time
+* **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
 * Change OpenVPN Server configuration via web interface
 * Easy to preview OpenVPN Server logs
 * Restart OpenVPN Server and OpenVPN UI from web interface
