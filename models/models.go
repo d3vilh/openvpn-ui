@@ -163,7 +163,7 @@ func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address 
 			Port:              1194,
 			Proto:             "udp",
 			ServerAddress:     "127.0.0.1",
-			OpenVpnServerPort: "12235",
+			OpenVpnServerPort: "1194",
 			Cipher:            "AES-256-CBC",
 			Auth:              "SHA512",
 			Ca:                "pki/ca.crt",

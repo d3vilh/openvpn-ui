@@ -23,8 +23,10 @@ func Init(configDir string) {
 	web.Router("/logs", &controllers.LogsController{})
 	web.Router("/ov/clientconfig", &controllers.OVClientConfigController{ConfigDir: configDir})
 	web.Router("/easyrsa/config", &controllers.EasyRSAConfigController{ConfigDir: configDir})
+	web.Router("/dangerzone", &controllers.DangerController{})
 
 	web.Include(&controllers.CertificatesController{ConfigDir: configDir})
+	web.Include(&controllers.DangerController{})
 
 	ns := web.NewNamespace("/api/v1",
 		web.NSNamespace("/session",

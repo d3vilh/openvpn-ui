@@ -19,10 +19,6 @@ export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3
 
 echo 'Revoke certificate...'
 
-# Copy easy-rsa variables
-cd /usr/share/easy-rsa
-#cp /etc/openvpn/config/easy-rsa.vars ./vars
-
 # Revoke certificate
 ./easyrsa revoke "$1"
 
@@ -31,7 +27,6 @@ echo 'Create new Create certificate revocation list (CRL)...'
 chmod +r ./pki/crl.pem
 
 echo 'Sync pki directory...'
-#rm -rf /etc/openvpn/pki/*
 cp -r ./pki/. /etc/openvpn/pki
 
 echo 'Done!'

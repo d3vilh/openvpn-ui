@@ -3,11 +3,12 @@
 
 FROM DEFINE-YOUR-ARCH
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
+LABEL version="0.5"
 WORKDIR /opt
 EXPOSE 8080
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install --reinstall libc-bin && apt-get install -y easy-rsa curl && apt-get clean && rm -rf /var/lib/apt/lists/* && chmod 755 /usr/share/easy-rsa/*
+RUN apt-get update && apt-get install --reinstall libc-bin && apt-get install -y easy-rsa curl jq && apt-get clean && rm -rf /var/lib/apt/lists/* && chmod 755 /usr/share/easy-rsa/*
 ADD assets/start.sh /opt/start.sh
 ADD assets/generate_ca_and_server_certs.sh /opt/scripts/generate_ca_and_server_certs.sh
 ADD assets/vars.template /opt/scripts/
@@ -15,6 +16,7 @@ ADD assets/genclient.sh /opt/scripts/genclient.sh
 ADD assets/rmclient.sh /opt/scripts/rmclient.sh
 ADD assets/restart.sh /opt/scripts/restart.sh
 ADD assets/rmcert.sh /opt/scripts/rmcert.sh
+ADD assets/remove.sh /opt/scripts/remove.sh
 ADD openvpn-ui.tar.gz /opt/openvpn-gui/
 RUN rm -f /opt/openvpn-gui/data.db
 ADD assets/app.conf /opt/openvpn-gui/conf/app.conf

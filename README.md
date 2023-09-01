@@ -1,44 +1,57 @@
-# OpenVPN WEB UI
+# OpenVPN UI
 
-Simple OpenVPN instance for Raspberry Pi based home server. 
-
-## Summary
 OpenVPN server web administration interface.
 
-Goal: create quick to deploy and easy to use solution that makes work with small OpenVPN environments a breeze.
-
-Its designed for Docker enviroment including 2 different containers:
- - OpenVPN Back-End container (openvpn) and 
- - OpenVPN UI WEB based Front-End container (openvpn-ui) for managing OpenVPN server.
-
-However it works fine as standalone application as well.
+Quick to deploy and easy to use, makes work with small OpenVPN environments a breeze.
 
 <img src="https://raw.githubusercontent.com/d3vilh/raspberry-gateway/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
+
+[![latest version](https://img.shields.io/github/v/release/d3vilh/openvpn-ui?color=%2344cc11&label=Latest%20release&style=for-the-badge)](https://github.com/d3vilh/openvpn-ui/releases/latest)
 
 ## Features
 
 * Status page that shows server statistics and list of connected clients
 * Easy to **generate**, **download**, **revoke** and **delete** client certificates
-* Change predefined EasyRSA vars including certificates and CRL expiration time
-* You can set static IP to clients and
-* Add secret passphrase during client certificate generation
-* Easy to preview OpenVPN Server logs, as well as do
-* Chaneing of OpenVPN Server configuration via web interface
-* You can restart OpenVPN Server Back-End container via Web UI
-* Web-UI Admin user and password can be passed via environment variables to container
-* Support any architecture, AMD64 and ARM64v8 [available on Docker Hub](https://hub.docker.com/r/d3vilh/openvpn-ui).
-* Easy-rsa 3.X
-* Openssl 3.X
-* Beego 2.1 with all vulnerabilities fixed
-* OpenVPN 2.5.8 Server is fully compatible
-* Compatible OpenVPN Server images can be found on Docker Hub - [d3vilh/openvpn-server:latest](https://hub.docker.com/r/d3vilh/openvpn-server)
-* As well as Openvpn-UI itself - [d3vilh/openvpn-ui:latest](https://hub.docker.com/r/d3vilh/openvpn-ui)
+* Client can have secret passphrase and static IP assigned during client certificate generation
+* **Change predefined EasyRSA vars** including certificates and CRL expiration time
+* **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
+* Change OpenVPN Server configuration via web interface
+* Easy to preview OpenVPN Server logs
+* Restart OpenVPN Server and OpenVPN UI from web interface
+* OpenVPN-UI Admin user and password can be passed via environment variables to container
+* Updated infrustracture:
+  * Beego 2.1 with all vulnerabilities fixed (more than 200 CVEs)
+  * Easy-rsa 3.X
+  * Openssl 3.X
+  * OpenVPN 2.5.8 Server is fully compatible
+    * Compatible OpenVPN Server images can be found on Docker Hub - [d3vilh/openvpn-server:latest](https://hub.docker.com/r/d3vilh/openvpn-server)
+    * As well as Openvpn-UI itself - [d3vilh/openvpn-ui:latest](https://hub.docker.com/r/d3vilh/openvpn-ui)
+* Support any architecture, ready images for AMD64 and ARM [available on Docker Hub](https://hub.docker.com/r/d3vilh/openvpn-ui).
 
-Part of following cool projects:
-* [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) is a x86-64 fork of openvpn-ui project build to run on Amazon AWS t2-mini enviroment.
+Part of following projects:
+* [Openvpn-aws](https://github.com/d3vilh/openvpn-aws) OpenVPN and OpenVPN-UI for any Cloud, VM or x86 bare metal server.
 * [Raspberry-gateway](https://github.com/d3vilh/raspberry-gateway) simple yet powerful home gateway environment with Pi-Hole +Unbound, VPN, Torrent client and Internet monitoring, all managed by Portainer.
 
-## Run this image using a `docker-compose.yml` file
+## Installation
+For best experience, it is recommended to deploy it within a Docker environment consisting of two distinct containers:
+ - The OpenVPN Server Back-End container (openvpn) for running OpenVPN server.
+ - OpenVPN UI Front-End container (openvpn-ui) for efficient management of the OpenVPN server environment.
+
+However it works fine as standalone application with standalove OpenVPN server as well.
+### Intel x86 and AMD64 platforms
+For Baremetal x86-64 servers, Cloud or VM installation, please use [openvpn-aws](https://github.com/d3vilh/openvpn-aws) project.
+It includes all the necessary scripts for easy installation of OpenVPN-UI and OpenVPN server on any x86-64 platform.
+
+### Raspberry-pi and other ARM platforms
+For Raspberry-Pi and other ARM devices, consider [Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway) project.
+It has all the necessary scripts for easy installation and lot of additional features.
+
+### Manual installation
+
+  <details>
+    <summary>With Docker-compose</summary>
+
+#### Running this image with `docker-compose.yml` file
 
 ```yaml
     openvpn-ui:
@@ -57,9 +70,8 @@ Part of following cool projects:
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
 ```
-This image is compatible with the [openvpn](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image of [Raspberyy-Gateway](https://github.com/d3vilh/raspberry-gateway) project. 
 
-You can use them together in a `docker-compose.yml` file like this:
+You can couple OpenVPN-UI with recommended [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image and here is updated `docker-compose.yml` for it:
 
 ```yaml
 ---
@@ -104,7 +116,35 @@ services:
        restart: always
 ``` 
 
-## Run this image using the Docker itself
+**Where:** 
+* `TRUST_SUB` is Trusted subnet, from which OpenVPN server will assign IPs to trusted clients (default subnet for all clients)
+* `GUEST_SUB` is Gusets subnet for clients with internet access only
+* `HOME_SUB` is subnet where the VPN server is located, thru which you get internet access to the clients with MASQUERADE
+* `fw-rules.sh` is bash file with additional firewall rules you would like to apply during container start
+
+`docker_entrypoint.sh` will apply following Firewall rules:
+```shell
+IPT MASQ Chains:
+MASQUERADE  all  --  ip-10-0-70-0.ec2.internal/24  anywhere
+MASQUERADE  all  --  ip-10-0-71-0.ec2.internal/24  anywhere
+IPT FWD Chains:
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 8
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 0
+       0        0 DROP       0    --  *      *       10.0.71.0/24         192.168.88.0/24
+``` 
+Here is possible content of `fw-rules.sh` file to apply additional rules:
+```shell
+~/openvpn-server $ cat fw-rules.sh
+iptables -A FORWARD -s 10.0.70.88 -d 10.0.70.77 -j DROP
+iptables -A FORWARD -d 10.0.70.77 -s 10.0.70.88 -j DROP
+```
+
+  </details>
+
+  <details>
+    <summary>With Dockerfile</summary>
+
+#### Run this image using the Dockerfile
 
 Run the OpenVPN-UI image
 ```shell
@@ -120,7 +160,7 @@ docker run \
 --privileged d3vilh/openvpn-ui:latest
 ```
 
-Run the OpenVPN image:
+Run the OpenVPN Server image:
 ```shell
 cd ~/openvpn-server/ && 
 docker run  --interactive --tty --rm \
@@ -138,10 +178,60 @@ docker run  --interactive --tty --rm \
   -v ./fw-rules.sh:/opt/app/fw-rules.sh \
   --privileged d3vilh/openvpn-server:latest
 ```
+  </details>
 
-If you are running OpenVPN-UI with `d3vilh/openvpn-server` please be sure `easy-rsa.vars` is set properly and put in `.config` container volume as `easy-rsa.vars` file. In this case your custom EasyRSA options will be applyied correctly during root CA certificate generation.
+  <details>
+    <summary>Building own image</summary>
 
-Here is `easy-rsa.vars` file example:
+#### Building own image
+##### Prerequisites
+As prerequisite, you need to have Docker and GoLang to be installed and running:
+```
+sudo apt-get install docker.io -y
+sudo systemctl restart docker
+```
+
+To install Golang go to [https://go.dev/dl](https://go.dev/dl/) and copy download URL for Go1.20.X version of your arch and follow the instructions below.
+
+Example for ARM64:
+
+```shell
+wget https://golang.org/dl/go1.20.linux-arm64.tar.gz
+sudo tar -C /usr/local -xzf go1.20.linux-arm64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+source /etc/profile
+go version 
+```
+
+##### Building the image
+To build the OpenVPN-UI image:
+```shell
+cd build; ./build_openvpn-ui.sh
+```
+The new image will have `openvpn-ui` name.
+
+  </details>
+
+## Configuration
+**OpenVPN UI** can be accessed on own port (*e.g. http://localhost:8080), the default user and password is `admin/gagaZush` preconfigured in `config.yml` if you are using Raspberry-Gateway or Openvpn-aws projects. For standalone installation, you can pass your own credentials via environment variables to container (refer to Manual installation).
+
+### Container volume
+The container volume can be inicialized by using the [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image with included scripts to automatically generate everything you need on the first run:
+ - Diffie-Hellman parameters
+ - an EasyRSA CA key and certificate
+ - a new private key
+ - a self-certificate matching the private key for the OpenVPN server
+ - a TLS auth key from HMAC security
+
+However you can generate all the above components on OpenVPN UI `Configuration > Maintenance` page post installation process.
+
+### EasyRSA vars
+If you are running OpenVPN-UI manually please be sure `easy-rsa.vars` is set properly and placed in `.config` container volume as `easy-rsa.vars`. 
+
+In this case your custom EasyRSA options will be applied on the first OpenVPN Server start post PKI init step.
+
+Default EasyRSA configuration can be set in `~/openvpn-server/config/easy-rsa.vars` file:
+
 ```shell
 set_var EASYRSA_DN           "org"
 set_var EASYRSA_REQ_COUNTRY  "UA"
@@ -157,97 +247,24 @@ set_var EASYRSA_CERT_EXPIRE  825
 set_var EASYRSA_CERT_RENEW   30
 set_var EASYRSA_CRL_DAYS     180
 ```
+In the process of installation these vars will be copied to container volume `/etc/openvpn/pki/vars` and used during all EasyRSA operations.
+You can update all these parameters later with OpenVPN UI on `Configuration > EasyRSA vars` page.
 
-## Build the image
-### Prerequisites
-As prerequisite, you need to have Docker and GoLang to be installed and running:
-```
-sudo apt-get install docker.io -y
-sudo systemctl restart docker
-```
+### Network configuration
 
-To install Golang go to [https://go.dev/dl](https://go.dev/dl/) and copy download URL for Go1.20.X version of your arch and follow the instructions below.
-
-For example for ARM64:
-
-```shell
-wget https://golang.org/dl/go1.20.linux-arm64.tar.gz
-sudo tar -C /usr/local -xzf go1.20.linux-arm64.tar.gz
-echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
-source /etc/profile
-go version 
-```
-
-### Building the image
-To build the OpenVPN-UI image:
-```shell
-cd build; ./build_openvpn-ui.sh
-```
-The new image will have `openvpn-ui` name.
-
-## Documentation
-Most of documentation can be found in the [main README.md](https://github.com/d3vilh/raspberry-gateway) file, if you want to run it without anything else you'll have to edit the [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L20) (which currently points to the PiHole DNS Server) and
-if you don't want to use a custom dns-resolve at all you may also want to comment out [this line](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L39).
-
-## Configuration
-**OpenVPN WEB UI** can be accessed on own port (*e.g. http://localhost:8080 , change `localhost` to your Raspberry host ip/name*), the default user and password is `admin/gagaZush` preconfigured in `config.yml` which you supposed to [set in](https://github.com/d3vilh/raspberry-gateway/blob/master/example.config.yml#L18) `ovpnui_user` & `ovpnui_password` vars, just before the installation.
-
-The volume container will be inicialized by using the official OpenVPN `openvpn_openvpn` image with included scripts to automatically generate everything you need  on the first run:
- - Diffie-Hellman parameters
- - an EasyRSA CA key and certificate
- - a new private key
- - a self-certificate matching the private key for the OpenVPN server
- - a TLS auth key from HMAC security
-
-This setup use `tun` mode, because it works on the widest range of devices. tap mode, for instance, does not work on Android, except if the device is rooted.
+This setup use `tun` mode, because it works on the widest range of devices. `tap`` mode, for instance, does not work on Android, except if the device is rooted.
 
 The topology used is `subnet`, because it works on the widest range of OS. p2p, for instance, does not work on Windows.
 
-The server config [specifies](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L40) `push redirect-gateway def1 bypass-dhcp`, meaning that after establishing the VPN connection, all traffic will go through the VPN. This might cause problems if you use local DNS recursors which are not directly reachable, since you will try to reach them through the VPN and they might not answer to you. If that happens, use public DNS resolvers like those of OpenDNS (`208.67.222.222` and `208.67.220.220`) or Google (`8.8.4.4` and `8.8.8.8`).
+The server config by default [specifies](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L40) `push redirect-gateway def1 bypass-dhcp`, meaning that after establishing the VPN connection, all traffic will go through the VPN. This might cause problems if you use local DNS recursors which are not directly reachable, since you will try to reach them through the VPN and they might not answer to you. If that happens, use public DNS resolvers like those of OpenDNS (`208.67.222.222` and `208.67.220.220`) or Google (`8.8.4.4` and `8.8.8.8`).
 
 If you wish to use your local Pi-Hole as a DNS server (the one which comes with this setup), you have to modify a [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L21) with your local Pi-Hole IP address.
 
-### Generating .OVPN client profiles
-
-Before client cert. generation you need to update the external IP address to your OpenVPN server in OVPN-UI GUI.
-
-For this go to `"Configuration > Settings"`:
-
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
-
-And then update `"Server Address (external)"` field with your external Internet IP. Then go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
-
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client.png" alt="Create Certificate" width="350" border="1" />
-
-To download .OVPN client configuration file, press on the `Client Name` you just created:
-
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client_download.png" alt="download OVPN" width="350" border="1" />
-
-If you use NAT and different port for all the external connections on your network router, you may need to change server port in .OVPN file. For that, just open it in any text editor (emax?) and update `1194` port with the desired one in this line: `remote 178.248.232.12 1194 udp`.
-This line also can be [preconfigured in](https://github.com/d3vilh/raspberry-gateway/blob/master/example.config.yml#L23) `config.yml` file in var `ovpn_remote`.
-
-Install [Official OpenVPN client](https://openvpn.net/vpn-client/) to your client device.
-
-Deliver .OVPN profile to the client device and import it as a FILE, then connect with new profile to enjoy your free VPN:
-
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
-
-### Revoking .OVPN profiles
-
-If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
-You can do it via OpenVPN WEB UI `"Certificates"` menue, by pressing "Revoke" amber button:
-
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
-
-Revoked certificates won't kill active connections, you'll have to restart the service if you want the user to immediately disconnect. It can be done via Portainer or OpenVPN WEB UI from the same `"Certificates"` page, by pressing Restart red button:
-
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
-
-After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press "Remove" red button.
+This can be done on OpenVPN UI `Configuration > Server config` page as well.
 
 ### OpenVPN client subnets. Guest and Home users
 
-[Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway/) OpenVPN server uses `10.0.70.0/24` **"Trusted"** subnet for dynamic clients by default and all the clients connected by default will have full access to your Home network, as well as your home Internet.
+By default [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) OpenVPN server uses `10.0.70.0/24` **"Trusted"** subnet for dynamic clients and all the clients connected by default will have full access to your Home network, as well as your home Internet.
 However you can be desired to share VPN access with your friends and restrict access to your Home network for them, but allow to use Internet connection over your VPN. This type of guest clients needs to live in special **"Guest users"** subnet - `10.0.71.0/24`:
 
 <p align="center">
@@ -259,6 +276,31 @@ To do that, just enter `"Static IP (optional)"` field in `"Certificates"` page a
 
 > Keep in mind, by default, all the clients have full access, so you don't need to specifically configure static IP for your own devices, your home devices always will land to **"Trusted"** subnet by default. 
 
+### Firewall rules
+
+By default `docker_entrypoint.sh` of [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) OpenVPN Server container will apply following Firewall rules:
+
+```shell
+IPT MASQ Chains:
+MASQUERADE  all  --  ip-10-0-70-0.ec2.internal/24  anywhere
+MASQUERADE  all  --  ip-10-0-71-0.ec2.internal/24  anywhere
+IPT FWD Chains:
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 8
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 0
+       0        0 DROP       0    --  *      *       10.0.71.0/24         192.168.88.0/24
+``` 
+
+You can apply optional Firewall rules in `~/openvpn-server/fw-rules.sh` file, which will be executed on the container start. 
+
+Here is example to blocking traffic between 2 "Trusted" subnet clients:
+```shell
+~/openvpn-server $ cat fw-rules.sh
+iptables -A FORWARD -s 10.0.70.88 -d 10.0.70.77 -j DROP
+iptables -A FORWARD -d 10.0.70.77 -s 10.0.70.88 -j DROP
+```
+
+Check detailed subnets description on [here](https://github.com/d3vilh/openvpn-ui/tree/dev1#openvpn-client-subnets-guest-and-home-users).
+
 ### OpenVPN Pstree structure
 
 All the Server and Client configuration located in Docker volume and can be easely tuned. Here are tree of volume content:
@@ -268,14 +310,15 @@ All the Server and Client configuration located in Docker volume and can be ease
 |   |-- your_client1.ovpn
 |-- config
 |   |-- client.conf
-|   |-- easy-rsa.vars
+|   |-- easy-rsa.vars //EasyRSA vars draft, see below real vars file.
 |   |-- server.conf
 |-- db
-|   |-- data.db //OpenVPN UI DB
+|   |-- data.db       //OpenVPN UI DB
 |-- log
 |   |-- openvpn.log
 |-- pki
 |   |-- ca.crt
+|   |-- vars          // EasyRSA real vars, used by all applications
 |   |-- certs_by_serial
 |   |   |-- your_client1_serial.pem
 |   |-- crl.pem
@@ -304,10 +347,49 @@ All the Server and Client configuration located in Docker volume and can be ease
 |   |-- safessl-easyrsa.cnf
 |   |-- serial
 |   |-- ta.key
-|-- staticclients //Directory where stored all the satic clients configuration
+|-- staticclients    //Directory where stored all the satic clients configuration
 ```
 
-[**OpenVPN**](https://openvpn.net) as a server and **OpenVPN-web-ui** as a WEB UI screenshots:
+### Generating .OVPN client profiles
+
+You can update external client IP and port address anytime under `"Configuration > OpenVPN Client"` menue. 
+
+For this go to `"Configuration > OpenVPN Client"` (don't trust what you see, this picture is outdated):
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
+
+And then update `"Connection Address"` and `"Connection Port"` fields with your external Internet IP and Port. 
+
+To generate new Client Certificate go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client.png" alt="Create Certificate" width="350" border="1" />
+
+To download .OVPN client configuration file, press on the `Client Name` you just created:
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client_download.png" alt="download OVPN" width="350" border="1" />
+
+Install [Official OpenVPN client](https://openvpn.net/vpn-client/) to your client device.
+
+Deliver .OVPN profile to the client device and import it as a FILE, then connect with new profile to enjoy your free VPN:
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
+
+### Revoking .OVPN profiles
+
+If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
+You can do it via OpenVPN UI `"Certificates"` menue, by pressing "Revoke" amber button:
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
+
+Certificate revoke won't kill active VPN connections, you'll have to restart the service if you want the user to immediately disconnect. It can be done from the same `"Certificates"` page, by pressing Restart red button:
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
+
+You can do the same from the `"Maintenance"` page.
+
+After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press "Remove" button.
+
+### Screenshots:
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Login.png" alt="OpenVPN-UI Login screen" width="1000" border="1" />
 
@@ -315,13 +397,19 @@ All the Server and Client configuration located in Docker volume and can be ease
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Certs.png" alt="OpenVPN-UI Certificates screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-EasyRsaVars.png" alt="OpenVPN-UI EasyRSA vars screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Maintenance.png" alt="OpenVPN-UI Maintenance screen" width="1000" border="1" />
 
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Server-config.png" alt="OpenVPN-UI Server Configuration screen" width="1000" border="1" />
 
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-ClientConf.png" alt="OpenVPN-UI Client Configuration screen" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
+
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
 
 ## Дякую and Kudos to the original author
 
