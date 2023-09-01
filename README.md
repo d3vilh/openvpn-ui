@@ -38,11 +38,11 @@ For best experience, it is recommended to deploy it within a Docker environment 
  - OpenVPN UI Front-End container (openvpn-ui) for efficient management of the OpenVPN server environment.
 
 However it works fine as standalone application with standalove OpenVPN server as well.
-### x86-64 and AMD64 platforms
+### Intel x86 and AMD64 platforms
 For Baremetal x86-64 servers, Cloud or VM installation, please use [openvpn-aws](https://github.com/d3vilh/openvpn-aws) project.
 It includes all the necessary scripts for easy installation of OpenVPN-UI and OpenVPN server on any x86-64 platform.
 
-### Raspberry-Pi and other ARM platforms
+### Raspberry-pi and other ARM platforms
 For Raspberry-Pi and other ARM devices, consider [Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway) project.
 It has all the necessary scripts for easy installation and lot of additional features.
 
@@ -115,6 +115,30 @@ services:
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
 ``` 
+
+**Where:** 
+* `TRUST_SUB` is Trusted subnet, from which OpenVPN server will assign IPs to trusted clients (default subnet for all clients)
+* `GUEST_SUB` is Gusets subnet for clients with internet access only
+* `HOME_SUB` is subnet where the VPN server is located, thru which you get internet access to the clients with MASQUERADE
+* `fw-rules.sh` is bash file with additional firewall rules you would like to apply during container start
+
+`docker_entrypoint.sh` will apply following Firewall rules:
+```shell
+IPT MASQ Chains:
+MASQUERADE  all  --  ip-10-0-70-0.ec2.internal/24  anywhere
+MASQUERADE  all  --  ip-10-0-71-0.ec2.internal/24  anywhere
+IPT FWD Chains:
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 8
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 0
+       0        0 DROP       0    --  *      *       10.0.71.0/24         192.168.88.0/24
+``` 
+Here is possible content of `fw-rules.sh` file to apply additional rules:
+```shell
+~/openvpn-server $ cat fw-rules.sh
+iptables -A FORWARD -s 10.0.70.88 -d 10.0.70.77 -j DROP
+iptables -A FORWARD -d 10.0.70.77 -s 10.0.70.88 -j DROP
+```
+
   </details>
 
   <details>
@@ -188,15 +212,11 @@ The new image will have `openvpn-ui` name.
 
   </details>
 
-## Documentation
-Most of documentation can be found in the [main README.md](https://github.com/d3vilh/raspberry-gateway) file, if you want to run it without anything else you'll have to edit the [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L20) (which currently points to the PiHole DNS Server) and
-if you don't want to use a custom dns-resolve at all you may also want to comment out [this line](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L39).
-
 ## Configuration
-**OpenVPN UI** can be accessed on own port (*e.g. http://localhost:8080 , change `localhost` to your Raspberry host ip/name*), the default user and password is `admin/gagaZush` preconfigured in `config.yml` which you supposed to [set in](https://github.com/d3vilh/raspberry-gateway/blob/master/example.config.yml#L18) `ovpnui_user` & `ovpnui_password` vars, just before the installation.
+**OpenVPN UI** can be accessed on own port (*e.g. http://localhost:8080), the default user and password is `admin/gagaZush` preconfigured in `config.yml` if you are using Raspberry-Gateway or Openvpn-aws projects. For standalone installation, you can pass your own credentials via environment variables to container (refer to Manual installation).
 
-#### Container volume
-The container volume will be inicialized by using the [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image with included scripts to automatically generate everything you need on the first run:
+### Container volume
+The container volume can be inicialized by using the [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image with included scripts to automatically generate everything you need on the first run:
  - Diffie-Hellman parameters
  - an EasyRSA CA key and certificate
  - a new private key
@@ -205,8 +225,10 @@ The container volume will be inicialized by using the [d3vilh/openvpn-server](ht
 
 However you can generate all the above components on OpenVPN UI `Configuration > Maintenance` page post installation process.
 
-#### EasyRSA vars
-If you are running OpenVPN-UI manually please be sure `easy-rsa.vars` is set properly and put in `.config` volume as `easy-rsa.vars` file. In this case your custom EasyRSA options will be applyied correctly during root CA certificate generation.
+### EasyRSA vars
+If you are running OpenVPN-UI manually please be sure `easy-rsa.vars` is set properly and placed in `.config` container volume as `easy-rsa.vars`. 
+
+In this case your custom EasyRSA options will be applied on the first OpenVPN Server start post PKI init step.
 
 Default EasyRSA configuration can be set in `~/openvpn-server/config/easy-rsa.vars` file:
 
@@ -228,19 +250,21 @@ set_var EASYRSA_CRL_DAYS     180
 In the process of installation these vars will be copied to container volume `/etc/openvpn/pki/vars` and used during all EasyRSA operations.
 You can update all these parameters later with OpenVPN UI on `Configuration > EasyRSA vars` page.
 
-#### Network configuration
+### Network configuration
 
-This setup use `tun` mode, because it works on the widest range of devices. tap mode, for instance, does not work on Android, except if the device is rooted.
+This setup use `tun` mode, because it works on the widest range of devices. `tap`` mode, for instance, does not work on Android, except if the device is rooted.
 
 The topology used is `subnet`, because it works on the widest range of OS. p2p, for instance, does not work on Windows.
 
-The server config [specifies](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L40) `push redirect-gateway def1 bypass-dhcp`, meaning that after establishing the VPN connection, all traffic will go through the VPN. This might cause problems if you use local DNS recursors which are not directly reachable, since you will try to reach them through the VPN and they might not answer to you. If that happens, use public DNS resolvers like those of OpenDNS (`208.67.222.222` and `208.67.220.220`) or Google (`8.8.4.4` and `8.8.8.8`).
+The server config by default [specifies](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L40) `push redirect-gateway def1 bypass-dhcp`, meaning that after establishing the VPN connection, all traffic will go through the VPN. This might cause problems if you use local DNS recursors which are not directly reachable, since you will try to reach them through the VPN and they might not answer to you. If that happens, use public DNS resolvers like those of OpenDNS (`208.67.222.222` and `208.67.220.220`) or Google (`8.8.4.4` and `8.8.8.8`).
 
 If you wish to use your local Pi-Hole as a DNS server (the one which comes with this setup), you have to modify a [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L21) with your local Pi-Hole IP address.
 
-#### OpenVPN client subnets. Guest and Home users
+This can be done on OpenVPN UI `Configuration > Server config` page as well.
 
-[Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway/) OpenVPN server uses `10.0.70.0/24` **"Trusted"** subnet for dynamic clients by default and all the clients connected by default will have full access to your Home network, as well as your home Internet.
+### OpenVPN client subnets. Guest and Home users
+
+By default [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) OpenVPN server uses `10.0.70.0/24` **"Trusted"** subnet for dynamic clients and all the clients connected by default will have full access to your Home network, as well as your home Internet.
 However you can be desired to share VPN access with your friends and restrict access to your Home network for them, but allow to use Internet connection over your VPN. This type of guest clients needs to live in special **"Guest users"** subnet - `10.0.71.0/24`:
 
 <p align="center">
@@ -251,6 +275,31 @@ To assign desired subnet policy to the specific client, you have to define stati
 To do that, just enter `"Static IP (optional)"` field in `"Certificates"` page and press `"Create"` button.
 
 > Keep in mind, by default, all the clients have full access, so you don't need to specifically configure static IP for your own devices, your home devices always will land to **"Trusted"** subnet by default. 
+
+### Firewall rules
+
+By default `docker_entrypoint.sh` of [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) OpenVPN Server container will apply following Firewall rules:
+
+```shell
+IPT MASQ Chains:
+MASQUERADE  all  --  ip-10-0-70-0.ec2.internal/24  anywhere
+MASQUERADE  all  --  ip-10-0-71-0.ec2.internal/24  anywhere
+IPT FWD Chains:
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 8
+       0        0 DROP       1    --  *      *       10.0.71.0/24         0.0.0.0/0            icmptype 0
+       0        0 DROP       0    --  *      *       10.0.71.0/24         192.168.88.0/24
+``` 
+
+You can apply optional Firewall rules in `~/openvpn-server/fw-rules.sh` file, which will be executed on the container start. 
+
+Here is example to blocking traffic between 2 "Trusted" subnet clients:
+```shell
+~/openvpn-server $ cat fw-rules.sh
+iptables -A FORWARD -s 10.0.70.88 -d 10.0.70.77 -j DROP
+iptables -A FORWARD -d 10.0.70.77 -s 10.0.70.88 -j DROP
+```
+
+Check detailed subnets description on [here](https://github.com/d3vilh/openvpn-ui/tree/dev1#openvpn-client-subnets-guest-and-home-users).
 
 ### OpenVPN Pstree structure
 
