@@ -41,9 +41,9 @@ var defaultConfig = Config{
 	OVConfigLogVerbose:       3,
 	OVConfigStatusLog:        "/var/log/openvpn/openvpn-status.log",
 	OVConfigStatusLogVersion: 2,
-	CustomOptOne:             "#Custom Option One",
-	CustomOptTwo:             "#Custom Option Two",
-	CustomOptThree:           "#Custom Option Three",
+	CustomOptOne:             "# Custom Option One",
+	CustomOptTwo:             "# Custom Option Two\n# client-to-client",
+	CustomOptThree:           "# Custom Option Three\n# push \"route 0.0.0.0 255.255.255.255 net_gateway\"\n# push block-outside-dns",
 }
 
 // Config model

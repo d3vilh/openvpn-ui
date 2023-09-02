@@ -23,11 +23,11 @@
       Disabled profile -->
 
       <div class="form-group">
-         <label for="name">Server Mode</label>
+         <label for="name">Trusted VPN (in Server Mode)</label>
          <input type="text" class="form-control" name="Server" id="Server" placeholder="server 10.0.70.0 255.255.255.0"
           value="{{ .Settings.Server }}">
-         <span id="helpBlock" class="help-block">Configures server mode or server-bridge. By default used as (&quot;server [Trusted subnet]&quot;) and supply a VPN subnet
-            for OpenVPN to draw &quot;VLAN1&quot; (Trusted VPN) client addresses from. 
+         <span id="helpBlock" class="help-block"> In Server mode supplys a Trusted VPN subnet for OpenVPN clients 
+          to draw &quot;VLAN1&quot; addresses from. You can ser server-bridge configuration here for tap mode.
           <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#Configuringclient-specificrulesandaccesspolicies" target="_blank">Info</a> 
           </span>
       </div>
@@ -36,7 +36,7 @@
         <label for="name">Your Home subnet</label>
         <input type="text" class="form-control" name="PushRoute" id="PushRoute" placeholder="10.0.60.0 255.255.255.0"
           value="{{ .Settings.PushRoute }}">
-        <span id="helpBlock" class="help-block">Used to push route for Home Network to access for &quot;VLAN1&quot; (Trusted VPN) subnet clients.
+        <span id="helpBlock" class="help-block">Used to push route for Home Network to &quot;VLAN1&quot; (Trusted VPN) subnet clients.
           <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#ExpandingthescopeoftheVPNtoincludeadditionalmachinesoneithertheclientorserversubnet" target="_blank">Info</a>
         </span>
       </div>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">DNS Server 1 (optional. Using 8.8.8.8 by default)</label>
+        <label for="name">DNS Server 1</label>
         <input type="text" class="form-control" name="DNSServer1" id="DNSServer1" placeholder="Enter the first DNS server"
           value="{{ .Settings.DNSServer1 }}">
         <span class="help-block">DNS Server 1 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.
@@ -60,7 +60,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">DNS Server 2 (optional. Using 1.0.0.1 by default)</label>
+        <label for="name">DNS Server 2</label>
         <input type="text" class="form-control" name="DNSServer2" id="DNSServer2" placeholder="Enter the second DNS server"
           value="{{ .Settings.DNSServer2 }}">
         <span class="help-block">DNS Server 2 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.
@@ -339,15 +339,15 @@
         
         <div class="form-group">
            <label for="name">Custom Option Two</label>
-           <input type="text" class="form-control" name="CustomOptTwo" id="CustomOptTwo" placeholder="#Custom Option Two"
-            value="{{ .Settings.CustomOptTwo }}">
+           <textarea class="form-control" name="CustomOptTwo" id="CustomOptTwo" placeholder="#Custom Option Two" 
+           rows="2">{{ .Settings.CustomOptTwo }}</textarea>
            <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
         </div>
 
         <div class="form-group">
            <label for="name">Custom Option Three</label>
-           <input type="text" class="form-control" name="CustomOptThree" id="CustomOptThree" placeholder="#Custom Option Three"
-            value="{{ .Settings.CustomOptThree }}">
+           <textarea class="form-control" name="CustomOptThree" id="CustomOptThree" placeholder="#Custom Option Three" 
+           rows="3">{{ .Settings.CustomOptThree }}</textarea>
            <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
         </div>
 

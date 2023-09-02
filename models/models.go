@@ -146,9 +146,9 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 			OVConfigLogVerbose:       3,
 			OVConfigStatusLog:        "/var/log/openvpn/openvpn-status.log",
 			OVConfigStatusLogVersion: 2,
-			CustomOptOne:             "#Custom Option One",
-			CustomOptTwo:             "#Custom Option Two",
-			CustomOptThree:           "#Custom Option Three",
+			CustomOptOne:             "# Custom Option One",
+			CustomOptTwo:             "# Custom Option Two\n# client-to-client",
+			CustomOptThree:           "# Custom Option Three\n# push \"route 0.0.0.0 255.255.255.255 net_gateway\"\n# push block-outside-dns",
 		},
 	}
 	o := orm.NewOrm()
@@ -178,12 +178,9 @@ func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address 
 			Proto:             "udp",
 			ServerAddress:     "127.0.0.1",
 			OpenVpnServerPort: "1194",
-			Cipher:            "AES-256-CBC",
+			Cipher:            "AES-256-GCM",
 			RedirectGateway:   "redirect-gateway def1",
 			Auth:              "SHA512",
-			Ca:                "pki/ca.crt",
-			Cert:              "pki/issued/server.crt",
-			Key:               "pki/private/server.key",
 		},
 	}
 	o := orm.NewOrm()
