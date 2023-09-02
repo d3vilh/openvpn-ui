@@ -23,3 +23,6 @@ verb 3
 <key>
 {{ .Key }}
 </key>
+<tls-crypt>
+{{ .Ta }}
+</tls-crypt>

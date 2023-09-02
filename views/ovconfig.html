@@ -23,22 +23,22 @@
       Disabled profile -->
 
       <div class="form-group">
+         <label for="name">Server Mode</label>
+         <input type="text" class="form-control" name="Server" id="Server" placeholder="server 10.0.70.0 255.255.255.0"
+          value="{{ .Settings.Server }}">
+         <span id="helpBlock" class="help-block">Configures server mode or server-bridge. By default used as (&quot;server [Trusted subnet]&quot;) and supply a VPN subnet
+            for OpenVPN to draw &quot;VLAN1&quot; (Trusted VPN) client addresses from. 
+          <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#Configuringclient-specificrulesandaccesspolicies" target="_blank">Info</a> 
+          </span>
+      </div>
+
+      <div class="form-group">
         <label for="name">Your Home subnet</label>
         <input type="text" class="form-control" name="PushRoute" id="PushRoute" placeholder="10.0.60.0 255.255.255.0"
           value="{{ .Settings.PushRoute }}">
         <span id="helpBlock" class="help-block">Used to push route for Home Network to access for &quot;VLAN1&quot; (Trusted VPN) subnet clients.
           <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#ExpandingthescopeoftheVPNtoincludeadditionalmachinesoneithertheclientorserversubnet" target="_blank">Info</a>
         </span>
-      </div>
-
-      <div class="form-group">
-        <label for="name">Trusted VPN subnet</label>
-        <input type="text" class="form-control" name="Server" id="Server" placeholder="10.0.70.0 255.255.255.0"
-          value="{{ .Settings.Server }}">
-        <span id="helpBlock" class="help-block">Configures server mode (&quot;server [Trusted subnet]&quot;) and supply a VPN subnet
-            for OpenVPN to draw &quot;VLAN1&quot; (Trusted VPN) client addresses from. 
-          <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#Configuringclient-specificrulesandaccesspolicies" target="_blank">Info</a> 
-          </span>
       </div>
 
       <div class="form-group">
@@ -181,6 +181,15 @@
        </div>
 
        <div class="form-group">
+        <label for="name">Crl</label>
+        <input type="text" class="form-control" name="Crl" id="Crl" placeholder="pki/crl.pem"
+         value="{{ .Settings.Crl }}">
+        <span id="helpBlock" class="help-block"> Certificate Revocation List file. 
+        <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#Modifyingaliveserverconfiguration" target="_blank">Info</a>
+        </span>
+       </div>       
+
+       <div class="form-group">
          <label for="name">Dh</label>
          <input type="text" class="form-control" name="Dh" id="Dh" placeholder="pki/dh.pem"
            value="{{ .Settings.Dh }}">
@@ -191,13 +200,41 @@
        </div>
 
        <div class="form-group">
-          <label for="name">Crl</label>
-          <input type="text" class="form-control" name="Crl" id="Crl" placeholder="pki/crl.pem"
-           value="{{ .Settings.Crl }}">
-          <span id="helpBlock" class="help-block"> Certificate Revocation List file. 
-          <a href="https://community.openvpn.net/openvpn/wiki/HOWTO#Modifyingaliveserverconfiguration" target="_blank">Info</a>
-          </span>
+        <label for="name">Dh Curve</label>
+        <input type="text" class="form-control" name="ECDhCurve" id="ECDhCurve" placeholder="ecdh-curve prime256v1"
+          value="{{ .Settings.ECDhCurve }}">
+        <span id="helpBlock" class="help-block"></span>
+        <span class="help-block"> Diffie Hellman elliptic curve. The specified curve will only be used for ECDH TLS-ciphers. Full format option (to disable - comment with #). 
+        <a href="https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage" target="_blank">Info</a>
+        </span>
        </div>
+
+       <div class="form-group">
+         <label for="name">TLS Crypt Key</label>
+         <input type="text" class="form-control" name="TLSControlChannel" id="TLSControlChannel" placeholder="tls-crypt pki/ta.key"
+          value="{{ .Settings.TLSControlChannel }}">
+         <span id="helpBlock" class="help-block"> Key for TLS authentication and session encryption. Full format option (to disable - comment with #). 
+         <a href="https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage" target="_blank">Info</a>
+         </span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">TLS Minimum Version</label>
+         <input type="text" class="form-control" name="TLSMinVersion" id="TLSMinVersion" placeholder="tls-version-min 1.2"
+          value="{{ .Settings.TLSMinVersion }}">
+         <span id="helpBlock" class="help-block"> Sets the minimum TLS version to accept from the peer. Full format option (to disable - comment with #). 
+         <a href="https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage" target="_blank">Info</a>
+         </span>
+       </div>
+
+       <div class="form-group">
+         <label for="name">TLS Remote Cert</label>
+         <input type="text" class="form-control" name="TLSRemoteCert" id="TLSRemoteCert" placeholder="remote-cert-tls client"
+          value="{{ .Settings.TLSRemoteCert }}">
+         <span id="helpBlock" class="help-block"> Security option for clients, to ensure that the host they connect to is a designated server. Full format option (to disable - comment with #). 
+         <a href="https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage" target="_blank">Info</a>
+         </span>
+       </div>      
 
        <div class="form-group">
           <label for="name">Cipher</label>
@@ -307,21 +344,21 @@
            <label for="name">Custom Option One</label>
            <input type="text" class="form-control" name="CustomOptOne" id="CustomOptOne" placeholder="#Custom Option One"
             value="{{ .Settings.CustomOptOne }}">
-           <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything</span>
+           <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
         </div>
         
         <div class="form-group">
            <label for="name">Custom Option Two</label>
            <input type="text" class="form-control" name="CustomOptTwo" id="CustomOptTwo" placeholder="#Custom Option Two"
             value="{{ .Settings.CustomOptTwo }}">
-           <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything</span>
+           <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
         </div>
 
         <div class="form-group">
            <label for="name">Custom Option Three</label>
            <input type="text" class="form-control" name="CustomOptThree" id="CustomOptThree" placeholder="#Custom Option Three"
             value="{{ .Settings.CustomOptThree }}">
-           <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything</span>
+           <span id="helpBlock" class="help-block"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
         </div>
 
        {{ .xsrfdata }}
