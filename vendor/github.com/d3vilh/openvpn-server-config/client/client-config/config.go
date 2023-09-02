@@ -12,7 +12,7 @@ var defaultConfig = Config{
 	ServerAddress:     "127.0.0.1",
 	Port:              1194,
 	OpenVpnServerPort: "1194",
-	Cipher:            "AES-256-CBC",
+	Cipher:            "AES-256-GCM",
 	RedirectGateway:   "redirect-gateway def1",
 	Auth:              "SHA256",
 	Ca:                "ca.crt",

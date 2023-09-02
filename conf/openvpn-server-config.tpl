@@ -23,7 +23,6 @@ cert {{ .Cert }}
 key {{ .Key }}
 crl-verify {{ .Crl }}
 dh {{ .Dh }}
-{{ .ECDhCurve }}
 
 {{ .TLSControlChannel }}
 {{ .TLSMinVersion }}

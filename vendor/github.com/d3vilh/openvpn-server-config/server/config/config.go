@@ -25,11 +25,10 @@ var defaultConfig = Config{
 	Key:                      "pki/private/server.key",
 	Crl:                      "pki/crl.pem",
 	Dh:                       "pki/dh.pem",
-	ECDhCurve:                "ecdh-curve prime256v1",
 	TLSControlChannel:        "tls-crypt pki/ta.key",
 	TLSMinVersion:            "tls-version-min 1.2",
 	TLSRemoteCert:            "remote-cert-tls client",
-	Cipher:                   "AES-256-CBC",
+	Cipher:                   "AES-256-GCM",
 	OVConfigNcpCiphers:       "AES-256-GCM:AES-192-GCM:AES-128-GCM",
 	Auth:                     "SHA512",
 	Server:                   "server 10.0.70.0 255.255.255.0",
@@ -64,12 +63,11 @@ type Config struct {
 	OVConfigClientConfigDir string
 	IfconfigPoolPersist     string
 
-	Ca        string
-	Cert      string
-	Key       string
-	Crl       string
-	Dh        string
-	ECDhCurve string
+	Ca   string
+	Cert string
+	Key  string
+	Crl  string
+	Dh   string
 
 	TLSControlChannel string
 	TLSMinVersion     string

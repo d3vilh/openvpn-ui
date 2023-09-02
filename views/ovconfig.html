@@ -200,16 +200,6 @@
        </div>
 
        <div class="form-group">
-        <label for="name">Dh Curve</label>
-        <input type="text" class="form-control" name="ECDhCurve" id="ECDhCurve" placeholder="ecdh-curve prime256v1"
-          value="{{ .Settings.ECDhCurve }}">
-        <span id="helpBlock" class="help-block"></span>
-        <span class="help-block"> Diffie Hellman elliptic curve. The specified curve will only be used for ECDH TLS-ciphers. Full format option (to disable - comment with #). 
-        <a href="https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage" target="_blank">Info</a>
-        </span>
-       </div>
-
-       <div class="form-group">
          <label for="name">TLS Crypt Key</label>
          <input type="text" class="form-control" name="TLSControlChannel" id="TLSControlChannel" placeholder="tls-crypt pki/ta.key"
           value="{{ .Settings.TLSControlChannel }}">
