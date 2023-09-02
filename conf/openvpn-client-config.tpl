@@ -12,7 +12,7 @@ cipher {{ .Cipher }}
 auth {{ .Auth }}
 auth-nocache
 tls-client
-redirect-gateway def1
+{{ .RedirectGateway }}
 verb 3
 <ca>
 {{ .Ca }}

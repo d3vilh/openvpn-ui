@@ -13,6 +13,7 @@ var defaultConfig = Config{
 	Port:              1194,
 	OpenVpnServerPort: "1194",
 	Cipher:            "AES-256-CBC",
+	RedirectGateway:   "redirect-gateway def1",
 	Auth:              "SHA256",
 	Ca:                "ca.crt",
 }
@@ -30,8 +31,9 @@ type Config struct {
 	Key  string
 	Ta   string
 
-	Cipher string
-	Auth   string
+	Cipher          string
+	RedirectGateway string
+	Auth            string
 }
 
 // New returns config object with default values
