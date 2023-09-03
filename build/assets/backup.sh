@@ -4,7 +4,7 @@ set -e
 
 if [[ -z $1 || -z $2 || -z $3 ]]; then
     echo -e "\n\033[1mScript for Backing up or Restoration of OpenVPN Server Environment\033[0m"
-    echo -e ' Script usage: \n\n \033[1;32mBackup usage:\033[0m ./backup.sh -b "OpenVPN Server env" "Backup directory"\n  \033[1;32mBackup example:\033[0m ./backup.sh -b ~/openvpn-server backup/openvpn-server-030923\n\n \033[1;34mRestore usage:\033[0m ./backup.sh -r "OpenVPN Server env" "Backup directory"\n  \033[1;34mRestore example:\033[0m ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923\n'
+    echo -e ' Script usage: \n\n \033[1;32mBackup usage:\033[0m sudo ./backup.sh -b "OpenVPN Server env" "Backup directory"\n  \033[1;32mBackup example:\033[0m sudo ./backup.sh -b ~/openvpn-server backup/openvpn-server-030923\n\n \033[1;34mRestore usage:\033[0m sudo ./backup.sh -r "OpenVPN Server env" "Backup directory"\n  \033[1;34mRestore example:\033[0m sudo ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923\n'
     exit 1
 fi
 
