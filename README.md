@@ -234,6 +234,8 @@ this will create backup of all necessary files, from `~/openvpn-server` to `~/ba
 
 You can confirm all files are backed up and go to the "Upgrade" step.
 
+> **Note**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to backup it manually: `docker cp openvpn-ui:/opt/openvpn-gui/data.db .`
+
   </details>
 
   <details>
@@ -295,24 +297,44 @@ admin@aws3:~/openvpn $
 ```
 
 ##### Verification process
-Now when new OpenVPN-UI version is deployed, the DB schema will be updated to the latest version automatically but only for new tables. Old tables will be left as is to be sure you won't loose any data.
-New tables will be created with default values, so you'll have to update them manually on the first login to the new OpenVPN-UI version.
+Now when new OpenVPN-UI version is deployed, the DB schema will be updated to the latest version automatically:
+* Old tables will be updated with new fields, old data will remain not touched to be sure you won't loose any data.
+* New tables will be created with default values, so you'll have to update them manually on the first login to the new OpenVPN-UI version.
 Here is example of Server configuration page with new fields after the upgrade from version 0.3.5 to 0.6:
 
 So you have to insert dezired options there (as per your `server.conf` or `client.conf` files) then press `Save Config` button and verify new values are applied to the config files.
 On the next OpenVPN Server restart new `server.conf` file will be applied.
 
   <details>
-      <summary>New fields 0.3 > 0.6</summary>
+      <summary>DB Schema changes</summary>
 
-   ##### New fields 0.3.5 to 0.6
-  | Version | Table             | New Field       | OpenVPN UI gui location      |
-  |---------|-------------------|-----------------|------------------------------|
-  | 0.3.5   | o_v_client_config | new table       | Configuration > Client       |
-  |---------|-------------------|-----------------|------------------------------|
-  | 0.4.0   | settings          | easy_r_s_a_path | Configuration > OpenVPN-UI   |
-  |---------|-------------------|-----------------|------------------------------|
-  | 0.4.0   | easy_r_s_a_config | new table       | Configuration > EasyRSA vars |
+   ##### DB Schema changes 0.3 to 0.6 versions
+  | Version | Table             | New Field                     | New OpenVPN UI gui location     |
+  |---------|-------------------|-------------------------------|---------------------------------|
+  | **0.3.0** | o_v_config      | o_v_config_log_version        | Configuration > OpenVPN Server  |
+  | 0.3.0   | o_v_config        | o_v_config_status_log         | Configuration > OpenVPN Server  |
+  | 0.3.0   | settings          | server_address                | moved to Configuration > Client |
+  | 0.3.0   | settings          | open_vpn_server_port          | moved to Configuration > Client |
+  | **0.3.5** | o_v_client_config | new table                   | Configuration > Client          |
+  | **0.4.0** | settings        | easy_r_s_a_path               | Configuration > OpenVPN-UI      |
+  | 0.4.0   | easy_r_s_a_config | new table                     | Configuration > EasyRSA vars    |
+  | **0.5.0** | **no schema changes** | **no schema changes**   | https://u24.gov.ua              |
+  | **0.6.0** | o_v_config      | o_v_config_topology           | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_user               | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_group              | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_client_config_dir  | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | crl                           | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | t_l_s_control_channel         | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | t_l_s_min_version             | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | t_l_s_remote_cert             | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_ncp_ciphers        | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_logfile            | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_log_verbose        | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_status_log         | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | o_v_config_status_log_version | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | custom_opt_one                | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | custom_opt_two                | Configuration > OpenVPN Server  |
+  | 0.6.0   | o_v_config        | custom_opt_three              | Configuration > OpenVPN Server  |
 
   </details>
 
@@ -348,6 +370,8 @@ docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
 sudo ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923-1
 ```
 This will restore all the enviroment files from backup directory to `~/openvpn-server` directory.
+
+> **Note**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to restore it manually: `docker cp data.db openvpn-ui:/opt/openvpn-gui/data.db`
 
 ##### Restore container
 1. Run docker-compose up to deploy new container with old image:
