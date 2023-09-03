@@ -27,8 +27,5 @@ echo 'Create new Create certificate revocation list (CRL)...'
 ./easyrsa gen-crl
 chmod +r ./pki/crl.pem
 
-echo 'Sync pki directory...'
-cp -r ./pki/. /etc/openvpn/pki
-
 echo 'Done!'
 echo 'If you want to disconnect the user please restart the service using docker-compose restart openvpn.'

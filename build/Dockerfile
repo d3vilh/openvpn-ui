@@ -11,7 +11,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --reinstall libc-bin && apt-get install -y easy-rsa curl jq && apt-get clean && rm -rf /var/lib/apt/lists/* && chmod 755 /usr/share/easy-rsa/*
 ADD assets/start.sh /opt/start.sh
 ADD assets/generate_ca_and_server_certs.sh /opt/scripts/generate_ca_and_server_certs.sh
-ADD assets/vars.template /opt/scripts/
 ADD assets/genclient.sh /opt/scripts/genclient.sh
 ADD assets/rmclient.sh /opt/scripts/rmclient.sh
 ADD assets/restart.sh /opt/scripts/restart.sh

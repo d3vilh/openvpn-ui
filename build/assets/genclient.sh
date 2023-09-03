@@ -23,7 +23,6 @@ echo 'Generate client certificate...'
 
 # Copy easy-rsa variables
 cd /usr/share/easy-rsa
-#cp /etc/openvpn/config/easy-rsa.vars ./pki/vars  #Cared by OpenVPN UI > Settings > EasyRSA
 
 # Generate certificates
 if  [[ -z $3 ]]; then
@@ -41,7 +40,6 @@ fi
 # Sign request
 ./easyrsa sign-req client "$1"
 # Fix for /name in index.txt
-# backup  sed -i'.bak' "$ s/$/\/name=${1}/" /usr/share/easy-rsa/pki/index.txt
 sed -i'.bak' "$ s/$/\/name=${1}\/LocalIP=${2}/" /usr/share/easy-rsa/pki/index.txt
 # Certificate properties
 CA="$(cat ./pki/ca.crt )"
@@ -51,9 +49,6 @@ TLS_AUTH="$(cat ./pki/ta.key)"
 
 echo 'Permissions fix for pki/issued...'
 chmod +r ./pki/issued
-
-#echo 'Sync pki directory...'
-#cp -r ./pki/. /etc/openvpn/pki
 
 echo 'Generate .ovpn file...'
 echo "$(cat /etc/openvpn/config/client.conf)
