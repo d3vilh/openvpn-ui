@@ -307,15 +307,16 @@ Here is example of Server configuration page with new fields after the upgrade f
 
 You have to update empty fields with options from your current `server.conf` and **only then** press `Save Config` button.
 
-> **Important Note!**: In version 0.6 format of some fields has been changed!
-
 Please pay attention that before saving config you have to update all the fields with new format, otherwise OpenVPN Server will not start.
 
-All new format fields are **marked** with <strong><span style="color:#337ab7" title="New format in this version">!</span></strong> sign:
+> **Important Note!**: In version 0.6 format of some fields has been changed!
+
+All fields to review are **marked** with <strong><span style="color:#337ab7" title="New format in this version">!</span></strong> sign:
 
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.02.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
 Here is how it should looks like:
+
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.03.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
 On the next OpenVPN Server restart new `server.conf` file will be applied.

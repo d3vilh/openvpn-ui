@@ -19,6 +19,7 @@ export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3
 
 echo 'Revoke certificate...'
 
+cd /usr/share/easy-rsa
 # Revoke certificate
 ./easyrsa revoke "$1"
 
