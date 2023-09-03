@@ -212,6 +212,91 @@ The new image will have `openvpn-ui` name.
 
   </details>
 
+  <details>
+    <summary>Upgrade old enviroment</summary>
+
+#### Upgrade principles
+During the installtion or upgrade process OpenVPN-UI by itself does not do any changes to your OpenVPN server configuration or PKI infrastructure. However it is recommended to perform backup of your `PKI infrastructure`, `server.conf`, `client.conf` and `data.db` before following with upgrade steps.
+
+#### Backup
+To backup your PKI infrastructure, server, client configuration files and OpenVPN-UI DB you can use `backup.sh` script which is part of `build/assets` directory of [d3vilh/openvpn-ui]() since `0.6` release.
+
+Copy the script in your `~/openvpn-server` directory and run it:
+```shell
+cp -p build/assets/backup.sh ~/openvpn-server/
+```
+
+Run the script:
+```shell
+sudo ./backup.sh -b ~/openvpn-server backup/openvpn-server-030923-1
+```
+this will create backup of all necessary files, from `~/openvpn-server` to `backup/openvpn-server-030923-1`.
+
+#### Upgrade
+To upgrade OpenVPN-UI to the latest version, you have to save, stop, remove old container and run new one with the same parameters as you did before.
+
+##### Preparation
+1. Save old container image to the backup file:
+```shell
+docker save -o openvpn-ui-backup.tar d3vilh/openvpn-ui:latest
+```
+2. Confirm, the **desired version** of container image is available on Docker Hub:
+```shell
+docker pull d3vilh/openvpn-ui:latest
+```
+3. Make sure your docker-compose.yml file is up to date with **desired version** of image pulled on previous step:
+```shell
+admin@aws3:~/openvpn $ cat docker-compose.yml | grep image
+       image: d3vilh/openvpn-ui:latest
+admin@aws3:~/openvpn $
+```
+During the next container start, docker will use this image version to deploy new container.
+
+##### Upgrade Steps
+1. Stop and remove old container version and image
+```shell
+docker rm openvpn-ui --force
+docker image rm d3vilh/openvpn-ui:latest
+```
+2. Deploy new container:
+```shell
+cd ~/openvpn
+docker-compose up -d
+```
+3. Verify both containers are up and running:
+```shell
+admin@aws3:~/openvpn $ docker logs openvpn-ui
+...
+2023/09/03 12:38:50.650 [I] [server.go:280]  http server Running on http://:8080
+admin@aws3:~/openvpn $
+
+admin@aws3:~/openvpn $ docker logs openvpn
+...
+Start openvpn process...
+admin@aws3:~/openvpn $
+```
+
+##### Verification process
+Usually new OpenVPN UI version have new options which is not part of old OpenVPN-UI DB, that is why when you'll login to new OpenVPN-UI version, you'll see that new options are not set:
+
+
+
+#### Fallback
+If for some reason you would like to fallback to the previous version, you need to restore all the files from backup and run the container with the same parameters as you did before.
+
+##### Restore OpenVPN Server enviroment
+Run restore script:
+```shell
+sudo ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923-1
+```
+This will restore all the enviroment files from backup directory to `~/openvpn-server` directory.
+
+##### Remove new container version
+
+##### Run old container version
+
+  </details>
+
 ## Configuration
 **OpenVPN UI** can be accessed on own port (*e.g. http://localhost:8080), the default user and password is `admin/gagaZush` preconfigured in `config.yml` if you are using Raspberry-Gateway or Openvpn-aws projects. For standalone installation, you can pass your own credentials via environment variables to container (refer to Manual installation).
 
