@@ -26,6 +26,12 @@ if [[ $ACTION == "-b" ]]; then
         cp -Rp $SERVER_ENV/config $BACKUP_DIR
         echo " OpenVPN config backed up"
         cp -Rp $SERVER_ENV/db $BACKUP_DIR
+        if [ ! -f "$BACKUP_DIR/db/data.db" ]; then
+            echo " You pronbably have old version of OpenVPN-UI, backing up your DB with docker cp"
+            mkdir -p $BACKUP_DIR/db; mkdir -p $SERVER_ENV/db;
+            sudo docker cp openvpn-ui:/opt/openvpn-gui/data.db $BACKUP_DIR/db/data.db
+            sudo cp -p $BACKUP_DIR/db/data.db $SERVER_ENV/db/data.db
+        fi
         echo " OpenVPN-UI db backed up"
         cp -Rp $SERVER_ENV/pki $BACKUP_DIR
         echo " OpenVPN pki backed up"
