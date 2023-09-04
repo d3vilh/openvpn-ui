@@ -73,8 +73,6 @@
     <!-- /.box-body -->
     <div class="box-footer">
       <button type="submit" style="width: 125px;" class="btn btn-primary">Save Config</button> &nbsp; 
-      <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart">Restart Server</a>
-      &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
     </div>
   </form>
 </div>
@@ -356,18 +354,25 @@
     
    <div class="box-footer">
      <button type="submit" style="width: 135px;" class="btn btn-primary">Save Expert Config</button> &nbsp; &nbsp;
-     <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
-     &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
    </div>
       <!-- /.box-body -->
  </form>
 
 </div>
-<!-- Add a new form that wraps around the two existing forms -->
-<form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
-  {{ .xsrfdata }}
-  <button type="button" style="width: 200px;" class="btn btn-primary" onclick="saveAll()">Save Both Configurations</button>
-</form>
+<div class="box box-default">
+  <!-- /.box-body -->
+  <!-- /.box-header -->
+  <!-- form start -->
+  <form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
+    {{ .xsrfdata }}
+    <div class="box-footer">
+      <button type="submit" style="width: 135px;" class="btn btn-primary" onclick="saveAll()">Save Both Configs</button> &nbsp; &nbsp;
+      <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
+      <span style="color:grey;"> &nbsp; OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
+    </div>
+      <!-- /.box-body -->
+  </form>
+</div>
 <!-- /.box -->
 {{end}}
 

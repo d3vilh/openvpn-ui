@@ -38,8 +38,9 @@ func (c *DangerController) DeletePKI() {
 		flash.Warning("Success! The \"" + name + "\" has been deleted")
 		flash.Store(&c.Controller)
 	}
-	c.Redirect(c.URLFor("DangerController.Get"), 302)
-	// return
+	c.Data["Flash"] = flash.Data
+	logs.Info("Flash message stored:", flash.Data)
+	//	c.Redirect(c.URLFor("DangerController.Get"), 302)
 }
 
 // @router /pki/init/:key [InitPKI]
@@ -56,8 +57,9 @@ func (c *DangerController) InitPKI() {
 		flash.Success("Success! The \"" + name + "\" has been initialized.")
 		flash.Store(&c.Controller)
 	}
-	c.Redirect(c.URLFor("DangerController.Get"), 302)
-	// return
+	c.Data["Flash"] = flash.Data
+	logs.Info("Flash message stored:", flash.Data)
+	//	c.Redirect(c.URLFor("DangerController.Get"), 302)
 }
 
 // @router /container/restart [RestartContainer]
@@ -67,13 +69,14 @@ func (c *DangerController) RestartContainer() {
 	name := c.GetString(":key")
 	logs.Info("Controller: Restarting:", name)
 	if err := lib.RestartContainer(name); err != nil {
-		logs.Error(err)
+		logs.Error("Error restarting container:", err)
+		//	logs.Error("Stack trace:", string(debug.Stack()))
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
 		flash.Success("Success! Container \"" + name + "\" has been restarted")
 		flash.Store(&c.Controller)
 	}
-	c.Redirect(c.URLFor("DangerController.Get"), 302)
-	// return
+	c.Data["Flash"] = flash.Data
+	logs.Info("Flash message stored:", flash.Data)
 }
