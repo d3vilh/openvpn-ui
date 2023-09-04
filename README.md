@@ -33,7 +33,7 @@ Part of following projects:
 * [Raspberry-gateway](https://github.com/d3vilh/raspberry-gateway) simple yet powerful home gateway environment with Pi-Hole +Unbound, VPN, Torrent client and Internet monitoring, all managed by Portainer.
 
 ## Installation
-For best experience, it is recommended to deploy it within a Docker environment consisting of two distinct containers:
+For the best experience, it is recommended to deploy it within a Docker environment consisting of two distinct containers:
  - The OpenVPN Server Back-End container (openvpn) for running OpenVPN server.
  - OpenVPN UI Front-End container (openvpn-ui) for efficient management of the OpenVPN server environment.
 
@@ -219,7 +219,7 @@ During the installtion or upgrade process OpenVPN-UI by itself does not do any c
     <summary>Backup</summary>
 
 #### Backup
-To backup your PKI infrastructure, server, client configuration files and OpenVPN-UI DB you can use `backup.sh` script which is in [`build/assets` directory](build/assets/backup.sh) (since the release `0.6`).
+To backup your PKI infrastructure, server, client configuration files and OpenVPN-UI DB you can use `backup.sh` script which is in [`build/assets` directory](build/assets/backup.sh) (since the release `0.6`), it is also part of [openvpn-aws](https://github.com/d3vilh/openvpn-aws) and [Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway) projects (right in openvpn-server directory).
 
 Copy the script in your home directory(any directory in fact):
 ```shell
@@ -295,17 +295,17 @@ admin@aws3:~/openvpn $
 ```
 
 ##### Verification process
-Now when new OpenVPN-UI version is deployed, the DB schema were updated to the latest version automatically during the container start:
+Now when new OpenVPN-UI version is deployed, the DB schema were updated to the latest version automatically during the container start.
 * All tables were updated with new fields, existed fields in those tables were not touched to be sure you won't loose any data.
 * New tables were created with default values.
 
-Now you need to review all options in `Configuration > OpenVPN Server`, `OpenVPN Client` and `EasyRSA vars` manually.
+Now you need to go to `Configuration > OpenVPN Server` in OpenVPN UI webpage and review and update all options fields very carefully.
 
 Here is example of Server configuration page with new fields after the upgrade from version 0.3 to 0.6:
 
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.01.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
-You have to update empty fields with options from your current `server.conf` and **only then** press `Save Config` button.
+You have to update empty fields with options from your current `server.conf` and **only then** press **`Save Both Configs`** button on the same page below.
 
 Please pay attention that before saving config you have to update all the fields with new format, otherwise OpenVPN Server will not start.
 
@@ -319,12 +319,18 @@ Here is how it should looks like:
 
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.03.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
-On the next OpenVPN Server restart new `server.conf` file will be applied.
+New `server.conf` file will be applied immedeately, after you press **`Save Both Configs`** button.
+
+Then you have to update `OpenVPN UI`, `OpenVPN Client` and `EasyRSA vars` pages the same way.
+
+And you are done with the upgrade process.
 
   <details>
       <summary>DB Schema changes</summary>
 
    ##### DB Schema changes 0.3 to 0.6 versions
+   You have nothing to do with the DB schema, just for your information.
+
   | Version | Table             | New Field                     | New OpenVPN UI gui location     |
   |---------|-------------------|-------------------------------|---------------------------------|
   | **0.3** | o_v_config        | o_v_config_log_version        | Configuration > OpenVPN Server  |
@@ -352,6 +358,7 @@ On the next OpenVPN Server restart new `server.conf` file will be applied.
   | 0.6     | o_v_config        | custom_opt_two                | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | custom_opt_three              | Configuration > OpenVPN Server  |
 
+
   </details>
 
   </details>
@@ -359,7 +366,7 @@ On the next OpenVPN Server restart new `server.conf` file will be applied.
     <summary>Fallback</summary>
 
 #### Fallback
-If for some reason you would like to fallback to the previous version, you need to restore all the files from backup and run the container with the same parameters as you did before.
+If for some reason you would like to fallback to the previous version, you need to stop container, restore image, then restore all the files from backup you did before and finally run container with previous image.
 
 ##### Container and image fallback
 1. Stop and remove updated openvpn-ui container:
@@ -407,6 +414,8 @@ admin@aws3:~/openvpn $ docker logs openvpn
 Start openvpn process...
 admin@aws3:~/openvpn $
 ```
+
+Thats it you are back to the previous version. 
   </details>
 
 ## Configuration
