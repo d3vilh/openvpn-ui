@@ -29,16 +29,18 @@ dh {{ .Dh }}
 {{ .TLSRemoteCert }}
 
 cipher {{ .Cipher }}
-data-ciphers {{ .OVConfigNcpCiphers }}
+ncp-ciphers {{ .OVConfigNcpCiphers }}   #will be deprecated in future OpenVPN versions. we have to use data-ciphers instead
+#data-ciphers {{ .OVConfigNcpCiphers }}
 
 auth {{ .Auth }}
 
-{{ .Server }}
-{{ .Route }}
-{{ .PushRoute }}
-{{ .DNSServer1 }}
-{{ .DNSServer2 }}
-{{ .RedirectGW }}
+{{ .Server }}           #Trusted VPN subnet
+{{ .Route }}            #Route to Guest VPN subnet
+{{ .PushRoute }}     #Route to Home VPN subnet
+{{ .DNSServer1 }}           #DNS1 server for VPN clients
+{{ .DNSServer2 }}           #DNS2 server for VPN clients
+{{ .RedirectGW }} #Redirect gateway for VPN clients
+
 
 log {{ .OVConfigLogfile }}
 verb {{ .OVConfigLogVerbose }}
