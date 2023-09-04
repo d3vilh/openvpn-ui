@@ -11,6 +11,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 ## Features
 
 * Status page that shows server statistics and list of connected clients
+* Supports OpenVPN TAP/bridge or TUN/tunnel server configurations
 * Easy to **generate**, **download**, **revoke** and **delete** client certificates
 * Client can have secret passphrase and static IP assigned during client certificate generation
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
