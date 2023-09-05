@@ -620,7 +620,7 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 ## Дякую and Kudos to the original author
 
-Kudos to @adamwalach for development of original [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) interface which was ported for arm32v7 and arm64V8 with expanded functionality as part of this project.
+Kudos to @adamwalach for development of the original [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) project which was used as foundation of this project.
 #Thats all folks!
 
 <a href="https://www.buymeacoffee.com/d3vilh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
