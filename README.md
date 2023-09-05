@@ -4,13 +4,14 @@ OpenVPN server web administration interface.
 
 Quick to deploy and easy to use, makes work with small OpenVPN environments a breeze.
 
-<img src="https://raw.githubusercontent.com/d3vilh/raspberry-gateway/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
 
 [![latest version](https://img.shields.io/github/v/release/d3vilh/openvpn-ui?color=%2344cc11&label=Latest%20release&style=for-the-badge)](https://github.com/d3vilh/openvpn-ui/releases/latest)
 
 ## Features
 
 * Status page that shows server statistics and list of connected clients
+* Supports OpenVPN TAP/bridge or TUN/tunnel server configurations
 * Easy to **generate**, **download**, **revoke** and **delete** client certificates
 * Client can have secret passphrase and static IP assigned during client certificate generation
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
@@ -33,7 +34,7 @@ Part of following projects:
 * [Raspberry-gateway](https://github.com/d3vilh/raspberry-gateway) simple yet powerful home gateway environment with Pi-Hole +Unbound, VPN, Torrent client and Internet monitoring, all managed by Portainer.
 
 ## Installation
-For best experience, it is recommended to deploy it within a Docker environment consisting of two distinct containers:
+For the best experience, it is recommended to deploy it within a Docker environment consisting of two distinct containers:
  - The OpenVPN Server Back-End container (openvpn) for running OpenVPN server.
  - OpenVPN UI Front-End container (openvpn-ui) for efficient management of the OpenVPN server environment.
 
@@ -212,6 +213,212 @@ The new image will have `openvpn-ui` name.
 
   </details>
 
+### Upgrade to new Version
+During the installtion or upgrade process OpenVPN-UI by itself does not do any changes to your OpenVPN server configuration or PKI infrastructure. However it is recommended to perform backup of your `PKI infrastructure`, `server.conf`, `client.conf` and `data.db` before following with upgrade steps.
+
+  <details>
+    <summary>Backup</summary>
+
+#### Backup
+To backup your PKI infrastructure, server, client configuration files and OpenVPN-UI DB you can use `backup.sh` script which is in [`build/assets` directory](build/assets/backup.sh) (since the release `0.6`), it is also part of [openvpn-aws](https://github.com/d3vilh/openvpn-aws) and [Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway) projects (right in openvpn-server directory).
+
+Copy the script in your home directory(any directory in fact):
+```shell
+cp -p build/assets/backup.sh ~/
+```
+
+Then run the script:
+```shell
+sudo ./backup.sh -b ~/openvpn-server backup/openvpn-server-030923-1
+```
+this will create backup of all necessary files, from `~/openvpn-server` to `~/backup/openvpn-server-030923-1`.
+
+You can confirm all files are backed up and go to the "Upgrade" step.
+
+  </details>
+
+  <details>
+    <summary>Upgrade</summary>
+
+#### Upgrade
+To upgrade OpenVPN-UI to the latest version, you have to save old container image, remove old container and deploy new container with upgraded image.
+
+##### Preparation
+1. Check which OpenVPN-UI version image is currently used:
+```shell
+docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
+{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.5"}
+```
+> **Note**: Old container versions (below ver 0.5) does not have "version" tag.
+
+2. Tag current container image with backup tag:
+```shell
+docker tag d3vilh/openvpn-ui:latest local/openvpn-ui:backup
+```
+3. Make sure your docker-compose.yml file is up to date with **desired new version** of image. Our assumption that desired is the `latest` version:
+```shell
+admin@aws3:~/openvpn $ cat docker-compose.yml | grep image
+       image: d3vilh/openvpn-ui:latest
+admin@aws3:~/openvpn $
+```
+During the next container start, docker will use image tag from this file to deploy new container.
+
+##### Upgrade Steps
+1. Pull new image to your host. Old image will be replaced:
+```shell
+docker pull d3vilh/openvpn-ui:latest
+```
+2. Confirm new image is pulled with desired version:
+```shell
+docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
+{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.6"}
+```
+3. Stop and remove old container:
+```shell
+docker rm openvpn-ui --force
+```
+4. Deploy new container with updated image:
+```shell
+cd ~/openvpn-server
+docker-compose up -d
+```
+5. Verify both containers are up and running:
+```shell
+admin@aws3:~/openvpn $ docker logs openvpn-ui
+...
+2023/09/03 12:38:50.650 [I] [server.go:280]  http server Running on http://:8080
+admin@aws3:~/openvpn $
+
+admin@aws3:~/openvpn $ docker logs openvpn
+...
+Start openvpn process...
+admin@aws3:~/openvpn $
+```
+
+##### Verification process
+Now when new OpenVPN-UI version is deployed, the DB schema were updated to the latest version automatically during the container start.
+* All tables were updated with new fields, existed fields in those tables were not touched to be sure you won't loose any data.
+* New tables were created with default values.
+
+Now you need to go to `Configuration > OpenVPN Server` in OpenVPN UI webpage and review and update all options fields very carefully.
+
+Here is example of Server configuration page with new fields after the upgrade from version 0.3 to 0.6:
+
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.01.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
+
+You have to update empty fields with options from your current `server.conf` and **only then** press **`Save Both Configs`** button on the same page below.
+
+Please pay attention that before saving config you have to update all the fields with new format, otherwise OpenVPN Server will not start.
+
+> **Important Note!**: In version 0.6 format of some fields has been changed!
+
+All fields to review are **marked** with <strong><span style="color:#337ab7" title="New format in this version">!</span></strong> sign:
+
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.02.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
+
+Here is how it should looks like:
+
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/master/images/OpenVPN-UI-Upgrade.03.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
+
+New `server.conf` file will be applied immedeately, after you press **`Save Both Configs`** button.
+
+Then you have to update `OpenVPN UI`, `OpenVPN Client` and `EasyRSA vars` pages the same way.
+
+And you are done with the upgrade process.
+
+  <details>
+      <summary>DB Schema changes</summary>
+
+   ##### DB Schema changes 0.3 to 0.6 versions
+   You have nothing to do with the DB schema, just for your information.
+
+  | Version | Table             | New Field                     | New OpenVPN UI gui location     |
+  |---------|-------------------|-------------------------------|---------------------------------|
+  | **0.3** | o_v_config        | o_v_config_log_version        | Configuration > OpenVPN Server  |
+  | 0.3     | o_v_config        | o_v_config_status_log         | Configuration > OpenVPN Server  |
+  | 0.3     | settings          | server_address                | moved to Configuration > OpenVPN Client |
+  | 0.3     | settings          | open_vpn_server_port          | moved to Configuration > OpenVPN Client |
+  | **0.4** | o_v_client_config | new table                     | Configuration > OpenVPN Client  |
+  | 0.4     | easy_r_s_a_config | new table                     | Configuration > EasyRSA vars    |
+  | 0.4     | settings          | easy_r_s_a_path               | Configuration > OpenVPN-UI      |
+  | **0.5** | **no schema changes** | **no schema changes**     | https://u24.gov.ua              |
+  | **0.6** | o_v_config        | o_v_config_topology           | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_user               | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_group              | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_client_config_dir  | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | crl                           | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | t_l_s_control_channel         | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | t_l_s_min_version             | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | t_l_s_remote_cert             | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_ncp_ciphers        | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_logfile            | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_log_verbose        | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_status_log         | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | o_v_config_status_log_version | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | custom_opt_one                | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | custom_opt_two                | Configuration > OpenVPN Server  |
+  | 0.6     | o_v_config        | custom_opt_three              | Configuration > OpenVPN Server  |
+
+
+  </details>
+
+  </details>
+  <details>
+    <summary>Fallback</summary>
+
+#### Fallback
+If for some reason you would like to fallback to the previous version, you need to stop container, restore image, then restore all the files from backup you did before and finally run container with previous image.
+
+##### Container and image fallback
+1. Stop and remove updated openvpn-ui container:
+```shell
+docker rm openvpn-ui --force
+```
+2. Remove updated openvpn-ui image:
+```shell
+docker image rm d3vilh/openvpn-ui:latest
+```
+3. Restore old openvpn-ui image:
+```shell
+docker tag local/openvpn-ui:backup d3vilh/openvpn-ui:latest
+```
+4. Confirm you have old image version:
+```shell
+docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
+{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.5"}
+```
+
+##### Restore OpenVPN Server enviroment
+1. Run restore script:
+```shell
+sudo ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923-1
+```
+This will restore all the enviroment files from backup directory to `~/openvpn-server` directory.
+
+> **Note v.0.3**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to restore it manually: `docker cp backup/data.0.3.db openvpn-ui:/opt/openvpn-gui/data.db`
+
+##### Restore container
+1. Run docker-compose up to deploy new container with old image:
+```shell
+cd ~/openvpn-server
+docker-compose up -d
+```
+2. Verify both containers are up and running:
+```shell
+admin@aws3:~/openvpn $ docker logs openvpn-ui
+...
+2023/09/03 12:38:50.650 [I] [server.go:280]  http server Running on http://:8080
+admin@aws3:~/openvpn $
+
+admin@aws3:~/openvpn $ docker logs openvpn
+...
+Start openvpn process...
+admin@aws3:~/openvpn $
+```
+
+Thats it you are back to the previous version. 
+  </details>
+
 ## Configuration
 **OpenVPN UI** can be accessed on own port (*e.g. http://localhost:8080), the default user and password is `admin/gagaZush` preconfigured in `config.yml` if you are using Raspberry-Gateway or Openvpn-aws projects. For standalone installation, you can pass your own credentials via environment variables to container (refer to Manual installation).
 
@@ -356,34 +563,34 @@ You can update external client IP and port address anytime under `"Configuration
 
 For this go to `"Configuration > OpenVPN Client"` (don't trust what you see, this picture is outdated):
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
 
 And then update `"Connection Address"` and `"Connection Port"` fields with your external Internet IP and Port. 
 
 To generate new Client Certificate go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client.png" alt="Create Certificate" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-New_Client.png" alt="Create Certificate" width="350" border="1" />
 
 To download .OVPN client configuration file, press on the `Client Name` you just created:
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_New_Client_download.png" alt="download OVPN" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-New_Client_download.png" alt="download OVPN" width="350" border="1" />
 
 Install [Official OpenVPN client](https://openvpn.net/vpn-client/) to your client device.
 
 Deliver .OVPN profile to the client device and import it as a FILE, then connect with new profile to enjoy your free VPN:
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
 
 ### Revoking .OVPN profiles
 
 If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
 You can do it via OpenVPN UI `"Certificates"` menue, by pressing "Revoke" amber button:
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
 
 Certificate revoke won't kill active VPN connections, you'll have to restart the service if you want the user to immediately disconnect. It can be done from the same `"Certificates"` page, by pressing Restart red button:
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
 
 You can do the same from the `"Maintenance"` page.
 
@@ -391,25 +598,25 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 ### Screenshots:
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Login.png" alt="OpenVPN-UI Login screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Login.png" alt="OpenVPN-UI Login screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Home.png" alt="OpenVPN-UI Home screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Home.png" alt="OpenVPN-UI Home screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Certs.png" alt="OpenVPN-UI Certificates screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Certs.png" alt="OpenVPN-UI Certificates screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-EasyRsaVars.png" alt="OpenVPN-UI EasyRSA vars screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-EasyRsaVars.png" alt="OpenVPN-UI EasyRSA vars screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Maintenance.png" alt="OpenVPN-UI Maintenance screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Maintenance.png" alt="OpenVPN-UI Maintenance screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Server-config.png" alt="OpenVPN-UI Server Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Server-config.png" alt="OpenVPN-UI Server Configuration screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-ClientConf.png" alt="OpenVPN-UI Client Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-ClientConf.png" alt="OpenVPN-UI Client Configuration screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/master/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
 
 ## Дякую and Kudos to the original author
 

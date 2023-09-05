@@ -9,55 +9,90 @@ import (
 
 // Don't think these defaults are ever used -- see models/models.go
 var defaultConfig = Config{
-	Management:          "0.0.0.0 2080",
-	Port:                1194,
-	Proto:               "udp",
-	Device:              "tun",
-	Ca:                  "pki/ca.crt",
-	Cert:                "pki/issued/server.crt",
-	Key:                 "pki/private/server.key",
-	Cipher:              "AES-256-CBC",
-	Auth:                "SHA512",
-	Dh:                  "pki/dh.pem",
-	Server:              "10.0.70.0 255.255.255.0",
-	Route:               "10.0.71.0 255.255.255.0",
-	IfconfigPoolPersist: "pki/ipp.txt",
-	OVConfigLogV:        3,
-	OVConfigLogVersion:  2,
-	PushRoute:           "10.0.60.0 255.255.255.0",
-	DNSServer1:          "8.8.8.8",
-	DNSServer2:          "1.0.0.1",
-	RedirectGW:          "push \"redirect-gateway def1 bypass-dhcp\"",
-	Keepalive:           "10 120",
-	MaxClients:          100,
+	Management:               "0.0.0.0 2080",
+	Device:                   "tun",
+	Port:                     1194,
+	Proto:                    "udp",
+	OVConfigTopology:         "subnet",
+	Keepalive:                "10 120",
+	MaxClients:               100,
+	OVConfigUser:             "nobody",
+	OVConfigGroup:            "nogroup",
+	OVConfigClientConfigDir:  "/etc/openvpn/staticclients",
+	IfconfigPoolPersist:      "pki/ipp.txt",
+	Ca:                       "pki/ca.crt",
+	Cert:                     "pki/issued/server.crt",
+	Key:                      "pki/private/server.key",
+	Crl:                      "pki/crl.pem",
+	Dh:                       "pki/dh.pem",
+	TLSControlChannel:        "tls-crypt pki/ta.key",
+	TLSMinVersion:            "tls-version-min 1.2",
+	TLSRemoteCert:            "remote-cert-tls client",
+	Cipher:                   "AES-256-GCM",
+	OVConfigNcpCiphers:       "AES-256-GCM:AES-192-GCM:AES-128-GCM",
+	Auth:                     "SHA512",
+	Server:                   "server 10.0.70.0 255.255.255.0",
+	Route:                    "route 10.0.71.0 255.255.255.0",
+	PushRoute:                "push \"route 10.0.60.0 255.255.255.0\"",
+	DNSServer1:               "push \"dhcp-option DNS 8.8.8.8\"",
+	DNSServer2:               "push \"dhcp-option DNS 1.0.0.1\"",
+	RedirectGW:               "push \"redirect-gateway def1 bypass-dhcp\"",
+	OVConfigLogfile:          "/var/log/openvpn/openvpn.log",
+	OVConfigLogVerbose:       3,
+	OVConfigStatusLog:        "/var/log/openvpn/openvpn-status.log",
+	OVConfigStatusLogVersion: 2,
+	CustomOptOne:             "# Custom Option One",
+	CustomOptTwo:             "# Custom Option Two\n# client-to-client",
+	CustomOptThree:           "# Custom Option Three\n# push \"route 0.0.0.0 255.255.255.255 net_gateway\"\n# push block-outside-dns",
 }
 
 // Config model
 type Config struct {
 	Management string
+	Device     string
 	Port       int
 	Proto      string
-	Device     string
+
+	OVConfigTopology string
+	Keepalive        string
+	MaxClients       int
+
+	OVConfigUser  string
+	OVConfigGroup string
+
+	OVConfigClientConfigDir string
+	IfconfigPoolPersist     string
 
 	Ca   string
 	Cert string
 	Key  string
+	Crl  string
+	Dh   string
 
-	Cipher string
-	Auth   string
-	Dh     string
+	TLSControlChannel string
+	TLSMinVersion     string
+	TLSRemoteCert     string
 
-	Server              string
-	Route               string
-	IfconfigPoolPersist string
-	OVConfigLogV        int
-	OVConfigLogVersion  int
-	PushRoute           string
-	DNSServer1          string
-	DNSServer2          string
-	RedirectGW          string
-	Keepalive           string
-	MaxClients          int
+	Cipher             string
+	OVConfigNcpCiphers string
+
+	Auth string
+
+	Server     string
+	Route      string
+	PushRoute  string
+	DNSServer1 string
+	DNSServer2 string
+	RedirectGW string
+
+	OVConfigLogfile          string
+	OVConfigLogVerbose       int
+	OVConfigStatusLog        string
+	OVConfigStatusLogVersion int
+
+	CustomOptOne   string
+	CustomOptTwo   string
+	CustomOptThree string
 }
 
 // New returns config object with default values

@@ -23,21 +23,28 @@
         <label for="name">Connection Address</label>
         <input type="text" class="form-control" id="ServerAddress" name="ServerAddress" placeholder="Enter server address"
           value="{{ .Settings.ServerAddress }}">
-          <span id="helpBlock" class="help-block">Server IP address which will be part of &quot;Client.ovpn&quot; configuration file. If you use IP NAT you can set external Internet IP of your server here.</span>
+          <span id="helpBlock" class="help-block">Server IP address or DNS hostname which will be used by Client to connect. If you use IP NAT you can set external Internet IP of your server here</span>
       </div>
 
       <div class="form-group">
         <label for="name">Connection Port</label>
         <input type="text" class="form-control" id="OpenVpnServerPort" name="OpenVpnServerPort" placeholder="Enter external server port"
           value="{{ .Settings.OpenVpnServerPort }}">
-          <span id="helpBlock" class="help-block">Server Port which will be part of &quot;Client.ovpn&quot; configuration file. If you use PORT NAT you can set external Internet Port of your server here.</span>
+          <span id="helpBlock" class="help-block">Server Port which will be used by Client to connect. If you use PORT NAT you can set external Internet Port of your server here</span>
       </div>
 
       <div class="form-group">
         <label for="name">Connection Proto</label>
         <input type="text" class="form-control" id="OpenVpnProto" name="OpenVpnProto" placeholder="Enter external server protocol"
           value="{{ .Settings.Proto }}">
-          <span id="helpBlock" class="help-block">Protocol used to connect Client and Server, will be part of &quot;Client.ovpn&quot; configuration file.</span>
+          <span id="helpBlock" class="help-block">Protocol used by Client for connection</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Redirect Gateway</label> <strong><span style="color:#337ab7" title="&quot;redirect-gateway def1&quot;">!</span></strong>
+        <input type="text" class="form-control" id="RedirectGateway" name="RedirectGateway" placeholder="redirect-gateway def1"
+          value="{{ .Settings.RedirectGateway }}">
+          <span id="helpBlock" class="help-block">Used to redirect all Client traffic via OpenVPN Server. Comment it if you don't need this - &quot;#redirect-gateway def1&quot;</span>
       </div>
 <!--  comented out to avoid client/server confusion
       <div class="form-group">

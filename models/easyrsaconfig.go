@@ -9,9 +9,6 @@ import (
 type EasyRSAConfig struct {
 	Id      int
 	Profile string `orm:"size(64);unique" valid:"Required;"`
-	//	ServerAddress     string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
-	//	OpenVpnServerPort string `orm:"size(64);unique" form:"OpenVpnServerPort" valid:"Required;"`
-	//	Proto             string `orm:"size(64);unique" form:"Proto" valid:"Required;"`
 	easyrsaconfig.Config
 }
 

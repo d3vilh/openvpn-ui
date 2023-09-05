@@ -42,7 +42,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">EasyRSA ConfigPath</label>
+        <label for="name">EasyRSA ConfigPath</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
         <input type="text" class="form-control" id="EasyRSAPath" name="EasyRSAPath" title="EasyRSA configuration path." placeholder="/usr/share/easy-rsa"
           value="{{ .Settings.EasyRSAPath }}">
       </div>
@@ -52,8 +52,7 @@
     <!-- /.box-body -->
 
     <div class="box-footer">
-      <button type="submit" class="btn btn-primary" style="width: 125px;">Save Config</button> &nbsp; <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 125px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
-       &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
+      <button type="submit" class="btn btn-primary" style="width: 125px;">Save Config</button>  
     </div>
   </form>
 

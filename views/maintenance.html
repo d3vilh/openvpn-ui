@@ -88,7 +88,6 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    {{template "common/alert.html" .}}
     <form role="form" action="{{urlfor "DangerController.Post"}}" method="post">
       <div class="box-body">
         <div class="form-group">
@@ -119,7 +118,7 @@
 
           <div class="form-group">
             <a href="{{urlfor "DangerController.InitPKI" ":key" "gen_dh"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Generate Diffie-Hellman key" onclick="return confirm('Are you sure you want to generate DH key?');">Generate DH</a>
-            &nbsp; <span>Generate a new Diffie-Hellman key by running &quot;easyrsa gen-dh&quot;. This step may take <b>up to 10 minutes</b>.</span>
+            &nbsp; <span>Generate a new Diffie-Hellman key by running &quot;easyrsa gen-dh&quot;. This may take <b>up to 10 min</b>, keep an eye on browser progress bar. Nothing is freezed, be patient.</span>
           </div>    
 
           <div class="form-group">

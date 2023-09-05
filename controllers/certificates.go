@@ -173,17 +173,26 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 		return "", err
 	}
 	cfg.Ca = string(ca)
+
+	ta, err := os.ReadFile(filepath.Join(keysPathCa, "ta.key"))
+	if err != nil {
+		return "", err
+	}
+	cfg.Ta = string(ta)
+
 	cert, err := os.ReadFile(filepath.Join(keysPath, name+".crt"))
 	if err != nil {
 		return "", err
 	}
 	cfg.Cert = string(cert)
+
 	keysPathKey := filepath.Join(state.GlobalCfg.OVConfigPath, "pki/private")
 	key, err := os.ReadFile(filepath.Join(keysPathKey, name+".key"))
 	if err != nil {
 		return "", err
 	}
 	cfg.Key = string(key)
+
 	serverConfig := models.OVConfig{Profile: "default"}
 	_ = serverConfig.Read("Profile")
 	cfg.Port = serverConfig.Port

@@ -19,15 +19,13 @@ export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3
 
 echo 'Revoke certificate...'
 
+cd /usr/share/easy-rsa
 # Revoke certificate
 ./easyrsa revoke "$1"
 
 echo 'Create new Create certificate revocation list (CRL)...'
 ./easyrsa gen-crl
 chmod +r ./pki/crl.pem
-
-echo 'Sync pki directory...'
-cp -r ./pki/. /etc/openvpn/pki
 
 echo 'Done!'
 echo 'If you want to disconnect the user please restart the service using docker-compose restart openvpn.'
