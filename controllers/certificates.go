@@ -145,6 +145,22 @@ func (c *CertificatesController) Burn() {
 	c.showCerts()
 }
 
+// @router /certificates/revoke/:key [get]
+func (c *CertificatesController) Renew() {
+	c.TplName = "certificates.html"
+	flash := web.NewFlash()
+	name := c.GetString(":key")
+	if err := lib.RenewCertificate(name); err != nil {
+		logs.Error(err)
+		//flash.Error(err.Error())
+		//flash.Store(&c.Controller)
+	} else {
+		flash.Warning("Success! Certificate for the name \"" + name + "\" has been renewed")
+		flash.Store(&c.Controller)
+	}
+	c.showCerts()
+}
+
 func validateCertParams(cert NewCertParams) map[string]map[string]string {
 	valid := validation.Validation{}
 	b, err := valid.Valid(&cert)
