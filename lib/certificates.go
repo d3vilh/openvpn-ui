@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -112,32 +111,27 @@ func trim(s string) string {
 }
 
 func CreateCertificate(name string, staticip string, passphrase string) error {
-	path := filepath.Join(state.GlobalCfg.OVConfigPath, "pki/index.txt")
-	haveip := false
-	pass := false
+	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
+	haveip := staticip != ""
+	pass := passphrase != ""
 	existsError := errors.New("Error! There is already a valid or invalid certificate for the name \"" + name + "\"")
-	if staticip != "" {
-		haveip = true
-	}
-	if passphrase != "" {
-		pass = true
-	}
 	certs, err := ReadCerts(path)
 	if err != nil {
-		//		web.Debug(string(output))
 		logs.Error(err)
-		//		return err
 	}
-	Dump(certs)
 	exists := false
 	for _, v := range certs {
 		if v.Details.Name == name {
 			exists = true
+			break
 		}
 	}
-	if !pass {
-		if !exists && !haveip {
+	Dump(certs)
+	if !exists {
+		if !haveip {
 			staticip = "dynamic.pool"
+		}
+		if !pass {
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -151,42 +145,7 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 				return err
 			}
 			return nil
-		}
-		if !exists && haveip {
-			cmd := exec.Command("/bin/bash", "-c",
-				fmt.Sprintf(
-					"cd /opt/scripts/ && "+
-						"export KEY_NAME=%s &&"+
-						"./genclient.sh %s %s &&"+
-						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, name, staticip, staticip, name))
-			cmd.Dir = state.GlobalCfg.OVConfigPath
-			output, err := cmd.CombinedOutput()
-			if err != nil {
-				logs.Debug(string(output))
-				logs.Error(err)
-				return err
-			}
-			return nil
-		}
-		return existsError
-	} else {
-		if !exists && !haveip {
-			staticip = "dynamic.pool"
-			cmd := exec.Command("/bin/bash", "-c",
-				fmt.Sprintf(
-					"cd /opt/scripts/ && "+
-						"export KEY_NAME=%s &&"+
-						"./genclient.sh %s %s %s", name, name, staticip, passphrase))
-			cmd.Dir = state.GlobalCfg.OVConfigPath
-			output, err := cmd.CombinedOutput()
-			if err != nil {
-				logs.Debug(string(output))
-				logs.Error(err)
-				return err
-			}
-			return nil
-		}
-		if !exists && haveip {
+		} else {
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -202,8 +161,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 			}
 			return nil
 		}
-		return existsError
 	}
+	return existsError
 }
 
 func RevokeCertificate(name string) error {
@@ -252,12 +211,12 @@ func BurnCertificate(CN string, serial string) error {
 	return nil
 }
 
-func RenewCertificate(name string) error {
+func RenewCertificate(name string, localip string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./renew.sh %s", name, name))
+				"./renew.sh %s %s", name, name, localip))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
