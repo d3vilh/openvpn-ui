@@ -2,12 +2,19 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-if [ "$1" = "renew" ]; then
-  # Renew certificate. works 30days prior expiration.
-  echo 'Renew certificate...'
+if [ -n "$1" ]; then
+  export EASYRSA_BATCH=1
+  # Temp WA for reneval
+  mv /usr/share/easy-rsa/pki/vars /usr/share/easy-rsa/pki/vars.bak
+  # Renew certificate.
+  echo "Renew certificate: $1 with localip: $2"
   cd /usr/share/easy-rsa
-  ./easyrsa renew "$2"
+  ./easyrsa renew "$1" nopass  #as of now only nopass is supported
+  # Fix for new /name in index.txt (adding name and ip to the last line)
+  sed -i'.bak' "$ s/$/\/name=${1}\/LocalIP=${2}/" /usr/share/easy-rsa/pki/index.txt
+  #  ./easyrsa revoke-renewed "$1"
   chmod +r ./pki/crl.pem
+  mv /usr/share/easy-rsa/pki/vars.back /usr/share/easy-rsa/pki/vars
   echo 'Done!'
   echo 
 else

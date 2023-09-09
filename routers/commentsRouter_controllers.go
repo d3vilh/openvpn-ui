@@ -114,7 +114,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
 			web.ControllerComments{
 				Method:           "Renew",
-				Router:           `/certificates/renew/:key`,
+				Router:           `/certificates/renew/:key/:localip`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 

@@ -84,7 +84,7 @@
 
                   {{ if and .IsExpired (eq .Revocation "") }}
                     <td>
-                        <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
+                        <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
                     </td>
                   {{else}}
                     <td></td>
@@ -111,7 +111,6 @@
             </tbody>
           </table>
         </div>
-        <!-- /.table-responsive -->
       </div>
       <!--else
           Fix your configuration
