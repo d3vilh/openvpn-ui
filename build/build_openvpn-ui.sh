@@ -18,7 +18,8 @@ case $ARCH in
     ;;
   aarch64*)
     PLATFORM="linux/arm64/v8"
-    UIIMAGE="FROM arm64v8/debian:stable-slim"
+    #UIIMAGE="FROM arm64v8/debian:stable-slim"
+    UIIMAGE="FROM arm64v8/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM arm64v8/golang:1.20"
     ;;
   *)
