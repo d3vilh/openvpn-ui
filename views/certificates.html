@@ -84,13 +84,16 @@
 
                   {{ if eq .Revocation ""}}
                     <td>
-                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
+                      <span class="label label-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
+                      {{ if time.Now().AddDate(0, 0, 30).After .ExpirationT }}
+                        <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
+                      {{ end }}
                     </td>
                   {{else}}
-                    <td></td>
+                    <td>
+                      <span class="label label-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
+                    </td>
                   {{end}}
-
-
 
                   {{ if eq .Revocation ""}}
                     <td>
