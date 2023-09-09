@@ -165,12 +165,12 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 	return existsError
 }
 
-func RevokeCertificate(name string) error {
+func RevokeCertificate(name string, serial string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./rmclient.sh %s", name, name))
+				"./rmclient.sh %s %s", name, name, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

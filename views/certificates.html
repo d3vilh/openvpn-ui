@@ -92,7 +92,7 @@
 
                   {{ if eq .Revocation ""}}
                     <td>
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
                     </td>
                   {{else}}
                     <td></td>
