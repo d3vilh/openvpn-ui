@@ -5,7 +5,7 @@ set -e
 
 # .ovpn file path
 DEST_FILE_PATH="/etc/openvpn/clients/$CERT_NAME.ovpn"
-INDEX_PATH="/usr/share/easy-rsa/pki/index.txt"
+INDEX="/usr/share/easy-rsa/pki/index.txt"
 EASY_RSA="/usr/share/easy-rsa"
 CERT_SERIAL=$2
 CERT_NAME=$1
@@ -13,7 +13,7 @@ CERT_NAME=$1
 echo "Removing user: $CERT_NAME with Serial: $CERT_SERIAL"
 
 # Define if cert is valid or revoked
-STATUS_CH=$(grep -e ${CERT_NAME}$ -e${CERT_NAME}/ ${INDEX_PATH} | awk '{print $1}' | tr -d '\n')
+STATUS_CH=$(grep -e ${CERT_NAME}$ -e${CERT_NAME}/ ${INDEX} | awk '{print $1}' | tr -d '\n')
 if [[ $STATUS_CH = "V" ]]; then
     echo "Cert is VALID"
     echo "Will remove: ${CERT_SERIAL}"
@@ -25,7 +25,7 @@ fi
 # Check if the user has two certificates in index.txt
 if [[ $(cat /usr/share/easy-rsa/pki/index.txt | grep -c "/name=$NAME") -eq 2 ]]; then
     echo "Removing renewed certificate..."
-    sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX_PATH
+    sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
     # removing *.ovpn file because it has old certificate
     rm -f $DEST_FILE_PATH
     
@@ -59,7 +59,7 @@ else
     rm -f $DEST_FILE_PATH
 
     # Fix index.txt by removing the user from the list following the serial number
-    sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX_PATH
+    sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
 fi
 
 echo 'Remove done!'

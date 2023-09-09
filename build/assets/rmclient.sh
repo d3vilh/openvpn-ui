@@ -2,15 +2,15 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-NAME=$1
-SERIAL=$2
+CERT_NAME=$1
+CERT_SERIAL=$2
 INDEX=/usr/share/easy-rsa/pki/index.txt
 EASY_RSA="/usr/share/easy-rsa"
-PERSHIY=`cat $INDEX | grep "/name=$NAME" | head -1 | awk '{ print $3}'`
+PERSHIY=`cat $INDEX | grep "/name=$CERT_NAME" | head -1 | awk '{ print $3}'`
 #ACTION=$3
 
 # .ovpn file path
-#DEST_FILE_PATH="/etc/openvpn/clients/$NAME.ovpn"
+#DEST_FILE_PATH="/etc/openvpn/clients/$CERT_NAME.ovpn"
 # Check if .ovpn file exists
 #if [[ ! -f $DEST_FILE_PATH ]]; then
 #    echo "User not found."
@@ -20,38 +20,60 @@ PERSHIY=`cat $INDEX | grep "/name=$NAME" | head -1 | awk '{ print $3}'`
 export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
 
 # Check if the user has two certificates in index.txt
-if [[ $(cat $INDEX | grep -c "/name=$NAME") -eq 2 ]]; then
+if [[ $(cat $INDEX | grep -c "/name=$CERT_NAME") -eq 2 ]]; then
     # Check if first serial is the same as requested to revoke and if yes - revoke new cert and old cert
-    if [[ $PERSHIY = $SERIAL ]]; then
+    if [[ $PERSHIY = $CERT_SERIAL ]]; then
         echo "Revoking renewed certificate and then old one..."
         # Fix index.txt by removing everything after pattern "/name=$1" in the line
-        sed -i'.bak' "s/\/name=${NAME}\/.*//" $INDEX
+        sed -i'.bak' "s/\/name=${CERT_NAME}\/.*//" $INDEX
         cd $EASY_RSA
         # Revoke renewed certificate
-        ./easyrsa revoke-renewed "$NAME"
-        echo -e "Renewed certificate revoked!/nRevoking old certificate..."
-        cd $EASY_RSA
-        # Revoke certificate
-        ./easyrsa revoke "$NAME"
-        # Create new Create certificate revocation list (CRL)
-        echo -e "Old certificate revoked!/nCreate new Create certificate revocation list (CRL)..."
+        ./easyrsa revoke-renewed "$CERT_NAME"
+        echo -e "Old certificate revoked!"
+        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+        # removing *.ovpn file because it has old certificate
+        rm -f $DEST_FILE_PATH
+    
+        echo 'Generate New .ovpn file...'
+        CA="$(cat $EASY_RSA/pki/ca.crt )"
+        CERT="$(cat $EASY_RSA/pki/issued/${CERT_NAME}.crt | grep -zEo -e '-----BEGIN CERTIFICATE-----(\n|.)*-----END CERTIFICATE-----' | tr -d '\0')"
+        KEY="$(cat $EASY_RSA/pki/private/${CERT_NAME}.key)"
+        TLS_AUTH="$(cat $EASY_RSA/pki/ta.key)"
+        echo "$(cat /etc/openvpn/config/client.conf)
+<ca>
+$CA
+</ca>
+<cert>
+$CERT
+</cert>
+<key>
+$KEY
+</key>
+<tls-auth>
+$TLS_AUTH
+</tls-auth>
+" > "$DEST_FILE_PATH"
+        echo -e "Old Certificate revoked!/nCreate new Create certificate revocation list (CRL)..."
         ./easyrsa gen-crl
         chmod +r ./pki/crl.pem
     else
-        echo "Revoking renewed certificate..."
-        # removing the end of the line starting from /name=$NAME for the line that matches the $serial pattern
-        sed  -i'.bak' "/$SERIAL/s/\/name=$NAME.*//" $INDEX
         cd $EASY_RSA
-        # Revoke renewed certificate
-        ./easyrsa revoke-renewed "$NAME"
+        # Fix index.txt by removing the user from the list following the serial number
+        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+        rm -f $EASY_RSA/pki/renewed/issued/99.crt
+        rm -f $EASY_RSA/pki/inline/99.inline
+        # Create new Create certificate revocation list (CRL)
+        echo -e "New Certificate revoked!/nCreate new Create certificate revocation list (CRL)..."
+        ./easyrsa gen-crl
+        chmod +r ./pki/crl.pem
     fi
 else
     echo "Revoking certificate..."
     # removing the end of the line starting from /name=$NAME for the line that matches the $serial pattern
-    sed  -i'.bak' "/$SERIAL/s/\/name=$NAME.*//" $INDEX
+    sed  -i'.bak' "/$CERT_SERIAL/s/\/name=$CERT_NAME.*//" $INDEX
     cd $EASY_RSA
     # Revoke certificate
-    ./easyrsa revoke "$NAME"
+    ./easyrsa revoke "$CERT_NAME"
 
     echo 'Create new Create certificate revocation list (CRL)...'
     ./easyrsa gen-crl
