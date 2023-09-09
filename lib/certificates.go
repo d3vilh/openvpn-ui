@@ -211,12 +211,12 @@ func BurnCertificate(CN string, serial string) error {
 	return nil
 }
 
-func RenewCertificate(name string, localip string) error {
+func RenewCertificate(name string, localip string, serial string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./renew.sh %s %s", name, name, localip))
+				"./renew.sh %s %s %s", name, name, localip, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

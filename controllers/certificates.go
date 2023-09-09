@@ -151,12 +151,13 @@ func (c *CertificatesController) Renew() {
 	flash := web.NewFlash()
 	name := c.GetString(":key")
 	localip := c.GetString(":localip")
-	if err := lib.RenewCertificate(name, localip); err != nil {
+	serial := c.GetString(":serial")
+	if err := lib.RenewCertificate(name, localip, serial); err != nil {
 		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Warning("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" has been renewed")
+		flash.Warning("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" and \"" + serial + "\" has been renewed")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()
