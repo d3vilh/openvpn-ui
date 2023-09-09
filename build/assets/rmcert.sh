@@ -56,7 +56,8 @@ else
     rm -f /etc/openvpn/pki/issued/$CERT_NAME.crt
     rm -f /etc/openvpn/pki/private/$CERT_NAME.key
     rm -f /etc/openvpn/pki/reqs/$CERT_NAME.req
-    rm -f $DEST_FILE_PATH
+    echo "removing *.ovpn file" 
+    rm -f /etc/openvpn/clients/$CERT_NAME.ovpn
 
     # Fix index.txt by removing the user from the list following the serial number
     sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX

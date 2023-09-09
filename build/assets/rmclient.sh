@@ -7,6 +7,7 @@ CERT_SERIAL=$2
 INDEX=/usr/share/easy-rsa/pki/index.txt
 EASY_RSA="/usr/share/easy-rsa"
 PERSHIY=`cat $INDEX | grep "/name=$CERT_NAME" | head -1 | awk '{ print $3}'`
+DEST_FILE_PATH="/etc/openvpn/clients/$CERT_NAME.ovpn"
 #ACTION=$3
 
 # .ovpn file path
@@ -23,9 +24,10 @@ export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3
 if [[ $(cat $INDEX | grep -c "/name=$CERT_NAME") -eq 2 ]]; then
     # Check if first serial is the same as requested to revoke and if yes - revoke new cert and old cert
     if [[ $PERSHIY = $CERT_SERIAL ]]; then
-        echo "Revoking renewed certificate and then old one..."
+        echo "Revoking renewed certificate..."
         # Fix index.txt by removing everything after pattern "/name=$1" in the line
-        sed -i'.bak' "s/\/name=${CERT_NAME}\/.*//" $INDEX
+        #sed -i'.bak' "s/\/name=${CERT_NAME}\/.*//" $INDEX
+        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
         cd $EASY_RSA
         # Revoke renewed certificate
         ./easyrsa revoke-renewed "$CERT_NAME"
@@ -60,8 +62,8 @@ $TLS_AUTH
         cd $EASY_RSA
         # Fix index.txt by removing the user from the list following the serial number
         sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
-        rm -f $EASY_RSA/pki/renewed/issued/99.crt
-        rm -f $EASY_RSA/pki/inline/99.inline
+        rm -f $EASY_RSA/pki/renewed/issued/"$CERT_NAME".crt
+        rm -f $EASY_RSA/pki/inline/"$CERT_NAME".inline
         # Create new Create certificate revocation list (CRL)
         echo -e "New Certificate revoked!/nCreate new Create certificate revocation list (CRL)..."
         ./easyrsa gen-crl
