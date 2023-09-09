@@ -15,7 +15,7 @@ if [ -n "$1" ]; then
   #  ./easyrsa revoke-renewed "$1"
   chmod +r ./pki/crl.pem
   mv /usr/share/easy-rsa/pki/vars.back /usr/share/easy-rsa/pki/vars
-  echo 'Done!'
+  echo 'All Done, Sudar!'
   echo 
 else
   echo "Invalid input argument: $1"
