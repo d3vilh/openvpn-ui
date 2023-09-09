@@ -10,10 +10,10 @@ CERT_SERIAL=$2
 CERT_NAME=$1
 
 # Check if .ovpn file exists
-if [[ ! -f $DEST_FILE_PATH ]]; then
-    echo "User not found."
-    exit 1
-fi
+#if [[ ! -f $DEST_FILE_PATH ]]; then
+#    echo "User not found."
+#    exit 1
+#fi
 
 echo "Removing user: $CERT_NAME with Serial: $CERT_SERIAL"
 
