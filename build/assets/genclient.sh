@@ -27,8 +27,7 @@ cd /usr/share/easy-rsa
 # Generate certificates
 if  [[ -z $3 ]]; then
     echo 'Without password...'
-   # export KEY_NAME="$1"
-./easyrsa --batch --req-cn="$1" gen-req "$1" nopass 
+    ./easyrsa --batch --req-cn="$1" gen-req "$1" nopass 
 else
     echo 'With password...'
     # See https://stackoverflow.com/questions/4294689/how-to-generate-an-openssl-key-using-a-passphrase-from-the-command-line

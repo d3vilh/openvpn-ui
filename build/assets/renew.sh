@@ -5,7 +5,7 @@ set -e
 if [ -n "$1" ]; then
   export EASYRSA_BATCH=1
   # Temp WA for reneval
-  mv /usr/share/easy-rsa/pki/vars /usr/share/easy-rsa/pki/vars.bak
+  #mv /usr/share/easy-rsa/pki/vars /usr/share/easy-rsa/pki/vars.bak
   # Renew certificate.
   echo "Renew certificate: $1 with localip: $2"
   cd /usr/share/easy-rsa
@@ -14,7 +14,7 @@ if [ -n "$1" ]; then
   sed -i'.bak' "$ s/$/\/name=${1}\/LocalIP=${2}/" /usr/share/easy-rsa/pki/index.txt
   #  ./easyrsa revoke-renewed "$1"
   chmod +r ./pki/crl.pem
-  mv /usr/share/easy-rsa/pki/vars.back /usr/share/easy-rsa/pki/vars
+  #mv /usr/share/easy-rsa/pki/vars.back /usr/share/easy-rsa/pki/vars
   echo 'All Done, Sudar!'
   echo 
 else
