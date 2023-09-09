@@ -82,17 +82,12 @@
                       <span class="label label-warning">Email: {{ .Details.Email }}</span>  -->
                     </td>
 
-                  {{ if eq .Revocation ""}}
+                  {{ if and .IsExpired (eq .Revocation "") }}
                     <td>
-                      <span class="label label-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
-                      {{ if time.Now().AddDate(0, 0, 30).After .ExpirationT }}
                         <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
-                      {{ end }}
                     </td>
                   {{else}}
-                    <td>
-                      <span class="label label-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
-                    </td>
+                    <td></td>
                   {{end}}
 
                   {{ if eq .Revocation ""}}
