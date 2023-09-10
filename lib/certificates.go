@@ -53,7 +53,7 @@ func ReadCerts(path string) ([]*Cert, error) {
 					line, 6, len(fields))
 		}
 		expT, _ := time.Parse("060102150405Z", fields[1])
-		expTA := time.Now().AddDate(0, 0, 30).After(expT)
+		expTA := time.Now().AddDate(0, 0, 36135).After(expT)      // show/hide Renew button if expired within 99 years (always show)
 		logs.Debug("ExpirationT: %v, IsExpired: %v", expT, expTA) // logging
 		revT, _ := time.Parse("060102150405Z", fields[2])
 		c := &Cert{
