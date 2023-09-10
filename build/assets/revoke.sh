@@ -76,9 +76,10 @@ $TLS_AUTH
         cd $EASY_RSA
         # Fix index.txt by removing the user from the list following the serial number
         echo "Removing New Certificate..."
-        # removing the end of the line starting from /name=$NAME for the line that matches the $serial pattern
-        sed  -i'.bak' "/$CERT_SERIAL/s/\/name=$CERT_NAME.*//" $INDEX
-        ./easyrsa revoke "$CERT_NAME"
+        mv $EASY_RSA/pki/renewed/issued/$CERT_NAME.crt  $EASY_RSA/pki/issued/$CERT_NAME.crt
+        rm -f $EASY_RSA/pki/inline/$CERT_NAME.inline
+        # Removing old cert from the DB
+        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
         # Create new Create certificate revocation list (CRL)
         echo -e "New Certificate revoked!\nCreate new certificate revocation list (CRL)..."
         ./easyrsa gen-crl
