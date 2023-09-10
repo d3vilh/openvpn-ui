@@ -82,7 +82,7 @@
                       <span class="label label-warning">Email: {{ .Details.Email }}</span>  -->
                     </td>
 
-                  {{ if and .IsExpired (eq .Revocation "") }}
+                  {{ if and .IsExpired (eq .Revocation "") (ne .Detail.Name "") }}
                     <td>
                         <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
                     </td>
@@ -90,7 +90,7 @@
                     <td></td>
                   {{end}}
 
-                  {{ if eq .Revocation ""}}
+                  {{ if and (eq .Revocation "") (ne .Detail.Name "") }}
                     <td>
                       <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
                     </td>
