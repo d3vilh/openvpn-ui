@@ -31,13 +31,23 @@ if [[ $(cat $INDEX | grep -c "/name=$CERT_NAME") -eq 2 ]]; then
         #2 sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
 
         # removing the end of the line starting from /name=$NAME for the line that matches the $serial pattern
+
         sed  -i'.bak' "/$CERT_SERIAL/s/\/name=$CERT_NAME.*//" $INDEX
+        echo "index.txt patched"
         cd $EASY_RSA
+        
+        #moving new cert to old dir
+        #mv $EASY_RSA/pki/renewed/issued/$CERT_NAME.crt  $EASY_RSA/pki/issued/$CERT_NAME.crt
+        echo "Runing: easyrsa revoke-renewed $CERT_NAME"
         # Revoke renewed certificate
         ./easyrsa revoke-renewed "$CERT_NAME"
-        echo -e "Old certificate revoked!"
-        #sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+        echo -e "Old certificate revoked! \nRemoving old cert from the DB"
+
+        # Removing old cert from the DB
+        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+        echo "Old cert with serial $CERT_SERIAL removed from the DB"
         # removing *.ovpn file because it has old certificate
+        echo "removing *.ovpn file"
         rm -f $DEST_FILE_PATH
     
         echo 'Generate New .ovpn file...'

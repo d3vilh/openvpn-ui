@@ -16,14 +16,15 @@ echo "Removing user: $CERT_NAME with Serial: $CERT_SERIAL"
 STATUS_CH=$(grep -e ${CERT_NAME}$ -e${CERT_NAME}/ ${INDEX} | awk '{print $1}' | tr -d '\n')
 if [[ $STATUS_CH = "V" ]]; then
     echo "Cert is VALID"
-    echo "Will remove: ${CERT_SERIAL}"
+    echo "Should not remove: $CERT_NAME with serial: $CERT_SERIAL"
+    exit 1
 else
     echo "Cert is REVOKED"
-    echo "Will remove: ${CERT_SERIAL}"
+    echo "Will remove: $CERT_NAME with serial: $CERT_SERIAL"
 fi
 
 # Check if the user has two certificates in index.txt
-if [[ $(cat /usr/share/easy-rsa/pki/index.txt | grep -c "/CN=$NAME") -eq 2 ]]; then
+if [[ $(cat $INDEX | grep -c "/CN=$CERT_NAME/") -eq 2 ]]; then
     echo "Removing renewed certificate..."
     sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
     # removing *.ovpn file because it has old certificate
@@ -52,10 +53,10 @@ $TLS_AUTH
 
 else
     echo "Removing certificate..."
-    rm -f /etc/openvpn/pki/certs_by_serial/$CERT_SERIAL.pem
-    rm -f /etc/openvpn/pki/issued/$CERT_NAME.crt
-    rm -f /etc/openvpn/pki/private/$CERT_NAME.key
-    rm -f /etc/openvpn/pki/reqs/$CERT_NAME.req
+   # rm -f /etc/openvpn/pki/certs_by_serial/$CERT_SERIAL.pem #IDK what to do now
+    #rm -f /etc/openvpn/pki/issued/$CERT_NAME.crt  #should be removed by revoke
+    #rm -f /etc/openvpn/pki/private/$CERT_NAME.key #should be removed by revoke
+    #rm -f /etc/openvpn/pki/reqs/$CERT_NAME.req    #should be removed by revoke
     echo "removing *.ovpn file" 
     rm -f /etc/openvpn/clients/$CERT_NAME.ovpn
 

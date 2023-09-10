@@ -21,7 +21,7 @@ if [ -n "$1" ]; then
   #./easyrsa revoke-renewed "$1"
   # Fix for new /name in index.txt (adding name and ip to the last line)
  
-  chmod +r ./pki/crl.pem
+  #chmod +r ./pki/crl.pem
   #mv /usr/share/easy-rsa/pki/vars.back /usr/share/easy-rsa/pki/vars
   echo 'All Done, Sudar!'
   echo 
