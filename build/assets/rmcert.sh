@@ -23,7 +23,7 @@ else
 fi
 
 # Check if the user has two certificates in index.txt
-if [[ $(cat /usr/share/easy-rsa/pki/index.txt | grep -c "/name=$NAME") -eq 2 ]]; then
+if [[ $(cat /usr/share/easy-rsa/pki/index.txt | grep -c "/CN=$NAME") -eq 2 ]]; then
     echo "Removing renewed certificate..."
     sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
     # removing *.ovpn file because it has old certificate

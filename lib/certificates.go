@@ -170,7 +170,7 @@ func RevokeCertificate(name string, serial string) error {
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./rmclient.sh %s %s", name, name, serial))
+				"./revoke.sh %s %s", name, name, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

@@ -27,12 +27,16 @@ if [[ $(cat $INDEX | grep -c "/name=$CERT_NAME") -eq 2 ]]; then
         echo "Revoking renewed certificate..."
         # Fix index.txt by removing everything after pattern "/name=$1" in the line
         #sed -i'.bak' "s/\/name=${CERT_NAME}\/.*//" $INDEX
-        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+        
+        #2 sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+
+        # removing the end of the line starting from /name=$NAME for the line that matches the $serial pattern
+        sed  -i'.bak' "/$CERT_SERIAL/s/\/name=$CERT_NAME.*//" $INDEX
         cd $EASY_RSA
         # Revoke renewed certificate
         ./easyrsa revoke-renewed "$CERT_NAME"
         echo -e "Old certificate revoked!"
-        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
+        #sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
         # removing *.ovpn file because it has old certificate
         rm -f $DEST_FILE_PATH
     
@@ -55,17 +59,18 @@ $KEY
 $TLS_AUTH
 </tls-auth>
 " > "$DEST_FILE_PATH"
-        echo -e "Old Certificate revoked!/nCreate new Create certificate revocation list (CRL)..."
+        echo -e "Old Certificate revoked!\nCreate new Create certificate revocation list (CRL)..."
         ./easyrsa gen-crl
         chmod +r ./pki/crl.pem
     else
         cd $EASY_RSA
         # Fix index.txt by removing the user from the list following the serial number
-        sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
-        rm -f $EASY_RSA/pki/renewed/issued/"$CERT_NAME".crt
-        rm -f $EASY_RSA/pki/inline/"$CERT_NAME".inline
+        echo "Removing New Certificate..."
+        # removing the end of the line starting from /name=$NAME for the line that matches the $serial pattern
+        sed  -i'.bak' "/$CERT_SERIAL/s/\/name=$CERT_NAME.*//" $INDEX
+        ./easyrsa revoke "$CERT_NAME"
         # Create new Create certificate revocation list (CRL)
-        echo -e "New Certificate revoked!/nCreate new Create certificate revocation list (CRL)..."
+        echo -e "New Certificate revoked!\nCreate new certificate revocation list (CRL)..."
         ./easyrsa gen-crl
         chmod +r ./pki/crl.pem
     fi

@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install --reinstall libc-bin -y && apt-get install
 ADD assets/start.sh /opt/start.sh
 ADD assets/generate_ca_and_server_certs.sh /opt/scripts/generate_ca_and_server_certs.sh
 ADD assets/genclient.sh /opt/scripts/genclient.sh
-ADD assets/rmclient.sh /opt/scripts/rmclient.sh
+ADD assets/revoke.sh /opt/scripts/revoke.sh
 ADD assets/restart.sh /opt/scripts/restart.sh
 ADD assets/rmcert.sh /opt/scripts/rmcert.sh
 ADD assets/remove.sh /opt/scripts/remove.sh
