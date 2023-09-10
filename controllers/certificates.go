@@ -116,7 +116,7 @@ func (c *CertificatesController) Revoke() {
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Warning("Success! Certificate for the name \"" + name + "\" and serial  \"" + serial + "\" has been revoked")
+		flash.Success("Success! Certificate for the name \"" + name + "\" and serial  \"" + serial + "\" has been revoked")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()
@@ -158,7 +158,7 @@ func (c *CertificatesController) Renew() {
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Warning("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" and \"" + serial + "\" has been renewed")
+		flash.Success("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" and \"" + serial + "\" has been renewed")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()
