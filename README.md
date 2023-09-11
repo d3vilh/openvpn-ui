@@ -341,7 +341,7 @@ And you are done with the upgrade process.
   | **0.4** | o_v_client_config | new table                     | Configuration > OpenVPN Client  |
   | 0.4     | easy_r_s_a_config | new table                     | Configuration > EasyRSA vars    |
   | 0.4     | settings          | easy_r_s_a_path               | Configuration > OpenVPN-UI      |
-  | **0.5** | **no schema changes** | **no schema changes**     | https://u24.gov.ua              |
+  | **0.5** | **no schema changes** | **no schema changes**     | Donate here https://u24.gov.ua  |
   | **0.6** | o_v_config        | o_v_config_topology           | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | o_v_config_user               | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | o_v_config_group              | Configuration > OpenVPN Server  |
@@ -585,8 +585,7 @@ Deliver .OVPN profile to the client device and import it as a FILE, then connect
 
 To renew certificate, go to `"Certificates"` and press `"Renew"` button for the client you would like to renew certificate for:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Cert-Renew.01.png" alt="Renew OpenVPN Certificate" width="350" border="1" />
-
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Cert-Renew.01.png" alt="Renew OpenVPN Certificate" width="600" border="1" />
 
 Right after this step new Certificate will be genrated and it will appear as new client profile with the same Client name. At this point both client profiles will have updated Certificate when you try to download it.
 
@@ -599,7 +598,7 @@ Renewal process will not affect active VPN connections, old client will be disco
 ### Revoking .OVPN profiles
 
 If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
-You can do it via OpenVPN UI `"Certificates"` menue, by pressing "Revoke" amber button:
+You can do it via OpenVPN UI `"Certificates"` menue, by pressing `"Revoke"`` amber button:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
 
@@ -609,7 +608,7 @@ Certificate revoke won't kill active VPN connections, you'll have to restart the
 
 You can do the same from the `"Maintenance"` page.
 
-After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press "Remove" button.
+After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press `"Remove"` button.
 
 ### Screenshots:
 
