@@ -12,7 +12,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 
 * Status page that shows server statistics and list of connected clients
 * Supports OpenVPN **tunnel**(`dev tun`) or **bridge**(`dev tap`) server configurations
-* Easy to **generate**, **download**, **revoke** and **delete** client certificates
+* Easy to **generate**, **download**, **renew**, **revoke** and **delete** client certificates
 * Client can have secret passphrase and static IP assigned during client certificate generation
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
 * **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
@@ -341,7 +341,7 @@ And you are done with the upgrade process.
   | **0.4** | o_v_client_config | new table                     | Configuration > OpenVPN Client  |
   | 0.4     | easy_r_s_a_config | new table                     | Configuration > EasyRSA vars    |
   | 0.4     | settings          | easy_r_s_a_path               | Configuration > OpenVPN-UI      |
-  | **0.5** | **no schema changes** | **no schema changes**     | https://u24.gov.ua              |
+  | **0.5** | **no schema changes** | **no schema changes**     | Donate here https://u24.gov.ua  |
   | **0.6** | o_v_config        | o_v_config_topology           | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | o_v_config_user               | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | o_v_config_group              | Configuration > OpenVPN Server  |
@@ -506,7 +506,7 @@ iptables -A FORWARD -s 10.0.70.88 -d 10.0.70.77 -j DROP
 iptables -A FORWARD -d 10.0.70.77 -s 10.0.70.88 -j DROP
 ```
 
-Check detailed subnets description on [here](https://github.com/d3vilh/openvpn-ui/tree/dev1#openvpn-client-subnets-guest-and-home-users).
+Check detailed subnets description on [here](https://github.com/d3vilh/openvpn-ui/tree/main#openvpn-client-subnets-guest-and-home-users).
 
 ### OpenVPN Pstree structure
 
@@ -581,10 +581,24 @@ Deliver .OVPN profile to the client device and import it as a FILE, then connect
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
 
+### Renew Certificates for client profiles
+
+To renew certificate, go to `"Certificates"` and press `"Renew"` button for the client you would like to renew certificate for:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Cert-Renew.01.png" alt="Renew OpenVPN Certificate" width="600" border="1" />
+
+Right after this step new Certificate will be genrated and it will appear as new client profile with the same Client name. At this point both client profiles will have updated Certificate when you try to download it.
+
+Once you will deliver new client profile with renewed Certificate to you client, press `"Revoke"` button for old profile to revoke old Certificate, old client profile will be deleted from the list.
+
+If, for some reason you still would like to keep old certificate you have to `"Revoke"` new profile, old certificate will be rolled back and new profile will be deleted from the list.
+
+Renewal process will not affect active VPN connections, old client will be disconnected only after you revoke old certificate or certificate term of use will expire.
+
 ### Revoking .OVPN profiles
 
 If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
-You can do it via OpenVPN UI `"Certificates"` menue, by pressing "Revoke" amber button:
+You can do it via OpenVPN UI `"Certificates"` menue, by pressing `"Revoke"`` amber button:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
 
@@ -594,7 +608,7 @@ Certificate revoke won't kill active VPN connections, you'll have to restart the
 
 You can do the same from the `"Maintenance"` page.
 
-After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press "Remove" button.
+After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press `"Remove"` button.
 
 ### Screenshots:
 
@@ -620,7 +634,6 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 ## Дякую and Kudos to the original author
 
-Kudos to @adamwalach for development of the original [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) project which was used as foundation of this project.
-#Thats all folks!
+Kudos to @adamwalach for development of the original [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) project which was used as foundation for this project.
 
-<a href="https://www.buymeacoffee.com/d3vilh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
+<a href="https://www.buymeacoffee.com/d3vilh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="51" width="217"></a>

@@ -35,7 +35,7 @@ func (c *DangerController) DeletePKI() {
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		flash.Warning("Success! The \"" + name + "\" has been deleted")
+		flash.Success("Success! The \"" + name + "\" has been deleted")
 		flash.Store(&c.Controller)
 	}
 	c.Data["Flash"] = flash.Data

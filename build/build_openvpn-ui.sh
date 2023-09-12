@@ -8,22 +8,26 @@ ARCH=$(uname -m)
 case $ARCH in
   armv6*)
     PLATFORM="linux/arm/v5"
-    UIIMAGE="FROM arm32v5/debian:stable-slim"
+    #UIIMAGE="FROM arm32v5/debian:stable-slim"
+    UIIMAGE="FROM arm32v5/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM arm32v5/golang:1.20"
     ;;
   armv7*)
     PLATFORM="linux/arm/v7"
-    UIIMAGE="FROM arm32v7/debian:stable-slim"
+    #UIIMAGE="FROM arm32v7/debian:stable-slim"
+    UIIMAGE="FROM arm32v7/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM arm32v7/golang:1.20"
     ;;
   aarch64*)
     PLATFORM="linux/arm64/v8"
-    UIIMAGE="FROM arm64v8/debian:stable-slim"
+    #UIIMAGE="FROM arm64v8/debian:stable-slim"
+    UIIMAGE="FROM arm64v8/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM arm64v8/golang:1.20"
     ;;
   *)
     PLATFORM="linux/amd64"
-    UIIMAGE="FROM debian:stable-slim"
+    #UIIMAGE="FROM debian:stable-slim"
+    UIIMAGE="FROM debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM golang:1.20"
     ;;
 esac

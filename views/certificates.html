@@ -28,6 +28,7 @@
               <th>Revocation</th>
               <th>Serial</th>
               <th>Details</th>
+              <th>Renew</th>
               <th>Revoke</th>
               <th>Delete</th>
               <th></th>
@@ -80,9 +81,18 @@
                 <!--  Comented until bypass of client email to DB will be implemented 
                       <span class="label label-warning">Email: {{ .Details.Email }}</span>  -->
                     </td>
-                  {{ if eq .Revocation ""}}
+
+                  {{ if and .IsExpired (eq .Revocation "") (ne .Details.Name "") }}
                     <td>
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
+                        <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
+                    </td>
+                  {{else}}
+                    <td></td>
+                  {{end}}
+
+                  {{ if and (eq .Revocation "") (ne .Details.Name "") }}
+                    <td>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
                     </td>
                   {{else}}
                     <td></td>
@@ -101,7 +111,6 @@
             </tbody>
           </table>
         </div>
-        <!-- /.table-responsive -->
       </div>
       <!--else
           Fix your configuration

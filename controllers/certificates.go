@@ -110,12 +110,13 @@ func (c *CertificatesController) Revoke() {
 	c.TplName = "certificates.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
-	if err := lib.RevokeCertificate(name); err != nil {
+	serial := c.GetString(":serial")
+	if err := lib.RevokeCertificate(name, serial); err != nil {
 		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Warning("Success! Certificate for the name \"" + name + "\" has been revoked")
+		flash.Success("Success! Certificate for the name \"" + name + "\" and serial  \"" + serial + "\" has been revoked")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()
@@ -139,7 +140,25 @@ func (c *CertificatesController) Burn() {
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Success("Success! Certificate for the name \"" + CN + "\" has been removed")
+		flash.Success("Success! Certificate for the name \"" + CN + "\" and serial  \"" + serial + "\"  has been removed")
+		flash.Store(&c.Controller)
+	}
+	c.showCerts()
+}
+
+// @router /certificates/revoke/:key [get]
+func (c *CertificatesController) Renew() {
+	c.TplName = "certificates.html"
+	flash := web.NewFlash()
+	name := c.GetString(":key")
+	localip := c.GetString(":localip")
+	serial := c.GetString(":serial")
+	if err := lib.RenewCertificate(name, localip, serial); err != nil {
+		logs.Error(err)
+		//flash.Error(err.Error())
+		//flash.Store(&c.Controller)
+	} else {
+		flash.Success("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" and \"" + serial + "\" has been renewed")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()
