@@ -99,7 +99,9 @@ func parseDetails(d string) *Details {
 			case "LocalIP":
 				details.LocalIP = fields[1]
 			default:
-				logs.Warn(fmt.Sprintf("Undefined entry: %s", line))
+				if line != "" && !strings.Contains(line, "name") && !strings.Contains(line, "LocalIP") {
+					logs.Warn(fmt.Sprintf("Undefined entry: %s", line))
+				}
 			}
 		}
 	}
