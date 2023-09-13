@@ -3,21 +3,22 @@
 set -e
 
 # Directory where OpenVPN configuration files are stored
-OVDIR=/etc/openvpn
+OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
+echo 'OVPN path: $OPENVPN_DIR'
 
 # Change to the /opt directory
 cd /opt/
 
 # If the provisioned file does not exist in the OpenVPN directory, prepare the certificates and create the provisioned file
-if [ ! -f $OVDIR/.provisioned ]; then
+if [ ! -f $OPENVPN_DIR/.provisioned ]; then
   #echo "Preparing certificates"
-  mkdir -p $OVDIR
+  mkdir -p $OPENVPN_DIR
 
   # Uncomment line below to generate CA and server certificates (should be done on the side of OpenVPN container or server however)
   #./scripts/generate_ca_and_server_certs.sh
 
   # Create the provisioned file
-  touch $OVDIR/.provisioned
+  touch $OPENVPN_DIR/.provisioned
   echo "First OpenVPN UI start."
 fi
 

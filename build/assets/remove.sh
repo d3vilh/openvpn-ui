@@ -5,10 +5,13 @@ set -e
 
 # Variables
 ACTION=$1  #passed via OpenVPN-UI GUI
-PKI_DIR=/usr/share/easy-rsa/pki
-CERT_DIR=/etc/openvpn/clients
-STATIC_CLIENT_DIR=/etc/openvpn/staticclients
-OVPN_DB_DIR=/etc/openvpn/db
+EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
+OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
+echo 'EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR'
+PKI_DIR=$EASY_RSA/pki
+CERT_DIR=$OPENVPN_DIR/clients
+STATIC_CLIENT_DIR=$OPENVPN_DIR/staticclients
+OVPN_DB_DIR=$OPENVPN_DIR/db
 
 if [ "$ACTION" = "remove_pki" ]; then
   # Remove PKI
