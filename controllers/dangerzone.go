@@ -29,7 +29,7 @@ func (c *DangerController) DeletePKI() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
-	logs.Info("Controller: Deleting:", name)
+	//logs.Info("Controller: Deleting:", name)
 	if err := lib.DeletePKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
@@ -39,7 +39,7 @@ func (c *DangerController) DeletePKI() {
 		flash.Store(&c.Controller)
 	}
 	c.Data["Flash"] = flash.Data
-	logs.Info("Flash message stored:", flash.Data)
+	//logs.Info("Flash message stored:", flash.Data)
 	//	c.Redirect(c.URLFor("DangerController.Get"), 302)
 }
 
@@ -48,7 +48,7 @@ func (c *DangerController) InitPKI() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
-	logs.Info("Controller: Runing init for:", name)
+	//logs.Info("Controller: Runing init for:", name)
 	if err := lib.InitPKI(name); err != nil {
 		logs.Error(err)
 		flash.Error(err.Error())
@@ -58,7 +58,7 @@ func (c *DangerController) InitPKI() {
 		flash.Store(&c.Controller)
 	}
 	c.Data["Flash"] = flash.Data
-	logs.Info("Flash message stored:", flash.Data)
+	//logs.Info("Flash message stored:", flash.Data)
 	//	c.Redirect(c.URLFor("DangerController.Get"), 302)
 }
 
@@ -67,7 +67,7 @@ func (c *DangerController) RestartContainer() {
 	c.TplName = "maintenance.html"
 	flash := web.NewFlash()
 	name := c.GetString(":key")
-	logs.Info("Controller: Restarting:", name)
+	//logs.Info("Controller: Restarting:", name)
 	if err := lib.RestartContainer(name); err != nil {
 		logs.Error("Error restarting container:", err)
 		//	logs.Error("Stack trace:", string(debug.Stack()))
@@ -78,5 +78,5 @@ func (c *DangerController) RestartContainer() {
 		flash.Store(&c.Controller)
 	}
 	c.Data["Flash"] = flash.Data
-	logs.Info("Flash message stored:", flash.Data)
+	//logs.Info("Flash message stored:", flash.Data)
 }
