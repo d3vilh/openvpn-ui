@@ -7,7 +7,6 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_SERIAL=$3
-#EASY_RSA=/usr/share/easy-rsa
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
 echo 'EasyRSA path: $EASY_RSA'
 

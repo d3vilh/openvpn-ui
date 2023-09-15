@@ -7,8 +7,6 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_PASS=$3
-#EASY_RSA=/usr/share/easy-rsa
-#OPENVPN_DIR=/etc/openvpn
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
 echo 'EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR'
@@ -48,7 +46,7 @@ fi
 # Sign request
 ./easyrsa sign-req client "$CERT_NAME"
 # Fix for /name in index.txt
-echo "Fixind Database..."
+echo "Fixing Database..."
 sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}/" $EASY_RSA/pki/index.txt
 # Certificate properties
 CA="$(cat $EASY_RSA/pki/ca.crt )"
@@ -75,4 +73,4 @@ $TLS_AUTH
 </tls-auth>
 " > "$OVPN_FILE_PATH"
 
-echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn/clients/$CERT_NAME.ovpn"
+echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
