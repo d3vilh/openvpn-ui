@@ -3,7 +3,7 @@
 set -e
 
 # Directory where OpenVPN configuration files are stored
-OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '[:space:]')
+OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 echo "Init. OVPN path: $OPENVPN_DIR"
 
 # Change to the /opt directory
