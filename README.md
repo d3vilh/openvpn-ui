@@ -4,7 +4,7 @@ OpenVPN server web administration interface.
 
 Quick to deploy and easy to use, makes work with small OpenVPN environments a breeze.
 
-<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPNVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
 
 [![latest version](https://img.shields.io/github/v/release/d3vilh/openvpn-ui?color=%2344cc11&label=Latest%20release&style=for-the-badge)](https://github.com/d3vilh/openvpn-ui/releases/latest)
 
@@ -21,6 +21,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Restart OpenVPN Server and OpenVPN UI from web interface
 * OpenVPN-UI Admin user and password can be passed via environment variables to container
 * Updated infrustracture:
+  * GoLang 1.21
   * Beego 2.1 with all vulnerabilities fixed
   * Easy-rsa 3.X
   * Openssl 3.X
@@ -271,7 +272,7 @@ docker pull d3vilh/openvpn-ui:latest
 2. Confirm new image is pulled with desired version:
 ```shell
 docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
-{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.6"}
+{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.8"}
 ```
 3. Stop and remove old container:
 ```shell
@@ -304,7 +305,7 @@ Now you need to go to `Configuration > OpenVPN Server` in OpenVPN UI webpage and
 
 Here is example of Server configuration page with new fields after the upgrade from version 0.3 to 0.6:
 
-<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/images/OpenVPN-UI-Upgrade.01.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPNVPN-UI-Upgrade.01.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
 You have to update empty fields with options from your current `server.conf` and **only then** press **`Save Both Configs`** button on the same page below.
 
@@ -314,11 +315,11 @@ Please pay attention that before saving config you have to update all the fields
 
 All fields to review are **marked** with <strong><span style="color:#337ab7" title="New format in this version">!</span></strong> sign:
 
-<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/images/OpenVPN-UI-Upgrade.02.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPNVPN-UI-Upgrade.02.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
 Here is how it should looks like:
 
-<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/images/OpenVPN-UI-Upgrade.03.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
+<img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPNVPN-UI-Upgrade.03.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
 New `server.conf` file will be applied immedeately, after you press **`Save Both Configs`** button.
 
@@ -329,7 +330,7 @@ And you are done with the upgrade process.
   <details>
       <summary>DB Schema changes</summary>
 
-   ##### DB Schema changes 0.3 to 0.6 versions
+   ##### DB Schema changes 0.3 to 0.8 versions
    You have nothing to do with the DB schema, just for your information.
 
   | Version | Table             | New Field                     | New OpenVPN UI gui location     |
@@ -341,7 +342,7 @@ And you are done with the upgrade process.
   | **0.4** | o_v_client_config | new table                     | Configuration > OpenVPN Client  |
   | 0.4     | easy_r_s_a_config | new table                     | Configuration > EasyRSA vars    |
   | 0.4     | settings          | easy_r_s_a_path               | Configuration > OpenVPN-UI      |
-  | **0.5** | **no schema changes** | **no schema changes**     | Donate here https://u24.gov.ua  |
+  | **0.5** | **no schema changes** | **no schema changes**     | **no schema changes**           |
   | **0.6** | o_v_config        | o_v_config_topology           | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | o_v_config_user               | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | o_v_config_group              | Configuration > OpenVPN Server  |
@@ -358,7 +359,8 @@ And you are done with the upgrade process.
   | 0.6     | o_v_config        | custom_opt_one                | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | custom_opt_two                | Configuration > OpenVPN Server  |
   | 0.6     | o_v_config        | custom_opt_three              | Configuration > OpenVPN Server  |
-
+  | **0.7** | **no schema changes** | **no schema changes**     | **no schema changes**           |
+  | **0.8** | **no schema changes** | **no schema changes**     | Donate here https://u24.gov.ua  |
 
   </details>
 
@@ -563,29 +565,29 @@ You can update external client IP and port address anytime under `"Configuration
 
 For this go to `"Configuration > OpenVPN Client"` (don't trust what you see, this picture is outdated):
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
 
 And then update `"Connection Address"` and `"Connection Port"` fields with your external Internet IP and Port. 
 
 To generate new Client Certificate go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-New_Client.png" alt="Create Certificate" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-New_Client.png" alt="Create Certificate" width="350" border="1" />
 
 To download .OVPN client configuration file, press on the `Client Name` you just created:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-New_Client_download.png" alt="download OVPN" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-New_Client_download.png" alt="download OVPN" width="350" border="1" />
 
 Install [Official OpenVPN client](https://openvpn.net/vpn-client/) to your client device.
 
 Deliver .OVPN profile to the client device and import it as a FILE, then connect with new profile to enjoy your free VPN:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
 
 ### Renew Certificates for client profiles
 
 To renew certificate, go to `"Certificates"` and press `"Renew"` button for the client you would like to renew certificate for:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Cert-Renew.01.png" alt="Renew OpenVPN Certificate" width="600" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Cert-Renew.01.png" alt="Renew OpenVPN Certificate" width="600" border="1" />
 
 Right after this step new Certificate will be genrated and it will appear as new client profile with the same Client name. At this point both client profiles will have updated Certificate when you try to download it.
 
@@ -600,11 +602,11 @@ Renewal process will not affect active VPN connections, old client will be disco
 If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
 You can do it via OpenVPN UI `"Certificates"` menue, by pressing `"Revoke"`` amber button:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Revoke.png" alt="Revoke Certificate" width="600" border="1" />
 
 Certificate revoke won't kill active VPN connections, you'll have to restart the service if you want the user to immediately disconnect. It can be done from the same `"Certificates"` page, by pressing Restart red button:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Restart.png" alt="OpenVPN Restart" width="600" border="1" />
 
 You can do the same from the `"Maintenance"` page.
 
@@ -612,25 +614,25 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 ### Screenshots:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Login.png" alt="OpenVPN-UI Login screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Login.png" alt="OpenVPN-UI Login screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Home.png" alt="OpenVPN-UI Home screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Home.png" alt="OpenVPN-UI Home screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Certs.png" alt="OpenVPN-UI Certificates screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Certs.png" alt="OpenVPN-UI Certificates screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-EasyRsaVars.png" alt="OpenVPN-UI EasyRSA vars screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-EasyRsaVars.png" alt="OpenVPN-UI EasyRSA vars screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Maintenance.png" alt="OpenVPN-UI Maintenance screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Maintenance.png" alt="OpenVPN-UI Maintenance screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Server-config.png" alt="OpenVPN-UI Server Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Server-config.png" alt="OpenVPN-UI Server Configuration screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-ClientConf.png" alt="OpenVPN-UI Client Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-ClientConf.png" alt="OpenVPN-UI Client Configuration screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPNVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
 
 ## Дякую and Kudos to the original author
 
