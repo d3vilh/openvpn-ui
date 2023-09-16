@@ -174,7 +174,7 @@
 
             <div class="form-group">
               <label for="name" title="Cert days to expire">Expired Days</label>
-              <input type="number" min="1" value="825" class="form-control" placeholder="825" pattern="^\d{1,6}$" id="EasyRSACertExpire" name="EasyRSACertExpire" value="{{ .Settings.EasyRSACertExpire }}">
+              <input type="number" min="1" class="form-control" placeholder="825" pattern="^\d{1,6}$" id="EasyRSACertExpire" name="EasyRSACertExpire" value="{{ .Settings.EasyRSACertExpire }}">
               <span class="help-block">Number of days until Client certificate expire. The recommended value is 825.</span>
             </div>
 
