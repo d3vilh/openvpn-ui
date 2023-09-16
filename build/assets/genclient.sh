@@ -27,7 +27,7 @@ echo 'Patching easy-rsa.3.1.1 openssl-easyrsa.cnf...'
 sed -i '/serialNumber_default/d' "$EASY_RSA/pki/openssl-easyrsa.cnf"
 
 echo 'Generate client certificate...'
-echo -e "Will use following parameters: \nEASYRSA_CERT_EXPIRE: $EASYRSA_CERT_EXPIRE\nEASYRSA_REQ_EMAIL: $EASYRSA_REQ_EMAIL"
+echo -e "Will use following parameters: \nEASYRSA_CERT_EXPIRE: $EASYRSA_CERT_EXPIRE\nEASYRSA_REQ_EMAIL: $EASYRSA_REQ_EMAIL\nEASYRSA_REQ_COUNTRY: $EASYRSA_REQ_COUNTRY\nEASYRSA_REQ_PROVINCE: $EASYRSA_REQ_PROVINCE\nEASYRSA_REQ_CITY: $EASYRSA_REQ_CITY\nEASYRSA_REQ_ORG: $EASYRSA_REQ_ORG\nEASYRSA_REQ_OU: $EASYRSA_REQ_OU"
 
 # Copy easy-rsa variables
 cd $EASY_RSA
