@@ -1,6 +1,6 @@
 #!/bin/bash
 #VERSION 1.2 by @d3vilh@github.com aka Mr. Philipp
-# Exit immediately if a command exits with a non-zero status
+# Exit immediately if a command exits with a non-zero status.
 set -e
 
 # .ovpn file path
