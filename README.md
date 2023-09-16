@@ -563,13 +563,13 @@ All the Server and Client configuration located in Docker volume and can be ease
 
 You can update external client IP and port address anytime under `"Configuration > OpenVPN Client"` menue. 
 
-For this go to `"Configuration > OpenVPN Client"` (don't trust what you see, this picture is outdated):
+For this go to `"Configuration > OpenVPN Client"`:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ext_serv_ip1.png" alt="Configuration > Settings" width="350" border="1" />
 
 And then update `"Connection Address"` and `"Connection Port"` fields with your external Internet IP and Port. 
 
-To generate new Client Certificate go to `"Certificates"`, enter new VPN client name in the field at the page below and press `"Create"` to generate new Client certificate:
+To generate new Client Certificate go to `"Certificates"`, then press `"Create Certificate"` button, enter new VPN client name, complete all the rest fields and press `"Create"` to generate new Client certificate:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ext_serv_ip2.png" alt="Server Address" width="350" border="1" />  <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-New_Client.png" alt="Create Certificate" width="350" border="1" />
 
