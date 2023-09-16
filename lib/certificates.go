@@ -112,7 +112,7 @@ func trim(s string) string {
 	return strings.Trim(strings.Trim(s, "\r\n"), "\n")
 }
 
-func CreateCertificate(name string, staticip string, passphrase string, expiredays string) error {
+func CreateCertificate(name string, staticip string, passphrase string, expiredays string, email string, country string, province string, city string, org string, orgunit string) error {
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
@@ -139,7 +139,13 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
-						"./genclient.sh %s %s", name, expiredays, name, staticip))
+						"export EASYRSA_REQ_EMAIL=%s &&"+
+						"export EASYRSA_REQ_COUNTRY=%s &&"+
+						"export EASYRSA_REQ_PROVINCE=%s &&"+
+						"export EASYRSA_REQ_CITY=%s &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_OU=%s &&"+
+						"./genclient.sh %s %s", name, expiredays, email, country, province, city, org, orgunit, name, staticip))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
@@ -153,8 +159,15 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
+						"export EASYRSA_CERT_EXPIRE=%s &&"+
+						"export EASYRSA_REQ_EMAIL=%s &&"+
+						"export EASYRSA_REQ_COUNTRY=%s &&"+
+						"export EASYRSA_REQ_PROVINCE=%s &&"+
+						"export EASYRSA_REQ_CITY=%s &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_OU=%s &&"+
 						"./genclient.sh %s %s %s &&"+
-						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, name, staticip, passphrase, staticip, name))
+						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase, staticip, name))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {

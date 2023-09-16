@@ -21,6 +21,12 @@ type NewCertParams struct {
 	Staticip   string `form:"staticip"`
 	Passphrase string `form:"passphrase"`
 	ExpireDays string `form:"EasyRSACertExpire" valid:"Required;"`
+	Email      string `form:"Email" valid:"Required;"`
+	Country    string `form:"Country" valid:"Required;"`
+	Province   string `form:"Province" valid:"Required;"`
+	City       string `form:"City" valid:"Required;"`
+	Org        string `form:"Organisation" valid:"Required;"`
+	OrgUnit    string `form:"OrganisationUnit" valid:"Required;"`
 }
 
 type CertificatesController struct {
@@ -67,6 +73,9 @@ func (c *CertificatesController) Download() {
 func (c *CertificatesController) Get() {
 	c.TplName = "certificates.html"
 	c.showCerts()
+	cfg := models.EasyRSAConfig{Profile: "default"}
+	_ = cfg.Read("Profile")
+	c.Data["EasyRSA"] = &cfg
 }
 
 func (c *CertificatesController) showCerts() {
@@ -93,7 +102,7 @@ func (c *CertificatesController) Post() {
 		if vMap := validateCertParams(cParams); vMap != nil {
 			c.Data["validation"] = vMap
 		} else {
-			if err := lib.CreateCertificate(cParams.Name, cParams.Staticip, cParams.Passphrase, cParams.ExpireDays); err != nil {
+			if err := lib.CreateCertificate(cParams.Name, cParams.Staticip, cParams.Passphrase, cParams.ExpireDays, cParams.Email, cParams.Country, cParams.Province, cParams.City, cParams.Org, cParams.OrgUnit); err != nil {
 				logs.Error(err)
 				flash.Error(err.Error())
 				flash.Store(&c.Controller)

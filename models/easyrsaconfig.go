@@ -5,7 +5,7 @@ import (
 	easyrsaconfig "github.com/d3vilh/openvpn-server-config/easyrsa/config"
 )
 
-// OVClientConfig holds values for OpenVPN Client config file
+// EasyRSAConfig holds values for EasyRSA configuration
 type EasyRSAConfig struct {
 	Id      int
 	Profile string `orm:"size(64);unique" valid:"Required;"`

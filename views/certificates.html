@@ -51,7 +51,7 @@
                     </td>
                   {{end}}
                     <td>
-                      <p class="text-muted">{{ .Details.LocalIP }}</p>
+                      <p class="text-muted" style="font-size: 90%;">{{ .Details.LocalIP }}</p>
                     </td>
 
                   {{if eq .Revocation ""}}
@@ -71,12 +71,12 @@
                     </td>
                   {{end}}
                     <td>
-                      <p class="text-muted">{{ .Serial }}</p>
+                      <p class="text-muted" style="font-size: 70%;">{{ .Serial }}</p>
                     </td>
                     <td>
                       <span class="label label-warning">CN: {{ .Details.CN }}</span>
-                <!--  Comented until bypass of client email to DB will be implemented 
-                      <span class="label label-warning">Email: {{ .Details.Email }}</span>  -->
+                <!--  Comented until bypass of client email to DB will be implemented  -->
+                      <span class="label label-warning">Email: {{ .Details.Email }}</span>
                     </td>
                     <td class="align-middle">
                   {{ if and .IsExpired (eq .Revocation "") (ne .Details.Name "") }}
@@ -153,8 +153,8 @@
        {{template "common/alert.html" .}}
         <form role="form" action="{{urlfor "CertificatesController.Post"}}" method="post">
           <div class="box-body">
-            <div class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}">
-              <label for="name" title="Name should not have spaces.">Name</label>
+            <div class="form-group has-success {{if field_error_exist .validation "Name" }}has-error{{end}}">
+              <label class="control-label" for="name" title="Name should not have spaces."><i class="fa fa-bell-o"></i>Name</label>
               <input type="text" class="form-control" pattern="^[^\s]+$" placeholder="Certificate Name" id="Name" name="Name">
               <span class="help-block" title="Name should not have spaces.">Common name of the certificate.<span>
             </div>
@@ -167,16 +167,53 @@
             </div>
     
             <div class="form-group">
-              <label for="name" title="IPv4 without subnet">Static IP (Optional)</label>
+              <label for="name" title="IPv4 without subnet">Client Static IP (Optional)</label>
               <input type="text" class="form-control" placeholder="Enter Static IP" pattern="^(\d{1,3}\.){3}\d{1,3}$" id="staticip" name="staticip">
               <span class="help-block">Client Static IP used as a local Client IP for subnet split.</span>
             </div>
 
             <div class="form-group">
-              <label for="name" title="Cert days to expire">Expired Days</label>
-              <input type="number" min="1" class="form-control" placeholder="825" pattern="^\d{1,6}$" id="EasyRSACertExpire" name="EasyRSACertExpire" value="{{ .Settings.EasyRSACertExpire }}">
+              <label for="name" title="EASYRSA_REQ_EMAIL">Client Email</label>
+              <input type="text" class="form-control" placeholder="Client Email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" id="EasyRSAReqEmail" name="EasyRSAReqEmail" value="{{ .EasyRSA.EasyRSAReqEmail }}">
+              <span class="help-block">The New Client e-mail address.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_COUNTRY">Expired Days</label>
+              <input type="number" min="1" class="form-control" placeholder="825" pattern="^\d{1,6}$" id="EasyRSACertExpire" name="EasyRSACertExpire" value="{{ .EasyRSA.EasyRSACertExpire }}">
               <span class="help-block">Number of days until Client certificate expire. The recommended value is 825.</span>
             </div>
+
+            <div class="form-group">
+              <label for="name" title="Cert days to expire">Client Country Name</label>
+              <input type="text" class="form-control" placeholder="UA" pattern="^[A-Za-z]{2}$" id="EasyRSAReqCountry" name="EasyRSAReqCountry" value="{{ .EasyRSA.EasyRSAReqCountry }}">
+              <span class="help-block">The two-letter DN Organisational field for Country Code (e.g. UA).</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_PROVINCE">Client State or Region Name</label>
+              <input type="text" class="form-control" placeholder="KY" pattern="^[A-Za-z]{2}$" id="EasyRSAReqProvince" name="EasyRSAReqProvince" value="{{ .EasyRSA.EasyRSAReqProvince }}">
+              <span class="help-block">The two-letter DN Organisational field for province code (e.g. KY for "Kyiv region").</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_CITY">Client City Name</label>
+              <input type="text" class="form-control" placeholder="Kyiv" id="EasyRSAReqCity" name="EasyRSAReqCity" value="{{ .EasyRSA.EasyRSAReqCity }}">
+              <span class="help-block">The city of DN Organisation.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_ORG">Client Organisation</label>
+              <input type="text" class="form-control" placeholder="SweetHome" id="EasyRSAReqOrg" name="EasyRSAReqOrg" value="{{ .EasyRSA.EasyRSAReqOrg }}">
+              <span class="help-block">The Client name of DN Organisation.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_OU">Client Organisation Unit Name</label>
+              <input type="text" class="form-control" placeholder="GarageVPN" id="EasyRSAReqOu" name="EasyRSAReqOu" value="{{ .EasyRSA.EasyRSAReqOu }}">
+              <span class="help-block">The Client Organisational Unit of DN Organisation.</span>
+            </div>
+
 
             <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
           </div>
