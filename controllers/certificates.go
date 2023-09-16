@@ -20,6 +20,7 @@ type NewCertParams struct {
 	Name       string `form:"Name" valid:"Required;"`
 	Staticip   string `form:"staticip"`
 	Passphrase string `form:"passphrase"`
+	ExpireDays string `form:"EasyRSACertExpire" valid:"Required;"`
 }
 
 type CertificatesController struct {
@@ -92,7 +93,7 @@ func (c *CertificatesController) Post() {
 		if vMap := validateCertParams(cParams); vMap != nil {
 			c.Data["validation"] = vMap
 		} else {
-			if err := lib.CreateCertificate(cParams.Name, cParams.Staticip, cParams.Passphrase); err != nil {
+			if err := lib.CreateCertificate(cParams.Name, cParams.Staticip, cParams.Passphrase, cParams.ExpireDays); err != nil {
 				logs.Error(err)
 				flash.Error(err.Error())
 				flash.Store(&c.Controller)

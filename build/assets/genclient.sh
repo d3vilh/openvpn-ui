@@ -9,7 +9,7 @@ CERT_IP=$2
 CERT_PASS=$3
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
-echo 'EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR'
+echo "EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR"
 OVPN_FILE_PATH="$OPENVPN_DIR/clients/$CERT_NAME.ovpn"
 
 # Validate username and check for duplicates
@@ -27,6 +27,7 @@ echo 'Patching easy-rsa.3.1.1 openssl-easyrsa.cnf...'
 sed -i '/serialNumber_default/d' "$EASY_RSA/pki/openssl-easyrsa.cnf"
 
 echo 'Generate client certificate...'
+echo "Will use following EASYRSA_CERT_EXPIRE: $EASYRSA_CERT_EXPIRE"
 
 # Copy easy-rsa variables
 cd $EASY_RSA
@@ -34,13 +35,13 @@ cd $EASY_RSA
 # Generate certificates
 if  [[ -z $CERT_PASS ]]; then
     echo 'Without password...'
-    ./easyrsa --batch --req-cn="$CERT_NAME" gen-req "$CERT_NAME" nopass 
+    ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" gen-req "$CERT_NAME" nopass 
 else
     echo 'With password...'
     # See https://stackoverflow.com/questions/4294689/how-to-generate-an-openssl-key-using-a-passphrase-from-the-command-line
     # ... and https://stackoverflow.com/questions/22415601/using-easy-rsa-how-to-automate-client-server-creation-process
     # ... and https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md
-    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --passin=pass:${CERT_PASS} --passout=pass:${CERT_PASS} gen-req "$CERT_NAME"
+    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --passin=pass:${CERT_PASS} --passout=pass:${CERT_PASS} gen-req "$CERT_NAME"
 fi
 
 # Sign request

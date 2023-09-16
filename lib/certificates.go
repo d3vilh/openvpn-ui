@@ -112,7 +112,7 @@ func trim(s string) string {
 	return strings.Trim(strings.Trim(s, "\r\n"), "\n")
 }
 
-func CreateCertificate(name string, staticip string, passphrase string) error {
+func CreateCertificate(name string, staticip string, passphrase string, expiredays string) error {
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
@@ -138,7 +138,8 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
-						"./genclient.sh %s %s", name, name, staticip))
+						"export EASYRSA_CERT_EXPIRE=%s &&"+
+						"./genclient.sh %s %s", name, expiredays, name, staticip))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
