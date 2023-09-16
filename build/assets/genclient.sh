@@ -1,14 +1,15 @@
 #!/bin/bash
 #VERSION 1.2 by @d3vilh@github.com aka Mr. Philipp
-# Exit immediately if a command exits with a non-zero status
+# Exit immediately if a command exits with a non-zero status.
 set -e
 
 # .ovpn file path
 CERT_NAME=$1
 CERT_IP=$2
 CERT_PASS=$3
-EASY_RSA=/usr/share/easy-rsa
-OPENVPN_DIR=/etc/openvpn
+EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
+OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
+echo "EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR"
 OVPN_FILE_PATH="$OPENVPN_DIR/clients/$CERT_NAME.ovpn"
 
 # Validate username and check for duplicates
@@ -26,6 +27,7 @@ echo 'Patching easy-rsa.3.1.1 openssl-easyrsa.cnf...'
 sed -i '/serialNumber_default/d' "$EASY_RSA/pki/openssl-easyrsa.cnf"
 
 echo 'Generate client certificate...'
+echo -e "Will use following parameters: \nEASYRSA_CERT_EXPIRE: $EASYRSA_CERT_EXPIRE\nEASYRSA_REQ_EMAIL: $EASYRSA_REQ_EMAIL\nEASYRSA_REQ_COUNTRY: $EASYRSA_REQ_COUNTRY\nEASYRSA_REQ_PROVINCE: $EASYRSA_REQ_PROVINCE\nEASYRSA_REQ_CITY: $EASYRSA_REQ_CITY\nEASYRSA_REQ_ORG: $EASYRSA_REQ_ORG\nEASYRSA_REQ_OU: $EASYRSA_REQ_OU"
 
 # Copy easy-rsa variables
 cd $EASY_RSA
@@ -33,19 +35,19 @@ cd $EASY_RSA
 # Generate certificates
 if  [[ -z $CERT_PASS ]]; then
     echo 'Without password...'
-    ./easyrsa --batch --req-cn="$CERT_NAME" gen-req "$CERT_NAME" nopass 
+    ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" gen-req "$CERT_NAME" nopass subject="/C=$EASYRSA_REQ_COUNTRY/ST=$EASYRSA_REQ_PROVINCE/L=$EASYRSA_REQ_CITY/O=$EASYRSA_REQ_ORG/OU=$EASYRSA_REQ_OU"
 else
     echo 'With password...'
     # See https://stackoverflow.com/questions/4294689/how-to-generate-an-openssl-key-using-a-passphrase-from-the-command-line
     # ... and https://stackoverflow.com/questions/22415601/using-easy-rsa-how-to-automate-client-server-creation-process
     # ... and https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md
-    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --passin=pass:${CERT_PASS} --passout=pass:${CERT_PASS} gen-req "$CERT_NAME"
+    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" --passin=pass:${CERT_PASS} --passout=pass:${CERT_PASS} gen-req "$CERT_NAME" subject="/C=$EASYRSA_REQ_COUNTRY/ST=$EASYRSA_REQ_PROVINCE/L=$EASYRSA_REQ_CITY/O=$EASYRSA_REQ_ORG/OU=$EASYRSA_REQ_OU"
 fi
 
 # Sign request
 ./easyrsa sign-req client "$CERT_NAME"
 # Fix for /name in index.txt
-echo "Fixind Database..."
+echo "Fixing Database..."
 sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}/" $EASY_RSA/pki/index.txt
 # Certificate properties
 CA="$(cat $EASY_RSA/pki/ca.crt )"
@@ -72,4 +74,4 @@ $TLS_AUTH
 </tls-auth>
 " > "$OVPN_FILE_PATH"
 
-echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn/clients/$CERT_NAME.ovpn"
+echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"

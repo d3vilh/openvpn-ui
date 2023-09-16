@@ -53,8 +53,8 @@ func ReadCerts(path string) ([]*Cert, error) {
 					line, 6, len(fields))
 		}
 		expT, _ := time.Parse("060102150405Z", fields[1])
-		expTA := time.Now().AddDate(0, 0, 36135).After(expT)      // show/hide Renew button if expired within 99 years (always show)
-		logs.Debug("ExpirationT: %v, IsExpired: %v", expT, expTA) // logging
+		expTA := time.Now().AddDate(0, 0, 36135).After(expT) // show/hide Renew button if expired within 99 years (always show)
+		//logs.Debug("ExpirationT: %v, IsExpired: %v", expT, expTA) // logging
 		revT, _ := time.Parse("060102150405Z", fields[2])
 		c := &Cert{
 			EntryType:   fields[0],
@@ -99,7 +99,9 @@ func parseDetails(d string) *Details {
 			case "LocalIP":
 				details.LocalIP = fields[1]
 			default:
-				logs.Warn(fmt.Sprintf("Undefined entry: %s", line))
+				if line != "" && !strings.Contains(line, "name") && !strings.Contains(line, "LocalIP") {
+					logs.Warn(fmt.Sprintf("Undefined entry: %s", line))
+				}
 			}
 		}
 	}
@@ -110,7 +112,7 @@ func trim(s string) string {
 	return strings.Trim(strings.Trim(s, "\r\n"), "\n")
 }
 
-func CreateCertificate(name string, staticip string, passphrase string) error {
+func CreateCertificate(name string, staticip string, passphrase string, expiredays string, email string, country string, province string, city string, org string, orgunit string) error {
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
@@ -136,7 +138,14 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
-						"./genclient.sh %s %s", name, name, staticip))
+						"export EASYRSA_CERT_EXPIRE=%s &&"+
+						"export EASYRSA_REQ_EMAIL=%s &&"+
+						"export EASYRSA_REQ_COUNTRY=%s &&"+
+						"export EASYRSA_REQ_PROVINCE=%s &&"+
+						"export EASYRSA_REQ_CITY=%s &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_OU=%s &&"+
+						"./genclient.sh %s %s", name, expiredays, email, country, province, city, org, orgunit, name, staticip))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
@@ -150,8 +159,15 @@ func CreateCertificate(name string, staticip string, passphrase string) error {
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
+						"export EASYRSA_CERT_EXPIRE=%s &&"+
+						"export EASYRSA_REQ_EMAIL=%s &&"+
+						"export EASYRSA_REQ_COUNTRY=%s &&"+
+						"export EASYRSA_REQ_PROVINCE=%s &&"+
+						"export EASYRSA_REQ_CITY=%s &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_OU=%s &&"+
 						"./genclient.sh %s %s %s &&"+
-						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, name, staticip, passphrase, staticip, name))
+						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase, staticip, name))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {

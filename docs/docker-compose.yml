@@ -3,35 +3,31 @@ version: "3.5"
 services:
     openvpn:
        container_name: openvpn
-       build: ./openvpn-docker
+       image: d3vilh/openvpn-server:latest
        privileged: true
        ports: 
           - "1194:1194/udp"
        environment:
-           REQ_COUNTRY: UA
-           REQ_PROVINCE: Kyiv
-           REQ_CITY: Chayka
-           REQ_ORG: CopyleftCertificateCo
-           REQ_OU: ShantiShanti
-           REQ_CN: MyOpenVPN
+           TRUST_SUB: 10.0.70.0/24
+           GUEST_SUB: 10.0.71.0/24
+           HOME_SUB: 192.168.88.0/24
        volumes:
            - ./pki:/etc/openvpn/pki
            - ./clients:/etc/openvpn/clients
            - ./config:/etc/openvpn/config
            - ./staticclients:/etc/openvpn/staticclients
            - ./log:/var/log/openvpn
+           - ./fw-rules.sh:/opt/app/fw-rules.sh
        cap_add:
            - NET_ADMIN
        restart: always
-       depends_on:
-           - "openvpn-ui"
 
     openvpn-ui:
        container_name: openvpn-ui
-       image: d3vilh/openvpn-ui-arm32v7:latest
+       image: d3vilh/openvpn-ui:latest
        environment:
-           - OPENVPN_ADMIN_USERNAME={{ ovpnui_user }}
-           - OPENVPN_ADMIN_PASSWORD={{ ovpnui_password }}
+           - OPENVPN_ADMIN_USERNAME=admin
+           - OPENVPN_ADMIN_PASSWORD=gagaZush
        privileged: true
        ports:
            - "8080:8080/tcp"

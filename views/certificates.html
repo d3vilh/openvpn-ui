@@ -8,7 +8,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-info">
+    <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Clients certificates</h3>
 
@@ -28,10 +28,7 @@
               <th>Revocation</th>
               <th>Serial</th>
               <th>Details</th>
-              <th>Renew</th>
-              <th>Revoke</th>
-              <th>Delete</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -54,7 +51,7 @@
                     </td>
                   {{end}}
                     <td>
-                      {{ .Details.LocalIP }}
+                      <p class="text-muted" style="font-size: 90%;">{{ .Details.LocalIP }}</p>
                     </td>
 
                   {{if eq .Revocation ""}}
@@ -74,36 +71,31 @@
                     </td>
                   {{end}}
                     <td>
-                      {{ .Serial }}
+                      <p class="text-muted" style="font-size: 70%;">{{ .Serial }}</p>
                     </td>
                     <td>
                       <span class="label label-warning">CN: {{ .Details.CN }}</span>
-                <!--  Comented until bypass of client email to DB will be implemented 
-                      <span class="label label-warning">Email: {{ .Details.Email }}</span>  -->
+                <!--  Comented until bypass of client email to DB will be implemented  -->
+                      <span class="label label-warning">Email: {{ .Details.Email }}</span>
                     </td>
-
+                    <td class="align-middle">
                   {{ if and .IsExpired (eq .Revocation "") (ne .Details.Name "") }}
-                    <td>
-                        <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Renew">Renew</a>
-                    </td>
+                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-primary btn-xs" title="Renew">Renew</a>
                   {{else}}
-                    <td></td>
+                      <a class="btn btn-default btn-xs" disabled>Renew</a>
                   {{end}}
 
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                    <td>
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-sm" title="Revoke">Revoke</a>
-                    </td>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-xs" title="Revoke">Revoke</a>
                   {{else}}
-                    <td></td>
+                      <a class="btn btn-default btn-xs" disabled>Revoke</a>
                   {{end}}
                   {{ if eq .Revocation ""}}
-                    <td></td>
+                      <a class="btn btn-default btn-xs" disabled>Delete</a>
                   {{else}}
-                    <td>
-                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial}}" class="btn btn-danger btn-sm" title="Burn">Remove</a>
-                    </td>
+                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial}}" class="btn btn-danger btn-xs" title="Burn">Delete</a>
                   {{end}}
+                    </td>
               </tr>
               {{ end }}
             {{end}}
@@ -113,7 +105,7 @@
         </div>
       </div>
       <!--else
-          Fix your configuration
+          It seems OpenVPN CA creation still in progress or you do have problems with your OpenVPN Server configuration
       end-->
       <div class="box-footer clearfix">
       </div>
@@ -129,83 +121,112 @@
   </div>
 </div>
 
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">Create a new certificate</h3>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Create New Client Certificate</h3>
+      </div>
+        <!-- /.box-header -->
+        {{template "common/alert.html" .}}
+      <div class="box-body">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+          Create Certificate
+        </button>
+        <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+      </div>
+    </div>
   </div>
-  <!-- /.box-header -->
-  <!-- form start -->
-  {{template "common/alert.html" .}}
-  <form role="form" action="{{urlfor "CertificatesController.Post"}}" method="post">
-    <div class="box-body">
-      <table class="create-new-cert">
-        <thead>
-          <tr>
-            <th>
-              <label for="name" title="Name should not have spaces.">Name</label>
-            </th>
-            <th>
-              <input type="checkbox" style="visibility: hidden;" disabled>
-            </th>
-            <th>
-              <label for="name">Passphrase (Optional)</label>
-            </th>
-            <th>
-              <input type="checkbox" style="visibility: hidden;" disabled>
-            </th>
-            <th>
-              <label for="name" title="IPv4 without subnet">Static IP (Optional)</label>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}">
+</div>
+
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create Certificate</h4>
+      </div>
+      <div class="modal-body">
+        <!-- /.box-header -->
+        <!-- form start -->
+       {{template "common/alert.html" .}}
+        <form role="form" action="{{urlfor "CertificatesController.Post"}}" method="post">
+          <div class="box-body">
+            <div class="form-group has-success {{if field_error_exist .validation "Name" }}has-error{{end}}">
+              <label class="control-label" for="name" title="Name should not have spaces."><i class="fa fa-bell-o"></i>Name</label>
               <input type="text" class="form-control" pattern="^[^\s]+$" placeholder="Certificate Name" id="Name" name="Name">
-            </td>
-            <td>
-              <input type="checkbox" style="visibility: hidden;" disabled>
-            </td>
-            <td class="form-group">
+              <span class="help-block" title="Name should not have spaces.">Common name of the certificate.<span>
+            </div>
+    
+            <div class="form-group">
+              <label for="name">Passphrase (Optional)</label>
               <input type="password" class="form-control" placeholder="Enter Password" id="password-input" id="passphrase" name="passphrase">
               <a href="#" class="password-control" title="Show or Hide Password"></a>
-            </td>
-            <td>
-              <input type="checkbox" style="visibility: hidden;" disabled>
-            </td>
-            <td class="form-group">
-              <input type="text" class="form-control" placeholder="Enter Static IP" pattern="^(\d{1,3}\.){3}\d{1,3}$" id="staticip" name="staticip">
-            </td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td class="form-group">
-              <span class="help-block" title="Name should not have spaces.">Common name of the certificate.<span>
-            </td>
-            <td>
-              <input type="checkbox" style="visibility: hidden;" disabled>
-            </td>
-            <td class="form-group">
               <span class="help-block">Passphrase is used for privte key protection.</span>
-            </td>
-            <td>
-              <input type="checkbox" style="visibility: hidden;" disabled>
-            </td>
-            <td class="form-group">
+            </div>
+    
+            <div class="form-group">
+              <label for="name" title="IPv4 without subnet">Client Static IP (Optional)</label>
+              <input type="text" class="form-control" placeholder="Enter Static IP" pattern="^(\d{1,3}\.){3}\d{1,3}$" id="staticip" name="staticip">
               <span class="help-block">Client Static IP used as a local Client IP for subnet split.</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
-    </div>
-    <!-- /.box-body -->
+            </div>
 
-    <div class="box-footer">
-      <button type="submit" class="btn btn-primary" style="width: 125px;">Create</button>
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_EMAIL">Client Email</label>
+              <input type="text" class="form-control" placeholder="Client Email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" id="EasyRSAReqEmail" name="EasyRSAReqEmail" value="{{ .EasyRSA.EasyRSAReqEmail }}">
+              <span class="help-block">The New Client e-mail address.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_COUNTRY">Expired Days</label>
+              <input type="number" min="1" class="form-control" placeholder="825" pattern="^\d{1,6}$" id="EasyRSACertExpire" name="EasyRSACertExpire" value="{{ .EasyRSA.EasyRSACertExpire }}">
+              <span class="help-block">Number of days until Client certificate expire. The recommended value is 825.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="Cert days to expire">Client Country Name</label>
+              <input type="text" class="form-control" placeholder="UA" pattern="^[A-Za-z]{2}$" id="EasyRSAReqCountry" name="EasyRSAReqCountry" value="{{ .EasyRSA.EasyRSAReqCountry }}">
+              <span class="help-block">The two-letter DN Organisational field for Country Code (e.g. UA).</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_PROVINCE">Client State or Region Name</label>
+              <input type="text" class="form-control" placeholder="KY" pattern="^[A-Za-z]{2}$" id="EasyRSAReqProvince" name="EasyRSAReqProvince" value="{{ .EasyRSA.EasyRSAReqProvince }}">
+              <span class="help-block">The two-letter DN Organisational field for province code (e.g. KY for "Kyiv region").</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_CITY">Client City Name</label>
+              <input type="text" class="form-control" placeholder="Kyiv" id="EasyRSAReqCity" name="EasyRSAReqCity" value="{{ .EasyRSA.EasyRSAReqCity }}">
+              <span class="help-block">The city of DN Organisation.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_ORG">Client Organisation</label>
+              <input type="text" class="form-control" placeholder="SweetHome" id="EasyRSAReqOrg" name="EasyRSAReqOrg" value="{{ .EasyRSA.EasyRSAReqOrg }}">
+              <span class="help-block">The Client name of DN Organisation.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="name" title="EASYRSA_REQ_OU">Client Organisation Unit Name</label>
+              <input type="text" class="form-control" placeholder="GarageVPN" id="EasyRSAReqOu" name="EasyRSAReqOu" value="{{ .EasyRSA.EasyRSAReqOu }}">
+              <span class="help-block">The Client Organisational Unit of DN Organisation.</span>
+            </div>
+
+
+            <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+          </div>
+          <!-- /.box-body -->
+      
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" style="width: 125px;">Create</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
+  </div>
 </div>
 
 <div class="box box-primary">

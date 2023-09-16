@@ -52,7 +52,7 @@ func AddFuncMaps() {
 		return num2str(int64(i/1024/1024/1024), ' ')
 	})
 	_ = web.AddFuncMap("percent", func(x, y interface{}) string {
-		logs.Notice("Percent", x, y)
+		//logs.Notice("Percent", x, y)
 		zValue := "0"
 		switch v := x.(type) {
 		case string:
