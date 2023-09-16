@@ -32,7 +32,7 @@ func (self *LoadAverage) Get() error {
 }
 
 func (u *Uptime) Get() error {
-	r1, _, e1 := syscall.Syscall(procGetTickCount64.Addr(), 0, 0, 0, 0)
+	r1, _, e1 := syscall.SyscallN(procGetTickCount64.Addr())
 	if e1 != 0 {
 		return error(e1)
 	}
@@ -55,10 +55,8 @@ type memorystatusex struct {
 func (m *Mem) Get() error {
 	var x memorystatusex
 	x.Length = uint32(unsafe.Sizeof(x))
-	r1, _, e1 := syscall.Syscall(procGlobalMemoryStatusEx.Addr(), 1,
+	r1, _, e1 := syscall.SyscallN(procGlobalMemoryStatusEx.Addr(),
 		uintptr(unsafe.Pointer(&x)),
-		0,
-		0,
 	)
 	if err := checkErrno(r1, e1); err != nil {
 		return fmt.Errorf("GlobalMemoryStatusEx: %s", err)
@@ -113,7 +111,7 @@ func (c *Cpu) Get() error {
 		kernelTime syscall.Filetime // Includes kernel and idle time.
 		userTime   syscall.Filetime
 	)
-	r1, _, e1 := syscall.Syscall(procGetSystemTimes.Addr(), 3,
+	r1, _, e1 := syscall.SyscallN(procGetSystemTimes.Addr(),
 		uintptr(unsafe.Pointer(&idleTime)),
 		uintptr(unsafe.Pointer(&kernelTime)),
 		uintptr(unsafe.Pointer(&userTime)),
@@ -212,13 +210,12 @@ func (fs *FileSystemUsage) Get(path string) error {
 		// associated with the calling thread.
 		TotalNumberOfClusters uint32
 	)
-	r1, _, e1 := syscall.Syscall6(procGetDiskFreeSpace.Addr(), 5,
+	r1, _, e1 := syscall.SyscallN(procGetDiskFreeSpace.Addr(),
 		uintptr(unsafe.Pointer(root)),
 		uintptr(unsafe.Pointer(&SectorsPerCluster)),
 		uintptr(unsafe.Pointer(&BytesPerSector)),
 		uintptr(unsafe.Pointer(&NumberOfFreeClusters)),
 		uintptr(unsafe.Pointer(&TotalNumberOfClusters)),
-		0,
 	)
 	if err := checkErrno(r1, e1); err != nil {
 		return fmt.Errorf("FileSystemUsage (%s): %s", path, err)

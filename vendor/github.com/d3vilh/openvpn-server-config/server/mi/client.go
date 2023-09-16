@@ -5,13 +5,13 @@ import (
 	"net"
 )
 
-//Client is used to connect to OpenVPN Management Interface
+// Client is used to connect to OpenVPN Management Interface
 type Client struct {
 	MINetwork string
 	MIAddress string
 }
 
-//NewClient initializes Management Interface client structure
+// NewClient initializes Management Interface client structure
 func NewClient(network, address string) *Client {
 	c := &Client{
 		MINetwork: network, //Management Interface Network
@@ -21,7 +21,7 @@ func NewClient(network, address string) *Client {
 	return c
 }
 
-//GetPid returns process id of OpenVPN server
+// GetPid returns process id of OpenVPN server
 func (c *Client) GetPid() (int64, error) {
 	str, err := c.Execute("pid")
 	if err != nil {
@@ -30,7 +30,7 @@ func (c *Client) GetPid() (int64, error) {
 	return ParsePid(str)
 }
 
-//GetVersion returns version of OpenVPN server
+// GetVersion returns version of OpenVPN server
 func (c *Client) GetVersion() (*Version, error) {
 	str, err := c.Execute("version")
 	if err != nil {
@@ -39,7 +39,7 @@ func (c *Client) GetVersion() (*Version, error) {
 	return ParseVersion(str)
 }
 
-//GetStatus returns list of connected clients and routing table
+// GetStatus returns list of connected clients and routing table
 func (c *Client) GetStatus() (*Status, error) {
 	str, err := c.Execute("status 2")
 	if err != nil {
@@ -48,7 +48,7 @@ func (c *Client) GetStatus() (*Status, error) {
 	return ParseStatus(str)
 }
 
-//GetLoadStats returns number of connected clients and total number of network traffic
+// GetLoadStats returns number of connected clients and total number of network traffic
 func (c *Client) GetLoadStats() (*LoadStats, error) {
 	str, err := c.Execute("load-stats")
 	if err != nil {
@@ -57,7 +57,7 @@ func (c *Client) GetLoadStats() (*LoadStats, error) {
 	return ParseStats(str)
 }
 
-//KillSession kills OpenVPN connection
+// KillSession kills OpenVPN connection
 func (c *Client) KillSession(cname string) (string, error) {
 	str, err := c.Execute("kill " + cname)
 	if err != nil {
@@ -66,7 +66,7 @@ func (c *Client) KillSession(cname string) (string, error) {
 	return ParseKillSession(str)
 }
 
-//Signal sends signal to daemon
+// Signal sends signal to daemon
 func (c *Client) Signal(signal string) error {
 	str, err := c.Execute("signal " + signal)
 	if err != nil {
@@ -75,7 +75,18 @@ func (c *Client) Signal(signal string) error {
 	return ParseSignal(str)
 }
 
-//Execute connects to the OpenVPN server, sends command and reads response
+// Restarts the OpenVPN server
+func (c *Client) RestartServer() error {
+	// Send SIGUSR1 signal to restart the server
+	err := c.Signal("SIGUSR1")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Execute connects to the OpenVPN server, sends command and reads response
 func (c *Client) Execute(cmd string) (string, error) {
 	conn, err := net.Dial(c.MINetwork, c.MIAddress)
 	if err != nil {

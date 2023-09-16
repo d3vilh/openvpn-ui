@@ -241,13 +241,10 @@ func GetTokenUser(token syscall.Token) (User, error) {
 
 // GetDebugInfo returns general debug info about the current process.
 func GetDebugInfo() (*DebugInfo, error) {
-	h, err := windows.GetCurrentProcess()
-	if err != nil {
-		return nil, err
-	}
+	h := windows.CurrentProcess()
 
 	var token syscall.Token
-	err = syscall.OpenProcessToken(syscall.Handle(h), syscall.TOKEN_QUERY, &token)
+	err := syscall.OpenProcessToken(syscall.Handle(h), syscall.TOKEN_QUERY, &token)
 	if err != nil {
 		return nil, err
 	}
