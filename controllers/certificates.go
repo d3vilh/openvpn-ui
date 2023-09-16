@@ -20,13 +20,13 @@ type NewCertParams struct {
 	Name       string `form:"Name" valid:"Required;"`
 	Staticip   string `form:"staticip"`
 	Passphrase string `form:"passphrase"`
-	ExpireDays string `form:"EasyRSACertExpire" valid:"Required;"`
-	Email      string `form:"EasyRSAReqEmail" valid:"Required;"`
-	Country    string `form:"EasyRSAReqCountry" valid:"Required;"`
-	Province   string `form:"EasyRSAReqProvince" valid:"Required;"`
-	City       string `form:"EasyRSAReqCity" valid:"Required;"`
-	Org        string `form:"EasyRSAReqOrg" valid:"Required;"`
-	OrgUnit    string `form:"EasyRSAReqOu" valid:"Required;"`
+	ExpireDays string `form:"EasyRSACertExpire"`
+	Email      string `form:"EasyRSAReqEmail"`
+	Country    string `form:"EasyRSAReqCountry"`
+	Province   string `form:"EasyRSAReqProvince"`
+	City       string `form:"EasyRSAReqCity"`
+	Org        string `form:"EasyRSAReqOrg"`
+	OrgUnit    string `form:"EasyRSAReqOu"`
 }
 
 type CertificatesController struct {

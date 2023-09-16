@@ -35,13 +35,13 @@ cd $EASY_RSA
 # Generate certificates
 if  [[ -z $CERT_PASS ]]; then
     echo 'Without password...'
-    ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --email="$EASYRSA_REQ_EMAIL" --req-country="$EASYRSA_REQ_COUNTRY" --req-province="$EASYRSA_REQ_PROVINCE" --req-city="$EASYRSA_REQ_CITY" --req-org="$EASYRSA_REQ_ORG" --req-ou="$EASYRSA_REQ_OU" gen-req "$CERT_NAME" nopass 
+    ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" --req-country="$EASYRSA_REQ_COUNTRY" --req-province="$EASYRSA_REQ_PROVINCE" --req-city="$EASYRSA_REQ_CITY" --req-org="$EASYRSA_REQ_ORG" --req-ou="$EASYRSA_REQ_OU" gen-req "$CERT_NAME" nopass 
 else
     echo 'With password...'
     # See https://stackoverflow.com/questions/4294689/how-to-generate-an-openssl-key-using-a-passphrase-from-the-command-line
     # ... and https://stackoverflow.com/questions/22415601/using-easy-rsa-how-to-automate-client-server-creation-process
     # ... and https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md
-    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --email="$EASYRSA_REQ_EMAIL" --req-country="$EASYRSA_REQ_COUNTRY" --req-province="$EASYRSA_REQ_PROVINCE" --req-city="$EASYRSA_REQ_CITY" --req-org="$EASYRSA_REQ_ORG" --req-ou="$EASYRSA_REQ_OU" --passin=pass:${CERT_PASS} --passout=pass:${CERT_PASS} gen-req "$CERT_NAME"
+    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" --req-country="$EASYRSA_REQ_COUNTRY" --req-province="$EASYRSA_REQ_PROVINCE" --req-city="$EASYRSA_REQ_CITY" --req-org="$EASYRSA_REQ_ORG" --req-ou="$EASYRSA_REQ_OU" --passin=pass:${CERT_PASS} --passout=pass:${CERT_PASS} gen-req "$CERT_NAME"
 fi
 
 # Sign request
