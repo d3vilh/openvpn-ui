@@ -9,6 +9,7 @@ EXPOSE 8080/tcp
 
 RUN apk update \
  && apk add --update-cache \
+    bash \
     easy-rsa \
     curl \
     jq \
