@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION 1.2 by @d3vilh@github.com aka Mr. Philipp
+#VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
 # Exit immediately if a command exits with a non-zero status
 set -e
 
@@ -37,8 +37,7 @@ elif [ "$ACTION" = "remove_all" ]; then
   rm -rf $CERT_DIR/*.ovpn
   echo -e 'All *.ovpn removed.\nRemoving static clients.\n'
   rm -rf $STATIC_CLIENT_DIR/*
-  echo -e 'Static clients remover.\nRemoving Openvpn-UI DB.\n'
-  rm -rf $OVPN_DB_DIR/data.db
+  echo -e 'Static clients removed.\n'
 else
   echo "Invalid input argument: $ACTION. Exiting."
   exit 1

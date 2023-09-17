@@ -1,5 +1,5 @@
 #!/bin/bash -e
-#VERSION 1.2 by @d3vilh@github.com aka Mr. Philipp
+#VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
 
 #Variables
 ACTION=$1  #passed via OpenVPN-UI GUI

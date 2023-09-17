@@ -45,7 +45,6 @@
   <div class="box-header with-border">
     <h3 class="box-title">Remove Actions</h3><br>
     <span> <b>DANGER ZONE!</b> You can't rollback any actions of this section!</span><br>
-    <span>Remove actions can lead to descrepencies in OpenVPN-UI DB. In most cases you have to Remove DB and Restart UI after, to recreate DB.</span>
     <div class="pull-right box-tools">
       <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
       <i class="fa fa-minus"></i></button>
@@ -57,7 +56,7 @@
     <div class="box-body">
       <div class="form-group">
         <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_all"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Remove All" onclick="return confirm('Are you sure you want to Remove ALL?');">DELETE ALL</a>
-        &nbsp; <span>This button will execute all the seteps below, one by one - delete PKI, Server keys, Client certificates, &quot;*.ovpn&quot; files and OpenVPN-UI Database.</span>
+        &nbsp; <span>This button will execute all the seteps below, one by one - delete PKI, Server keys, Client certificates and &quot;*.ovpn&quot;.</span>
       </div>
 
       <div class="box-body">
@@ -72,14 +71,14 @@
         </div>
 
         <div class="form-group">
-          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_static_clients"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Static IP reservations" onclick="return confirm('Are you sure you want to Remove all *.ovpn files?');">Remove Static</a>
+          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_static_clients"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Static IP reservations" onclick="return confirm('Are you sure you want to Remove all static IP reservations?');">Remove Static</a>
           &nbsp; <span>Remove all static IP reservations from the &quot;/etc/openvpn/staticclients&quot; directory.</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_ovpn_db"}}" class="btn btn-warning btn-primary" style="width: 125px;" title="Remove OpenVPN-UI Database" onclick="return confirm('Are you sure you want to Remove OVPN DB?');">Remove DB</a>
-          &nbsp; <span>Delete the OpenVPN-UI Database. <b>Restart OpenVPN-UI after.</b></span>
-        </div>
+      <div class="form-group">
+        <a href="{{urlfor "DangerController.DeletePKI" ":key" "remove_ovpn_db"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Remove OpenVPN-UI Database" onclick="return confirm('Are you sure you want to Remove OVPN DB?');">Remove DB</a>
+        &nbsp; <span>Delete the OpenVPN-UI Database. <b>Restart OpenVPN-UI after.</b></span>
       </div>
 
       {{ .xsrfdata }}
