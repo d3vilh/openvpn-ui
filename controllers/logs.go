@@ -49,17 +49,18 @@ func (c *LogsController) Get() {
 			logs = append(logs, strings.Trim(line, "\t"))
 		}
 	}
-	start := len(logs) - 200
+	start := len(logs) - 300 // :P
 	if start < 0 {
 		start = 0
 	}
-	c.Data["logs"] = reverse(logs[start:])
+	c.Data["logs"] = logs[start:]
+	//c.Data["logs"] = reverse(logs[start:])
 }
 
-func reverse(lines []string) []string {
-	for i := 0; i < len(lines)/2; i++ {
-		j := len(lines) - i - 1
-		lines[i], lines[j] = lines[j], lines[i]
-	}
-	return lines
-}
+//func reverse(lines []string) []string {
+//	for i := 0; i < len(lines)/2; i++ {
+//		j := len(lines) - i - 1
+//		lines[i], lines[j] = lines[j], lines[i]
+//	}
+//	return lines
+//}

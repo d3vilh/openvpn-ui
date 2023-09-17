@@ -7,25 +7,40 @@
 {{define "body"}}
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">EasyRSA variables</h3><br>
-    <span>Be cautious, high expertise level is essential! <a href="https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md#environmental-variables-reference" target="_blank">EasyRSA VARs reference</a>.</span><br><br>
-    <span><b>Note 1:</b> If you've already completed the automatic setup without modifying the EasyRSA vars and now wish to make changes, follow these steps:</span><br>
-    <span><b style="visibility: hidden;">Note 1:</b>1. Save the new EasyRSA vars on this page.</span><br>
-    <span><b style="visibility: hidden;">Note 1:</b>2. Navigate to &quot;Configuration > Maintenance&quot;.</span><br>
-    <span><b style="visibility: hidden;">Note 1:</b>3. Click the &quot;DELETE ALL&quot; button, followed by the &quot;INITIALIZE ALL&quot; button.</span><br>
-    <span><b>Note 2:</b> You can modify client certificate parameters here without full PKI reinitialization. The same applies to CERT_EXPIRE, as this variable will be applied to every new certificate.</span><br>
-    <span><b>Note 3:</b> EASYRSA_CRL_DAYS require to generate new CRL what can be done in &quot;Configuration > Maintenance&quot;.</span><br>
+    <h3 class="box-title">Vars Configuration</h3>
+    <small><a href="https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md#environmental-variables-reference" target="_blank">EasyRSA VARs reference</a>.</span></small>
+    <div class="pull-right box-tools">
+      <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+      <i class="fa fa-minus"></i></button>
+    </div>
   </div>
-  <!-- /.box-header -->
-  <!-- form start -->
-  {{template "common/alert.html" .}}
-  <form role="form" action="{{urlfor "EasyRSAConfigController.Post"}}" method="post">
-    <div class="box-body">
-      <!-- Disabled Profile - yet another feature to implement.
-      <div class="form-group">
-         <label for="name">Profile</label>
-         <input type="text" class="form-control" name="Profile" id="Profile" value="{{ .Settings.Profile }}" style="visibility: hidden;" disabled>
-     </div> -->
+  <div class="box-body">
+      <div class="box-group" id="accordion">
+        <span >
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">
+            <i class="fa fa-fw fa-info-circle" style="font-size: 15px;"></i> Please note
+          </a>
+        </span>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div class="box-body">
+          <span>If you've already completed the automatic setup without modifying the EasyRSA vars and now wish to make changes, follow these steps:</span><br>
+          <span><b style="visibility: hidden;">Note</b>1. Save the new EasyRSA vars on this page.</span><br>
+          <span><b style="visibility: hidden;">Note</b>2. Navigate to &quot;Configuration > Maintenance&quot;.</span><br>
+          <span><b style="visibility: hidden;">Note</b>3. Click the &quot;DELETE ALL&quot; button, followed by the &quot;INITIALIZE ALL&quot; button.</span><br>
+        </div>
+      </div>
+    </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      {{template "common/alert.html" .}}
+      <form role="form" action="{{urlfor "EasyRSAConfigController.Post"}}" method="post">
+      <div class="box-body">
+          <!-- Disabled Profile - yet another feature to implement.
+          <div class="form-group">
+            <label for="name">Profile</label>
+            <input type="text" class="form-control" name="Profile" id="Profile" value="{{ .Settings.Profile }}" style="visibility: hidden;" disabled>
+          </div> -->
       <div class="form-group">
         <label for="name">EASYRSA_DN</label>
         <input type="text" class="form-control" id="EasyRSADN" name="EasyRSADN" placeholder="org"

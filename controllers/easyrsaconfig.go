@@ -25,7 +25,7 @@ func (c *EasyRSAConfigController) NestPrepare() {
 		return
 	}
 	c.Data["breadcrumbs"] = &BreadCrumbs{
-		Title: "EasyRSA configuration",
+		Title: "EasyRSA vars",
 	}
 }
 

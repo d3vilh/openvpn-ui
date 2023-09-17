@@ -9,4 +9,4 @@ time docker run \
     --rm \
     -w /usr/src/myapp \
     local/beego-v8 \
-    sh -c "cd /go/src/github.com/d3vilh/openvpn-ui/ && go env -w GOFLAGS="-buildvcs=false" && bee version && bee pack -exr='^vendor|^data.db|^build|^README.md|^docs'"
+    sh -c "cd /go/src/github.com/d3vilh/openvpn-ui/ && go env -w GOFLAGS="-buildvcs=false" && bee version && bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs'"
