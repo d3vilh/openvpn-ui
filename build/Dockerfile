@@ -9,14 +9,15 @@ EXPOSE 8080
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --reinstall libc-bin -y && apt-get install -y easy-rsa curl jq && apt-get clean && rm -rf /var/lib/apt/lists/* && chmod 755 /usr/share/easy-rsa/*
-ADD assets/start.sh /opt/start.sh
-ADD assets/generate_ca_and_server_certs.sh /opt/scripts/generate_ca_and_server_certs.sh
-ADD assets/genclient.sh /opt/scripts/genclient.sh
-ADD assets/revoke.sh /opt/scripts/revoke.sh
-ADD assets/restart.sh /opt/scripts/restart.sh
-ADD assets/rmcert.sh /opt/scripts/rmcert.sh
-ADD assets/remove.sh /opt/scripts/remove.sh
-ADD assets/renew.sh /opt/scripts/renew.sh
+#ADD assets/start.sh /opt/start.sh
+#ADD assets/generate_ca_and_server_certs.sh /opt/scripts/generate_ca_and_server_certs.sh
+#ADD assets/genclient.sh /opt/scripts/genclient.sh
+#ADD assets/revoke.sh /opt/scripts/revoke.sh
+#ADD assets/restart.sh /opt/scripts/restart.sh
+#ADD assets/rmcert.sh /opt/scripts/rmcert.sh
+#ADD assets/remove.sh /opt/scripts/remove.sh
+#ADD assets/renew.sh /opt/scripts/renew.sh
+COPY assets/*.sh /opt/scripts/
 ADD openvpn-ui.tar.gz /opt/openvpn-gui/
 RUN rm -f /opt/openvpn-gui/data.db
 ADD assets/app.conf /opt/openvpn-gui/conf/app.conf
