@@ -18,7 +18,7 @@ type Cert struct {
 	EntryType   string
 	Expiration  string
 	ExpirationT time.Time
-	IsExpired   bool
+	IsExpiring  bool
 	Revocation  string
 	RevocationT time.Time
 	Serial      string
@@ -53,14 +53,14 @@ func ReadCerts(path string) ([]*Cert, error) {
 					line, 6, len(fields))
 		}
 		expT, _ := time.Parse("060102150405Z", fields[1])
-		expTA := time.Now().AddDate(0, 0, 36135).After(expT) // show/hide Renew button if expired within 99 years (always show)
-		//logs.Debug("ExpirationT: %v, IsExpired: %v", expT, expTA) // logging
+		expTA := time.Now().AddDate(0, 0, 30).After(expT) // If cer will expire in 30 days, raise this flag
+		//logs.Debug("ExpirationT: %v, IsExpiring: %v", expT, expTA) // logging
 		revT, _ := time.Parse("060102150405Z", fields[2])
 		c := &Cert{
 			EntryType:   fields[0],
 			Expiration:  fields[1],
 			ExpirationT: expT,
-			IsExpired:   expTA,
+			IsExpiring:  expTA,
 			Revocation:  fields[2],
 			RevocationT: revT,
 			Serial:      fields[3],

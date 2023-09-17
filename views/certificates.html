@@ -41,45 +41,65 @@
                       {{ .Details.Name }}
                     </a>
                   </td>
-                  {{if eq .Revocation ""}}
+                  {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <img src="/static/img/check-circle-fill.svg" width="16" height="16" alt="Valid">
+                      <i class="fa fa-fw fa-check-circle" style="color: #00a65a; font-size: 17px;"></i>
+                    </td>
+                  {{else if and (eq .Revocation "") .IsExpiring}}
+                    <td>
+                      <i class="fa fa-fw fa-exclamation-circle" style="color: #f39c12; font-size: 17px;"></i>
                     </td>
                   {{else}}
                     <td>
-                      <img src="/static/img/x-circle-fill.svg" width="16" height="16" alt="Invalid">
+                      <i class="fa fa-fw fa-times-circle" style="color: #dd4b39; font-size: 17px;"></i>
                     </td>
                   {{end}}
                     <td>
                       <p class="text-muted" style="font-size: 90%;">{{ .Details.LocalIP }}</p>
                     </td>
 
-                  {{if eq .Revocation ""}}
+                  {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <span class="label label-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
+                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
+                    </td>
+                  {{else if and (eq .Revocation "") .IsExpiring}}
+                    <td>
+                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{else}}
                     <td>
-                      <span class="label label-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>
+                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{end}}
+
                   {{if eq .Revocation ""}}
                     <td></td>
                   {{else}}
                     <td>
-                      <span class="label label-danger">{{ dateformat .RevocationT "2006-01-02 15:04"}}</span>
+                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>{{ dateformat .RevocationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{end}}
                     <td>
                       <p class="text-muted" style="font-size: 70%;">{{ .Serial }}</p>
                     </td>
+                  {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <span class="label label-warning">CN: {{ .Details.CN }}</span>
-                <!--  Comented until bypass of client email to DB will be implemented  -->
-                      <span class="label label-warning">Email: {{ .Details.Email }}</span>
+                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>CN: {{ .Details.CN }}</b></a>
+                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>Email: {{ .Details.Email }}</b></a>
                     </td>
+                  {{else if and (eq .Revocation "") .IsExpiring}}
+                    <td>
+                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>CN: {{ .Details.CN }}</b></a>
+                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>Email: {{ .Details.Email }}</b></a>
+                    </td>
+                  {{else}}
+                    <td>
+                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>CN: {{ .Details.CN }}</b></a>
+                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b>Email: {{ .Details.Email }}</b></a>
+                    </td>
+                  {{end}}
                     <td class="align-middle">
-                  {{ if and .IsExpired (eq .Revocation "") (ne .Details.Name "") }}
+                  {{ if and (eq .Revocation "") (ne .Details.Name "") }}
                       <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-primary btn-xs" title="Renew">Renew</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Renew</a>
@@ -97,9 +117,53 @@
                   {{end}}
                     </td>
               </tr>
+              <div id="{{ .Details.CN }}-modal" class="modal fade">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">{{ .Details.CN }} Details</h4>
+                    </div>
+                    <div class="modal-body">
+                      <!-- /.dl-header -->
+                      <dl class="dl-horizontal" id="certificate-details">
+                        <dt class="copy-details"><b><h4>Name: </h4></b></dt>
+                        <dd class="copy-details"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
+                        <dt class="copy-details">Status: </dt>
+                        <dd class="copy-details">{{if eq .EntryType "V"}}<span class="label label-success">Valid</span>{{else if eq .EntryType "R"}}<span class="label label-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
+                        <dt class="copy-details">Expiration Time: </dt>
+                        <dd class="copy-details">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="label label-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> Will soon expire!</b>{{else}}<span class="label label-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
+                        <dt class="copy-details">Revoke Time: </dt>
+                        <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}Not Revoked{{end}}</dd>
+                        <dt class="copy-details">IP Address: </dt>
+                        <dd class="copy-details">{{ .Details.LocalIP }}</dd>
+                        <dt class="copy-details">Serial: </dt>
+                        <dd class="copy-details">{{ .Serial }}</dd>
+                        <dt class="copy-details">Registered e-mail: </dt>
+                        <dd class="copy-details"><a href="mailto:{{ .Details.Email }}">{{ .Details.Email }}</a></dd>
+                        <dt class="copy-details">Registered Country: </dt>
+                        <dd class="copy-details">{{ .Details.Country }}</dd>
+                        <dt class="copy-details">Registered State/Region: </dt>
+                        <dd class="copy-details">{{ .Details.State }}</dd>
+                        <dt class="copy-details">Registered City: </dt>
+                        <dd class="copy-details">{{ .Details.City }}</dd>
+                        <dt class="copy-details">Registered Organisation: </dt>
+                        <dd class="copy-details">{{ .Details.Organisation }}</dd>
+                        <dt class="copy-details">Registered Unit: </dt>
+                        <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
+                      </dl>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary copy-btn copy-modal-data-btn" style="width: 125px;">Copy</button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               {{ end }}
             {{end}}
-
             </tbody>
           </table>
         </div>
@@ -174,7 +238,7 @@
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_EMAIL">Client Email</label>
-              <input type="text" class="form-control" placeholder="Client Email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" id="EasyRSAReqEmail" name="EasyRSAReqEmail" value="{{ .EasyRSA.EasyRSAReqEmail }}">
+              <input type="email" class="form-control" placeholder="Client Email" id="EasyRSAReqEmail" name="EasyRSAReqEmail" value="{{ .EasyRSA.EasyRSAReqEmail }}">
               <span class="help-block">The New Client e-mail address.</span>
             </div>
 
@@ -254,3 +318,4 @@
   <!-- /.box-footer -->
 </div>
 {{end}}
+
