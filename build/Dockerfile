@@ -14,7 +14,8 @@ RUN apk update \
     jq \
  && rm -rf /var/cache/apk/* && chmod 755 /usr/share/easy-rsa/*
 
-COPY assets/*.sh /opt/scripts/
+COPY assets/!(*start).sh /opt/scripts/
+COPY assets/start.sh /opt/start.sh
 ADD openvpn-ui.tar.gz /opt/openvpn-gui/
 RUN rm -f /opt/openvpn-gui/data.db
 ADD assets/app.conf /opt/openvpn-gui/conf/app.conf
