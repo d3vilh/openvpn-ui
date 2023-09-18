@@ -33,7 +33,7 @@ services:
            - "8080:8080/tcp"
        volumes:
            - ./:/etc/openvpn
-           - ./db:/opt/openvpn-gui/db
+           - ./db:/opt/openvpn-ui/db
            - ./pki:/usr/share/easy-rsa/pki
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always

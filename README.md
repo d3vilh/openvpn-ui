@@ -67,7 +67,7 @@ It has all the necessary scripts for easy installation and lot of additional fea
            - "8080:8080/tcp"
        volumes:
            - ./:/etc/openvpn
-           - ./db:/opt/openvpn-gui/db
+           - ./db:/opt/openvpn-ui/db
            - ./pki:/usr/share/easy-rsa/pki
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
@@ -112,7 +112,7 @@ services:
            - "8080:8080/tcp"
        volumes:
            - ./:/etc/openvpn
-           - ./db:/opt/openvpn-gui/db
+           - ./db:/opt/openvpn-ui/db
            - ./pki:/usr/share/easy-rsa/pki
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
@@ -152,7 +152,7 @@ Run the OpenVPN-UI image
 ```shell
 docker run \
 -v /home/pi/openvpn:/etc/openvpn \
--v /home/pi/openvpn/db:/opt/openvpn-gui/db \
+-v /home/pi/openvpn/db:/opt/openvpn-ui/db \
 -v /home/pi/openvpn/pki:/usr/share/easy-rsa/pki \
 -v /home/pi/openvpn/log:/var/log/openvpn \
 -v /var/run/docker.sock:/var/run/docker.sock \
@@ -397,7 +397,7 @@ sudo ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923-1
 ```
 This will restore all the enviroment files from backup directory to `~/openvpn-server` directory.
 
-> **Note v.0.3**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to restore it manually: `docker cp backup/data.0.3.db openvpn-ui:/opt/openvpn-gui/data.db`
+> **Note v.0.3**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to restore it manually: `docker cp backup/data.0.3.db openvpn-ui:/opt/openvpn-ui/data.db`
 
 ##### Restore container
 1. Run docker-compose up to deploy new container with old image:
