@@ -12,7 +12,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 
 * Status page that shows server statistics and list of connected clients
 * Supports OpenVPN **tunnel**(`dev tun`) or **bridge**(`dev tap`) server configurations
-* Easy to **generate**, **download**, **renew**, **revoke** and **delete** client certificates
+* Easy to **generate**, **download**, **renew**, **revoke**, **delete** and **view** client certificates
 * Client can have secret passphrase and static IP assigned during client certificate generation
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
 * **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
@@ -21,6 +21,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Restart OpenVPN Server and OpenVPN UI from web interface
 * OpenVPN-UI Admin user and password can be passed via environment variables to container
 * Updated infrustracture:
+  * Alpine Linux as fastest and secure base image
   * GoLang 1.21
   * Beego 2.1 with all vulnerabilities fixed
   * Easy-rsa 3.X
