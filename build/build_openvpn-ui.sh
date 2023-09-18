@@ -1,5 +1,6 @@
 #!/bin/bash
 # Exit immediately if a command exits with a non-zero status
+# VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
 set -e
 
 # Determine the machine architecture
@@ -9,26 +10,26 @@ case $ARCH in
   armv6*)
     PLATFORM="linux/arm/v5"
     #UIIMAGE="FROM arm32v5/debian:stable-slim"
-    UIIMAGE="FROM arm32v5/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM arm32v5/golang:1.21"
+    UIIMAGE="FROM arm32v5/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
+    BEEIMAGE="FROM arm32v5/golang:1.21.1-bookworm"
     ;;
   armv7*)
     PLATFORM="linux/arm/v7"
     #UIIMAGE="FROM arm32v7/debian:stable-slim"
-    UIIMAGE="FROM arm32v7/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
+    UIIMAGE="FROM arm32v7/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM arm32v7/golang:1.21"
     ;;
   aarch64*)
     PLATFORM="linux/arm64/v8"
     #UIIMAGE="FROM arm64v8/debian:stable-slim"
-    UIIMAGE="FROM arm64v8/debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM arm64v8/golang:1.21"
+    UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
+    BEEIMAGE="FROM golang:1.21.1-bookworm"
     ;;
   *)
     PLATFORM="linux/amd64"
     #UIIMAGE="FROM debian:stable-slim"
-    UIIMAGE="FROM debian:unstable-slim" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM golang:1.21"
+    UIIMAGE="FROM alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
+    BEEIMAGE="FROM golang:1.21.1-bookworm"
     ;;
 esac
 
