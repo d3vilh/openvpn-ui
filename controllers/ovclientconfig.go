@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"html/template"
+	"os"
 	"path/filepath"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -31,6 +32,15 @@ func (c *OVClientConfigController) NestPrepare() {
 
 func (c *OVClientConfigController) Get() {
 	c.TplName = "ovclient.html"
+
+	destPathClientTempl := filepath.Join(state.GlobalCfg.OVConfigPath, "config/client.conf")
+	clientTemplate, err := os.ReadFile(destPathClientTempl)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	c.Data["ClientTemplate"] = string(clientTemplate)
+
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	cfg := models.OVClientConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
@@ -71,5 +81,14 @@ func (c *OVClientConfigController) Post() {
 			flash.Warning("Config has been updated but OpenVPN server was NOT reloaded: " + err.Error())
 		}
 	}
+
+	destPathClientTempl := filepath.Join(state.GlobalCfg.OVConfigPath, "config/client.conf")
+	clientTemplate, err := os.ReadFile(destPathClientTempl)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	c.Data["ClientTemplate"] = string(clientTemplate)
+
 	flash.Store(&c.Controller)
 }

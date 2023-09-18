@@ -1,15 +1,15 @@
 client
-dev {{ .Device }}                  # This option was peakup from the server config
-proto {{ .Proto}}                # This option was peakup from the server config
+dev {{ .Device }}
+proto {{ .Proto}}
 remote {{ .ServerAddress }} {{ .OpenVpnServerPort }} {{ .Proto }}
 resolv-retry infinite
-user nobody              # This option was peakup from the server config
-group nogroup            # This option was peakup from the server config
+user nobody
+group nogroup
 persist-tun
 persist-key
 remote-cert-tls server
-cipher {{ .Cipher }}       # This option was peakup from the server config
-auth {{ .Auth }}              # This option was peakup from the server config
+cipher {{ .Cipher }}
+auth {{ .Auth }}
 auth-nocache
 tls-client
 {{ .RedirectGateway }}
