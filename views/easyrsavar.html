@@ -136,11 +136,53 @@
       {{ .xsrfdata }}
     </div>
     <div class="box-footer">
-      <button type="submit" style="width: 135px;" class="btn btn-primary">Save EasyRSA Vars</button>
+      <button type="submit" style="width: 135px;" class="btn btn-primary">Save EasyRSA Vars</button> &nbsp; &nbsp;
+      <button type="button" style="width: 135px;" class="btn btn-primary" data-toggle="modal" data-target="#easyrsa-view-modal">View EasyRSA Vars</button>
     </div>
         <!-- /.box-body -->
   </form>
 
 </div>
+
+<div class="modal fade" id="easyrsa-view-modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Config viewer</h4>
+      </div>
+      <div class="modal-body">
+           <!-- /.box-header -->
+            <!-- form start -->
+           {{template "common/alert.html" .}}
+            <form role="form" method="post">
+              <div class="box-body">
+              
+                <div class="form-group">
+                  <label for="name">.easy-rsa/pki/vars</label>
+                  <textarea type="text" class="form-control my-textarea" name="ServerConfig" 
+                   id="ServerConfig"  spellcheck="false" rows="15">{{ .EasyRSAConf }}</textarea>
+                  <span id="helpBlock" class="help-block">This is EasyRSA VARS file.
+                  </span>
+                </div>
+                
+                {{ .xsrfdata }}
+              </div>
+              <div class="box-footer">
+                <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button>
+              </div>
+                 <!-- /.box-body -->
+            </form>
+            <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- /.box -->
 {{end}}
+
+<script>
+  createEditor("EasyRSAConfig", "600px", "clouds", "ovpn", true)
+</script>

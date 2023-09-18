@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"html/template"
+	"os"
 	"path/filepath"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -31,6 +32,15 @@ func (c *EasyRSAConfigController) NestPrepare() {
 
 func (c *EasyRSAConfigController) Get() {
 	c.TplName = "easyrsavar.html"
+
+	destPathEasyRSAConfig := filepath.Join(state.GlobalCfg.EasyRSAPath, "pki/vars")
+	easyRSAConfig, err := os.ReadFile(destPathEasyRSAConfig)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	c.Data["EasyRSAConf"] = string(easyRSAConfig)
+
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	cfg := models.EasyRSAConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
@@ -80,6 +90,15 @@ func (c *EasyRSAConfigController) Post() {
 			flash.Warning("Config has been updated but OpenVPN server was NOT reloaded: " + err.Error())
 		}
 	}
+
+	destPathEasyRSAConfig := filepath.Join(state.GlobalCfg.EasyRSAPath, "pki/vars")
+	easyRSAConfig, err := os.ReadFile(destPathEasyRSAConfig)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	c.Data["EasyRSAConf"] = string(easyRSAConfig)
+
 	flash.Store(&c.Controller)
 
 }
