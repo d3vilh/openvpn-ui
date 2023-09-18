@@ -78,12 +78,25 @@
       {{ .xsrfdata }}
     </div>
     <div class="box-footer">
-      <button type="submit" style="width: 125px;" class="btn btn-primary">Save Config</button> &nbsp; <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 125px;" title="Restart">Restart Server</a>
-      &nbsp; <span> OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
+      <button type="submit" style="width: 125px;" class="btn btn-primary">Save Config</button> 
     </div>
         <!-- /.box-body -->
   </form>
-
 </div>
+
+<div class="box box-default">
+  <!-- /.box-body -->
+  <!-- /.box-header -->
+  <!-- form start -->
+  <form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
+    {{ .xsrfdata }}
+    <div class="box-footer">
+      <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
+      <span style="color:grey;"> &nbsp; OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
+    </div>
+      <!-- /.box-body -->
+  </form>
+</div>
+
 <!-- /.box -->
 {{end}}
