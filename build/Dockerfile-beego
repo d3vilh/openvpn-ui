@@ -1,14 +1,16 @@
 # armv5l raspberry pi 1/zero 32bit: FROM arm32v5/golang:1.20, armv7l raspberry pi 2/3/4 32bit: FROM arm32v7/golang:1.20
 # AMD64 64bit: golang:1.20, armv8l raspberry pi 3/4 64bit: FROM arm64v8/golang:1.20
-FROM DEFINE-YOUR-ARCH
+FROM golang:1.21.1-bookworm
 
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 
 # Set the working directory to /tmp
 WORKDIR /tmp1
+RUN apt-get update && apt-get install musl-tools -y
 
 # Enable go modules
 ENV GO111MODULE=on
+ENV CGO_ENABLED=1
 
 # Copy the go.mod and go.sum files to the container
 COPY go.mod go.sum ./
