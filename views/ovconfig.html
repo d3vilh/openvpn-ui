@@ -349,7 +349,7 @@
     </div>
     
    <div class="box-footer">
-     <button type="submit" style="width: 135px;" class="btn btn-primary">Save Config</button>
+     <button type="submit" style="width: 135px;" class="btn btn-primary" onclick="return confirm('Are you sure you want to Save new configuration file?\nCurrent configuration will be overwritten!');">Save Config</button>
    </div>
       <!-- /.box-body -->
  </form>
@@ -392,7 +392,7 @@
               </div>
               <div class="box-footer">
                 <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button> &nbsp; &nbsp;
-                <button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save updated configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button>
+                <button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save manually added configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button>
               </div>
                  <!-- /.box-body -->
             </form>
