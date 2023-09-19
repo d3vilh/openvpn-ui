@@ -129,11 +129,10 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 		}
 	}
 	Dump(certs)
-	if !exists {
-		if !haveip {
+
+	if !pass {
+		if !exists && !haveip {
 			staticip = "dynamic.pool"
-		}
-		if !pass {
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -154,7 +153,56 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 				return err
 			}
 			return nil
-		} else {
+		}
+		if !exists && haveip {
+			cmd := exec.Command("/bin/bash", "-c",
+				fmt.Sprintf(
+					"cd /opt/scripts/ && "+
+						"export KEY_NAME=%s &&"+
+						"export EASYRSA_CERT_EXPIRE=%s &&"+
+						"export EASYRSA_REQ_EMAIL=%s &&"+
+						"export EASYRSA_REQ_COUNTRY=%s &&"+
+						"export EASYRSA_REQ_PROVINCE=%s &&"+
+						"export EASYRSA_REQ_CITY=%s &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_OU=%s &&"+
+						"./genclient.sh %s %s &&"+
+						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, staticip, name))
+			cmd.Dir = state.GlobalCfg.OVConfigPath
+			output, err := cmd.CombinedOutput()
+			if err != nil {
+				logs.Debug(string(output))
+				logs.Error(err)
+				return err
+			}
+			return nil
+		}
+		return existsError
+	} else {
+		if !exists && !haveip {
+			staticip = "not.defined"
+			cmd := exec.Command("/bin/bash", "-c",
+				fmt.Sprintf(
+					"cd /opt/scripts/ && "+
+						"export KEY_NAME=%s &&"+
+						"export EASYRSA_CERT_EXPIRE=%s &&"+
+						"export EASYRSA_REQ_EMAIL=%s &&"+
+						"export EASYRSA_REQ_COUNTRY=%s &&"+
+						"export EASYRSA_REQ_PROVINCE=%s &&"+
+						"export EASYRSA_REQ_CITY=%s &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_OU=%s &&"+
+						"./genclient.sh %s %s %s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase))
+			cmd.Dir = state.GlobalCfg.OVConfigPath
+			output, err := cmd.CombinedOutput()
+			if err != nil {
+				logs.Debug(string(output))
+				logs.Error(err)
+				return err
+			}
+			return nil
+		}
+		if !exists && haveip {
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -177,8 +225,8 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 			}
 			return nil
 		}
+		return existsError
 	}
-	return existsError
 }
 
 func RevokeCertificate(name string, serial string) error {
