@@ -1,12 +1,12 @@
 #!/bin/bash
-#VERSION 1.2 by @d3vilh@github.com aka Mr. Philipp
+#VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
 # Exit immediately if a command exits with a non-zero status
 set -e
 
 # Variables
 ACTION=$1  #passed via OpenVPN-UI GUI
-EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
-OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
+EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
+OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 echo 'EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR'
 PKI_DIR=$EASY_RSA/pki
 CERT_DIR=$OPENVPN_DIR/clients
@@ -37,8 +37,7 @@ elif [ "$ACTION" = "remove_all" ]; then
   rm -rf $CERT_DIR/*.ovpn
   echo -e 'All *.ovpn removed.\nRemoving static clients.\n'
   rm -rf $STATIC_CLIENT_DIR/*
-  echo -e 'Static clients remover.\nRemoving Openvpn-UI DB.\n'
-  rm -rf $OVPN_DB_DIR/data.db
+  echo -e 'Static clients removed.\n'
 else
   echo "Invalid input argument: $ACTION. Exiting."
   exit 1

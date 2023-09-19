@@ -86,6 +86,14 @@ func init() {
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
+			web.ControllerComments{
+				Method:           "Renew",
+				Router:           `/certificates/renew/:key/:localip/:serial`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
 	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"] =
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:DangerController"],
 			web.ControllerComments{
@@ -110,11 +118,51 @@ func init() {
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
-	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"] =
-		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVConfigController"],
 			web.ControllerComments{
-				Method:           "Renew",
-				Router:           `/certificates/renew/:key/:localip/:serial`,
+				Method:           "Edit",
+				Router:           `/ov/config/edit`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVConfigController"],
+			web.ControllerComments{
+				Method:           "Post",
+				Router:           `/ov/config`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVConfigController"],
+			web.ControllerComments{
+				Method:           "Get",
+				Router:           `/ov/config`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"],
+			web.ControllerComments{
+				Method:           "Edit",
+				Router:           `/ov/clientconfig/edit`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"],
+			web.ControllerComments{
+				Method:           "Post",
+				Router:           `/ov/clientconfig`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"],
+			web.ControllerComments{
+				Method:           "Get",
+				Router:           `/ov/clientconfig`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 

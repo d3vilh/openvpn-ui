@@ -12,7 +12,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 
 * Status page that shows server statistics and list of connected clients
 * Supports OpenVPN **tunnel**(`dev tun`) or **bridge**(`dev tap`) server configurations
-* Easy to **generate**, **download**, **renew**, **revoke** and **delete** client certificates
+* Easy to **generate**, **download**, **renew**, **revoke**, **delete** and **view** client certificates
 * Client can have secret passphrase and static IP assigned during client certificate generation
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
 * **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
@@ -21,6 +21,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Restart OpenVPN Server and OpenVPN UI from web interface
 * OpenVPN-UI Admin user and password can be passed via environment variables to container
 * Updated infrustracture:
+  * Alpine Linux as fastest and secure base image
   * GoLang 1.21
   * Beego 2.1 with all vulnerabilities fixed
   * Easy-rsa 3.X
@@ -67,7 +68,7 @@ It has all the necessary scripts for easy installation and lot of additional fea
            - "8080:8080/tcp"
        volumes:
            - ./:/etc/openvpn
-           - ./db:/opt/openvpn-gui/db
+           - ./db:/opt/openvpn-ui/db
            - ./pki:/usr/share/easy-rsa/pki
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
@@ -112,7 +113,7 @@ services:
            - "8080:8080/tcp"
        volumes:
            - ./:/etc/openvpn
-           - ./db:/opt/openvpn-gui/db
+           - ./db:/opt/openvpn-ui/db
            - ./pki:/usr/share/easy-rsa/pki
            - /var/run/docker.sock:/var/run/docker.sock:ro
        restart: always
@@ -152,7 +153,7 @@ Run the OpenVPN-UI image
 ```shell
 docker run \
 -v /home/pi/openvpn:/etc/openvpn \
--v /home/pi/openvpn/db:/opt/openvpn-gui/db \
+-v /home/pi/openvpn/db:/opt/openvpn-ui/db \
 -v /home/pi/openvpn/pki:/usr/share/easy-rsa/pki \
 -v /home/pi/openvpn/log:/var/log/openvpn \
 -v /var/run/docker.sock:/var/run/docker.sock \
@@ -397,7 +398,7 @@ sudo ./backup.sh -r ~/openvpn-server backup/openvpn-server-030923-1
 ```
 This will restore all the enviroment files from backup directory to `~/openvpn-server` directory.
 
-> **Note v.0.3**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to restore it manually: `docker cp backup/data.0.3.db openvpn-ui:/opt/openvpn-gui/data.db`
+> **Note v.0.3**: There was bug in version 0.3 where data.db file were not shared over the volume, so you have to restore it manually: `docker cp backup/data.0.3.db openvpn-ui:/opt/openvpn-ui/data.db`
 
 ##### Restore container
 1. Run docker-compose up to deploy new container with old image:
@@ -622,11 +623,19 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Create-Cert.png" alt="OpenVPN-UI Create Certificate screen" width="1000" border="1" />
 
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Certs-Details-Expire.png" alt="OpenVPN-UI Expire Certificate details" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Certs-Details_OK.png" alt="OpenVPN-UI OK Certificate details" width="1000" border="1" />
+
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-EasyRsaVars.png" alt="OpenVPN-UI EasyRSA vars screen" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-EasyRsaVars-View.png" alt="OpenVPN-UI EasyRSA vars config view screen" width="1000" border="1" />
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Maintenance.png" alt="OpenVPN-UI Maintenance screen" width="1000" border="1" />
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Server-config.png" alt="OpenVPN-UI Server Configuration screen" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Server-config-edit.png" alt="OpenVPN-UI Server Configuration edit screen" width="1000" border="1" />
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ClientConf.png" alt="OpenVPN-UI Client Configuration screen" width="1000" border="1" />
 
@@ -636,8 +645,8 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
 
-## Дякую and Kudos to the original author
+## Дякую and Kudos to the initiator of this project
 
-Kudos to @adamwalach for development of the original [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) project which was used as foundation for this project.
+Kudos to @adamwalach for development of the original [OpenVPN-WEB-UI](https://github.com/adamwalach/openvpn-web-ui) project which was used as solid foundation for OpenVPN UI.
 
 <a href="https://www.buymeacoffee.com/d3vilh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="51" width="217"></a>

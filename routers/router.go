@@ -19,7 +19,7 @@ func Init(configDir string) {
 	web.Router("/logout", &controllers.LoginController{}, "get:Logout")
 	web.Router("/profile", &controllers.ProfileController{})
 	web.Router("/settings", &controllers.SettingsController{})
-	web.Router("/ov/config", &controllers.OVConfigController{ConfigDir: configDir})
+	web.Router("/ov/config", &controllers.OVConfigController{})
 	web.Router("/logs", &controllers.LogsController{})
 	web.Router("/ov/clientconfig", &controllers.OVClientConfigController{ConfigDir: configDir})
 	web.Router("/easyrsa/config", &controllers.EasyRSAConfigController{ConfigDir: configDir})
@@ -27,6 +27,8 @@ func Init(configDir string) {
 
 	web.Include(&controllers.CertificatesController{ConfigDir: configDir})
 	web.Include(&controllers.DangerController{})
+	web.Include(&controllers.OVConfigController{ConfigDir: configDir})
+	web.Include(&controllers.OVClientConfigController{ConfigDir: configDir})
 
 	ns := web.NewNamespace("/api/v1",
 		web.NSNamespace("/session",

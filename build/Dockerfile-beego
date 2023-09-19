@@ -6,9 +6,11 @@ LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 
 # Set the working directory to /tmp
 WORKDIR /tmp1
+RUN apt-get update && apt-get install musl-tools -y
 
 # Enable go modules
 ENV GO111MODULE=on
+ENV CGO_ENABLED=1
 
 # Copy the go.mod and go.sum files to the container
 COPY go.mod go.sum ./

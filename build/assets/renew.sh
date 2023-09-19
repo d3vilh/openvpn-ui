@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION 1.2 by @d3vilh@github.com aka Mr. Philipp
+#VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
 # Exit immediately if a command exits with a non-zero status
 set -e
 
@@ -7,7 +7,7 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_SERIAL=$3
-EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-gui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
+EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 echo 'EasyRSA path: $EASY_RSA'
 
 if [ -n "$1" ]; then

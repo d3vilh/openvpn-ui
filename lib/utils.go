@@ -2,6 +2,8 @@ package lib
 
 import (
 	"encoding/json"
+	"fmt"
+	"os"
 	"strings"
 
 	"github.com/beego/beego/v2/core/logs"
@@ -47,4 +49,14 @@ func CreateValidationMap(valid validation.Validation) map[string]map[string]stri
 func Dump(obj interface{}) {
 	result, _ := json.MarshalIndent(obj, "", "\t")
 	logs.Debug(string(result))
+}
+
+// ConfSaveToFile saves the given text to the specified file path, replacing Windows-style line endings with Unix-style line endings.
+func ConfSaveToFile(destPath string, text string) error {
+	text = strings.ReplaceAll(text, "\r\n", "\n")
+	err := os.WriteFile(destPath, []byte(text), 0644)
+	if err != nil {
+		return fmt.Errorf("error writing file: %w", err)
+	}
+	return nil
 }
