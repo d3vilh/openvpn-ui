@@ -375,14 +375,14 @@
                     <div class="box-group" id="accordion">
                       <span >
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">
-                          <i class="fa fa-fw fa-info-circle" style="font-size: 15px;"></i> Please note
+                          <i class="fa fa-fw fa-info-circle" style="color: #f39c12; font-size: 15px;"></i> <b style="color: #f39c12;">Please note</b>
                         </a>
                       </span>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                       <div class="box-body">
                         <span>Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
-                        <span>Saving configuration manually will not lead to automatic OpenVPN Server restart.</span><br>
+                        <span>It is better to update it via Configuration template.</span><br>
                       </div>
                     </div>
                     <br><textarea type="text" class="form-control my-textarea" name="ServerConfig" id="ServerConfig" spellcheck="false" rows="15">{{ .ServerConfig }}</textarea>
