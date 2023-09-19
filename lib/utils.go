@@ -2,6 +2,7 @@ package lib
 
 import (
 	"encoding/json"
+	"os"
 	"strings"
 
 	"github.com/beego/beego/v2/core/logs"
@@ -47,4 +48,10 @@ func CreateValidationMap(valid validation.Validation) map[string]map[string]stri
 func Dump(obj interface{}) {
 	result, _ := json.MarshalIndent(obj, "", "\t")
 	logs.Debug(string(result))
+}
+
+// ConfSaveToFile
+func ConfSaveToFile(destPath string, text string) error {
+	text = strings.ReplaceAll(text, "\r\n", "\n")
+	return os.WriteFile(destPath, []byte(text), 0644)
 }
