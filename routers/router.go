@@ -28,6 +28,7 @@ func Init(configDir string) {
 	web.Include(&controllers.CertificatesController{ConfigDir: configDir})
 	web.Include(&controllers.DangerController{})
 	web.Include(&controllers.OVConfigController{ConfigDir: configDir})
+	web.Include(&controllers.OVClientConfigController{ConfigDir: configDir})
 
 	ns := web.NewNamespace("/api/v1",
 		web.NSNamespace("/session",

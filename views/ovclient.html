@@ -85,47 +85,42 @@
   </form>
 </div>
 
-<div class="box box-default">
-  <!-- /.box-body -->
-  <!-- /.box-header -->
-  <!-- form start -->
-  <form role="form" action="{{urlfor "OVConfigController.Post"}}" method="post">
-    {{ .xsrfdata }}
-    <div class="box-footer">
-      <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
-      <span style="color:grey;"> &nbsp; OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
-    </div>
-      <!-- /.box-body -->
-  </form>
-</div>
-
 <div class="modal fade" id="config-view-modal">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Config viewer</h4>
+        <h4 class="modal-title">{{ .BeeSettings.OVConfigPath }}/config/client.conf</h4>
       </div>
       <div class="modal-body">
            <!-- /.box-header -->
             <!-- form start -->
            {{template "common/alert.html" .}}
-            <form role="form" method="post">
+            <form role="server-config" role="form" action="{{urlfor "OVClientConfigController.Edit"}}" method="post">
               <div class="box-body">
               
                 <div class="form-group">
-                  <label for="name">client.conf</label>
-                  <textarea type="text" class="form-control my-textarea" name="ServerConfig" 
-                   id="ServerConfig"  spellcheck="false" rows="15">{{ .ClientTemplate }}</textarea>
-                  <span id="helpBlock" class="help-block">This is actual Client config file.
-                  </span>
+                    <div class="box-group" id="accordion">
+                      <span >
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">
+                          <i class="fa fa-fw fa-info-circle" style="font-size: 15px;"></i> Please note
+                        </a>
+                      </span>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                      <div class="box-body">
+                        <span>Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
+                      </div>
+                    </div>
+                    <br><textarea type="text" class="form-control my-textarea" name="ClientTemplate" id="ClientTemplate" spellcheck="false" rows="15">{{ .ClientTemplate }}</textarea>
                 </div>
                 
                 {{ .xsrfdata }}
               </div>
               <div class="box-footer">
-                <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button> &nbsp; &nbsp;
+                <button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save updated configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button>
               </div>
                  <!-- /.box-body -->
             </form>
@@ -135,12 +130,22 @@
   </div>
 </div>
 
-
-
-
+<div class="box box-primary">
+  <!-- /.box-body -->
+  <!-- /.box-header -->
+  <!-- form start -->
+  <form role="form" action="{{urlfor "OVClientConfigController.Post"}}" method="post">
+    {{ .xsrfdata }}
+    <div class="box-footer">
+      <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
+      <span style="color:grey;"> &nbsp; OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
+    </div>
+      <!-- /.box-body -->
+  </form>
+</div>
 <!-- /.box -->
 {{end}}
 
 <script>
-  createEditor("ServerConfig", "600px", "clouds", "ovpn", true)
+  createEditor("ClientTemplate", "550px", "clouds", "ovpn", false)
 </script>

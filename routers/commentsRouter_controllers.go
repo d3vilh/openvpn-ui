@@ -142,4 +142,28 @@ func init() {
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"],
+			web.ControllerComments{
+				Method:           "Edit",
+				Router:           `/ov/clientconfig/edit`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"],
+			web.ControllerComments{
+				Method:           "Post",
+				Router:           `/ov/clientconfig`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:OVClientConfigController"],
+			web.ControllerComments{
+				Method:           "Get",
+				Router:           `/ov/clientconfig`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
 }
