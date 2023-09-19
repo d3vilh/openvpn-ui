@@ -2,6 +2,7 @@ package lib
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 
@@ -50,8 +51,12 @@ func Dump(obj interface{}) {
 	logs.Debug(string(result))
 }
 
-// ConfSaveToFile
+// ConfSaveToFile saves the given text to the specified file path, replacing Windows-style line endings with Unix-style line endings.
 func ConfSaveToFile(destPath string, text string) error {
 	text = strings.ReplaceAll(text, "\r\n", "\n")
-	return os.WriteFile(destPath, []byte(text), 0644)
+	err := os.WriteFile(destPath, []byte(text), 0644)
+	if err != nil {
+		return fmt.Errorf("error writing file: %w", err)
+	}
+	return nil
 }
