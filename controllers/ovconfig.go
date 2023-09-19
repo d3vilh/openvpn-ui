@@ -110,6 +110,21 @@ func (c *OVConfigController) Post() {
 func (c *OVConfigController) Edit() {
 	c.TplName = "ovconfig.html"
 	flash := web.NewFlash()
+	cfg := models.OVConfig{Profile: "default"}
+	_ = cfg.Read("Profile")
+
+	//logs.Info("Post: Parsing form data")
+	if err := c.ParseForm(&cfg); err != nil {
+		logs.Warning(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+		return
+	}
+
+	//logs.Info("Post: Dumping configuration data")
+	lib.Dump(cfg)
+	c.Data["Settings"] = &cfg
+
 	//logs.Info("Starting Edit method in OVConfigController")
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
 
