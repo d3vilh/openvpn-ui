@@ -6,7 +6,9 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPN-UI-Home.png" alt="Openvpn-ui home screen"/>
 
-[![latest version](https://img.shields.io/github/v/release/d3vilh/openvpn-ui?color=%2344cc11&label=Latest%20release&style=for-the-badge)](https://github.com/d3vilh/openvpn-ui/releases/latest)
+[![latest version](https://img.shields.io/github/v/release/d3vilh/openvpn-ui?color=%2344cc11&label=Latest%20release&style=for-the-badge&logo=Github)](https://github.com/d3vilh/openvpn-ui/releases/latest) [![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/d3vilh/openvpn-ui/latest?logo=docker&label=Docker%20image&color=2344cc11&style=for-the-badge&logoColor=white)](https://hub.docker.com/r/d3vilh/openvpn-ui) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/d3vilh/openvpn-ui/latest?logo=Docker&color=2344cc11&label=Image%20size&style=for-the-badge&logoColor=white)
+
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/d3vilh/openvpn-server/latest?style=for-the-badge&logo=docker&logoColor=white&label=OpenVPN-SERVER%20IMAGE&color=2344cc11)](https://hub.docker.com/r/d3vilh/openvpn-server)
 
 ## Features
 
@@ -37,7 +39,7 @@ Part of following projects:
 
 ## Installation
 For the best experience, it is recommended to deploy it within a Docker environment consisting of two distinct containers:
- - The OpenVPN Server Back-End container (openvpn) for running OpenVPN server.
+ - The [`d3vilh/openvpn-server`](https://github.com/d3vilh/openvpn-server) Back-End container (openvpn) for running OpenVPN server.
  - OpenVPN UI Front-End container (openvpn-ui) for efficient management of the OpenVPN server environment.
 
 However it works fine as standalone application with standalove OpenVPN server as well.
