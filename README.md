@@ -478,8 +478,8 @@ This also can be done easy via `"Configuration" > "OpenVPN Server" > "Push DHCP"
 
 ### OpenVPN client subnets. Guest and Home users
 
-By default [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) OpenVPN server uses option `server 10.0.70.0/24`  as **"Trusted"** subnet for dynamic clients and all the clients connected by default will have full access to your Home network, as well as your home Internet.
-However you can be desired to share internet over VPN access with your friends and restrict access to your Home network. For this scenario OpenVPN UI server.conf configuration template has special `route 10.0.71.0/24` option, aka **"Guest users"** subnet.
+By default [d3vilh/openvpn-server](https://github.com/d3vilh/openvpn-server) OpenVPN server uses option `server 10.0.70.0/24` as **"Trusted"** subnet to grab dynamic IPs for all your Clients which, by default will have full access to your **"Private/Home"** subnet, as well as Internet over VPN.
+However you can be desired to share internet over VPN with specific, Guest Clients and restrict access to your **"Private/Home"** subnet. For this scenario [d3vilh/openvpn-server](https://github.com/d3vilh/openvpn-server) `server.conf` configuration file has special `route 10.0.71.0/24` option, aka **"Guest users"** subnet.
 
 <p align="center">
 <img src="https://github.com/d3vilh/raspberry-gateway/blob/master/images/OVPN_VLANs.png" alt="OpenVPN Subnets" width="700" border="1" />
