@@ -5,17 +5,17 @@
 {{end}}
 
 {{define "body"}}
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">Vars Configuration</h3>
-    <small><a href="https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md#environmental-variables-reference" target="_blank">EasyRSA VARs reference</a>.</span></small>
-    <div class="pull-right box-tools">
-      <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-      <i class="fa fa-minus"></i></button>
+<div class="card card-default">
+  <div class="card-header with-border">
+    <h3 class="card-title">Vars Configuration</h3>
+    <small><a href="https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md#environmental-variables-reference" target="_blank"> EasyRSA VARs reference</a>.</span></small>
+    <div class="pull-right card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fa fa-minus"></i></button>
     </div>
   </div>
-  <div class="box-body">
-      <div class="box-group" id="accordion">
+  <div class="card-body">
+      <div class="card-group" id="accordion">
         <span >
           <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">
             <i class="fa fa-fw fa-info-circle" style="font-size: 15px;"></i> Please note
@@ -23,7 +23,7 @@
         </span>
       </div>
       <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-        <div class="box-body">
+        <div class="card-body">
           <span>If you've already completed the automatic setup without modifying the EasyRSA vars and now wish to make changes, follow these steps:</span><br>
           <span><b style="visibility: hidden;">Note</b>1. Save the new EasyRSA vars on this page.</span><br>
           <span><b style="visibility: hidden;">Note</b>2. Navigate to &quot;Configuration > Maintenance&quot;.</span><br>
@@ -31,11 +31,11 @@
         </div>
       </div>
     </div>
-      <!-- /.box-header -->
+      <!-- /.card-header -->
       <!-- form start -->
       {{template "common/alert.html" .}}
       <form role="form" action="{{urlfor "EasyRSAConfigController.Post"}}" method="post">
-      <div class="box-body">
+      <div class="card-body">
           <!-- Disabled Profile - yet another feature to implement.
           <div class="form-group">
             <label for="name">Profile</label>
@@ -45,7 +45,7 @@
         <label for="name">EASYRSA_DN</label>
         <input type="text" class="form-control" id="EasyRSADN" name="EasyRSADN" placeholder="org"
           value="{{ .Settings.EasyRSADN }}">
-          <span id="helpBlock" class="help-block">Define X509 Distinguished Name mode. &quot;cn_only&quot; - Use just a commonName value. &quot;org&quot; - Use full DN format: &quot;Country/Province/City/Org/Org.Unit/email/commonName&quot;.</span>
+          <span id="helpBlock" class="help-block">&quot;org&quot; - full DN format: &quot;Country/Province/City/Org/Org.Unit/email/commonName&quot;. &quot;cn_only&quot; - Use just a commonName value.</span>
       </div>
 
       <div class="form-group">
@@ -135,11 +135,11 @@
 
       {{ .xsrfdata }}
     </div>
-    <div class="box-footer">
-      <button type="submit" style="width: 135px;" class="btn btn-primary">Save EasyRSA Vars</button> &nbsp; &nbsp;
-      <button type="button" style="width: 135px;" class="btn btn-primary" data-toggle="modal" data-target="#easyrsa-view-modal">View EasyRSA Vars</button>
+    <div class="card-footer">
+      <button type="submit" style="width: 145px;" class="btn btn-primary">Save Vars</button> &nbsp; &nbsp;
+      <button type="button" style="width: 145px;" class="btn btn-primary" data-toggle="modal" data-target="#easyrsa-view-modal">View Vars</button>
     </div>
-        <!-- /.box-body -->
+        <!-- /.card-body -->
   </form>
 
 </div>
@@ -148,16 +148,16 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Config viewer</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
-           <!-- /.box-header -->
+           <!-- /.card-header -->
             <!-- form start -->
            {{template "common/alert.html" .}}
             <form role="form" method="post">
-              <div class="box-body">
+              <div class="card-body">
               
                 <div class="form-group">
                   <label for="name">.easy-rsa/pki/vars</label>
@@ -169,10 +169,10 @@
                 
                 {{ .xsrfdata }}
               </div>
-              <div class="box-footer">
-                <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button>
+              <div class="card-footer">
+                <button type="button" class="btn btn-default pull-left" style="width: 145px;" data-dismiss="modal">Close</button>
               </div>
-                 <!-- /.box-body -->
+                 <!-- /.card-body -->
             </form>
             <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
       </div>
@@ -180,7 +180,7 @@
   </div>
 </div>
 
-<!-- /.box -->
+<!-- /.card -->
 {{end}}
 
 <script>

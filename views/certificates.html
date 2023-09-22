@@ -8,17 +8,17 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">Clients certificates</h3>
-        <div class="pull-left box-tools">
-          <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+    <div class="card card-default">
+      <div class="card-header">
+        <h3 class="card-title">Clients certificates</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
           <i class="fa fa-minus"></i></button>
         </div>
       </div>
       <!-- /.box-header -->
 
-      <div class="box-body">
+      <div class="card-body">
         <!--if .ovstatus -->
         <div class="table-responsive">
           <table class="table no-margin">
@@ -124,9 +124,9 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
+                      <h4 class="modal-title">{{ .Details.CN }} Details</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">{{ .Details.CN }} Details</h4>
                     </div>
                     <div class="modal-body">
                       <!-- /.dl-header -->
@@ -134,9 +134,9 @@
                         <dt class="copy-details"><b><h4>Name: </h4></b></dt>
                         <dd class="copy-details"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
                         <dt class="copy-details">Status: </dt>
-                        <dd class="copy-details">{{if eq .EntryType "V"}}<span class="label label-success">Valid</span>{{else if eq .EntryType "R"}}<span class="label label-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
+                        <dd class="copy-details">{{if eq .EntryType "V"}}<span class="badge bg-success">Valid</span>{{else if eq .EntryType "R"}}<span class="badge bg-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
                         <dt class="copy-details">Expiration Time: </dt>
-                        <dd class="copy-details">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="label label-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> Will soon expire!</b>{{else}}<span class="label label-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
+                        <dd class="copy-details">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> Will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
                         <dt class="copy-details">Revoke Time: </dt>
                         <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}Not Revoked{{end}}</dd>
                         <dt class="copy-details">IP Address: </dt>
@@ -156,9 +156,9 @@
                         <dt class="copy-details">Registered Unit: </dt>
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
                       </dl>
-                      <div class="modal-footer">
+                      <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary copy-btn copy-modal-data-btn" style="width: 125px;">Copy</button>
+                        <button type="submit" class="btn btn-primary copy-btn copy-modal-data-btn" style="width: 135px;">Copy</button>
                       </div>
                       </div>
                     </div>
@@ -189,18 +189,18 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12">
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">Create New Client Certificate</h3>
-        <div class="pull-left box-tools">
-          <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+  <div class="col-md-12">
+    <div class="card card-primary">
+      <div class="card-header with-border">
+        <h3 class="card-title">Create New Client Certificate</h3>
+        <div class="pull-left card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
           <i class="fa fa-minus"></i></button>
         </div>
       </div>
         <!-- /.box-header -->
         {{template "common/alert.html" .}}
-      <div class="box-body">
+      <div class="card-body">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
           Create Certificate
         </button>
@@ -214,9 +214,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
+        <h4 class="modal-title">Create Certificate</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Create Certificate</h4>
       </div>
       <div class="modal-body">
         <!-- /.box-header -->
@@ -289,36 +289,37 @@
             <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
           </div>
           <!-- /.box-body -->
-      
-          <div class="modal-footer">
+
+          <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" style="width: 125px;">Create</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
+
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">OpenVPN Server Control</h3>
-    <div class="pull-left box-tools">
-      <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+<div class="card card-default">
+  <div class="card-header with-border">
+    <h3 class="card-title">OpenVPN Server Control</h3>
+    <div class="pull-left card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse">
       <i class="fa fa-minus"></i></button>
     </div>
   </div>
   <!-- /.box-header -->
-  <div class="box-body">
+  <div class="card-body">
     <span id="helpBlock" class="help-block">If you are revoking Certificate, don't forget to restart OpenVPN Server to disconnect all active client sessions and make revocation to take the effect.<br/></span>
   </div>
-  <div class="box-footer">
-    <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 125px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
+  <div class="card-footer">
+    <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 145px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
     &nbsp; OpenVPN Server Conditional Restart to reinitiate all active client sessions. <br><br>
-    <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger btn-primary" style="width: 125px;" title="Restart OpenVPN container">Restart Container</a> 
+    <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger btn-primary" style="width: 145px;" title="Restart OpenVPN container">Restart Container</a> 
     &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
   </div>
-  <div class="box-footer clearfix">
+  <div class="card-footer clearfix">
   </div>
   <!--
   <div class="box-footer clearfix">
