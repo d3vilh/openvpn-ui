@@ -4,35 +4,20 @@
 		{{template "common/header.html" .}}
 		{{template "head" .}}
 	</head>
-  <body class="hold-transition skin-blue layout-top-nav">
+  <body class="hold-transition layout-top-nav">
   <div class="wrapper">
-    <header class="main-header">
-      <nav class="navbar navbar-static-top">
+      <nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
         <div class="container">
-          <div class="navbar-header">
-            <a href="{{urlfor "MainController.Get"}}" class="navbar-brand"><b>OpenVPN</b> UI</a>
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-              <i class="fa fa-bars"></i>
-            </button>
-          </div>
+            <a href="{{urlfor "MainController.Get"}}" class="navbar-brand">
+              <span class="brand-text font-weight-light"><b>OpenVPN</b> UI</span></a>
+              <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <div class="collapse navbar-collapse pull-left" id="navbarCollapse">
             {{ template "common/header-top-menu.html" . }}
           </div>
-               <!--- Experiment
-               <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <div class="theme-switch-wrapper nav-link">
-                    <label class="theme-switch" for="checkbox">
-                      <input type="checkbox" id="checkbox" />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                </li> 
-              </ul>
-          Experiment-->
-          
           <!-- /.navbar-collapse -->
           <!-- Navbar Right Menu -->
           <div class="navbar-custom-menu">
