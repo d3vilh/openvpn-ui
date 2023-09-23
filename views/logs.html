@@ -4,34 +4,30 @@
 {{end}}
 
 {{define "body"}}
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">OpenVPN Server log
-      <small>Last 300 lines</small>
-      </h3>
-      <div class="pull-right box-tools">
-        <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-        <i class="fa fa-minus"></i></button>
+<div class="card card-default">
+  <div class="card-header with-border">
+    <h3 class="card-title">OpenVPN Server log</h3>
+      <div class="pull-right card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+          <i class="fa fa-minus"></i></button>
       </div>
   </div>
-  <form role="form">
-    <div class="box-body">
-
+  <div class="card-body">
+    <form role="form">
       <div class="form-group" >
         <textarea type="text" class="form-control my-textarea" name="Logs"
          id="Logs" spellcheck="false" rows="15">
 
-    {{ range $i, $line := .logs }}{{$line}}
-    {{ end }}
+        {{ range $i, $line := .logs }}{{$line}}
+        {{ end }}
 
         </textarea>
       </div>
-
-    </div>
-    <!-- /.box-body -->
-   </form>
-</div>
-
+    </form>
+    <span id="helpBlock" class="text-muted">Last 300 lines of openvpn.log</span>
+  </div>
+  <!-- /.card-body -->
+</div>  
 <!--script>
   createEditor("Logs", "700px", "clouds", "ovpn", true);
 </script-->
