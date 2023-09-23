@@ -6,134 +6,154 @@
 
 {{define "body"}}
 
-  <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-green">
-          <i class="fa fa-group"></i>
-        </span>
+
+<div class="row">
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-info shadow">
+      <div class="inner">
+        <h3>Clients: {{ .ovstats.NClients }}</h3>
         <div class="info-box-content">
           <span class="info-box-text">
-            Clients count: <span class="info-box-number2">{{ .ovstats.NClients }}</span>
-          </span>
-          <span class="info-box-text">
             In: <span class="info-box-number2">{{ printmb .ovstats.BytesIn }} MB</span>
-          </span>
+          </span><br>
           <span class="info-box-text">
             Out: <span class="info-box-number2">{{ printmb .ovstats.BytesOut }} MB </span>
           </span>
         </div>
-        <!-- /.info-box-content -->
       </div>
-      <!-- /.info-box -->
+    <div class="icon">
+      <i class="fa fa-group"></i>
     </div>
-    <!-- /.col -->
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-aqua">
-          <i class="fa fa-dashboard"></i>
-        </span>
-        <div class="info-box-content">
-          <span class="info-box-text">Load Average:</span>
-          <span class="info-box-number">
-            {{ .sysinfo.LoadAvg.One }},
-            {{ .sysinfo.LoadAvg.Five }},
-            {{ .sysinfo.LoadAvg.Fifteen }}<br/>
-            </span>
-          <span class="info-box-text">
-            CPU count: <span class="info-box-number2">
-              {{ .sysinfo.CPUList.List | len }}
-            </span>
-          </span>
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <div class="card-group" id="accordion">
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div class="card-body text-center">
+          <span>Connected Clients and traffic</span>
         </div>
-        <!-- /.info-box-content -->
       </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-
-    <!-- fix for small devices only -->
-    <div class="clearfix visible-sm-block"></div>
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-orange">
-          <i class="ion ion-arrow-graph-up-right"></i>
-        </span>
-        <div class="info-box-content">
-          <span class="info-box-text">OS uptime:</span>
-          <span class="info-box-number">{{ .sysinfo.UptimeS }}</span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-yellow">
-          <i class="fa fa-clock-o"></i>
-        </span>
-        <div class="info-box-content">
-          <span class="info-box-text">
-            Server time:
-          </span>
-          <span class="info-box-number">
-              {{ dateformat .sysinfo.CurrentTime "2006-01-02 15:04:05"}}
-          </span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-
-
   </div>
-<!-- /.row -->
-
-<div class="box box-default">
-  <div class="box-header with-border">
-    <h3 class="box-title">Memory usage</h3>
-  </div>
-  <div class="box-body">
-    <div class="col-md-6">
-      <div class="progress-group">
-        <span class="progress-text">Memory</span>
-        <span class="progress-number">
-          <b>{{ printmb .sysinfo.Memory.Used }}</b>
-          /
-          {{ printmb .sysinfo.Memory.Total }} MB
-          - {{percent .sysinfo.Memory.Used .sysinfo.Memory.Total}}%
-        </span>
-        <div class="progress sm">
-          <div class="progress-bar progress-bar-aqua"
-            style="width: {{percent .sysinfo.Memory.Used .sysinfo.Memory.Total}}%"></div>
-        </div>
-      </div>
-    </div>
-    <!-- /.col -->
-    <div class="col-md-6">
-      <div class="progress-group">
-        <span class="progress-text">Swap</span>
-        <span class="progress-number">
-          <b>{{ printmb .sysinfo.Swap.Used }}</b>
-          /
-          {{ printmb .sysinfo.Swap.Total }} MB
-          - {{percent .sysinfo.Swap.Used .sysinfo.Swap.Total}}%
-        </span>
-
-        <div class="progress sm">
-          <div class="progress-bar progress-bar-red"
-            style="width: {{percent .sysinfo.Swap.Used .sysinfo.Swap.Total}}%"></div>
-        </div>
-      </div>
-    </div>
-    <!-- /.col -->  </div>
-  <!-- /.box-body -->
 </div>
+
+<div class="col-lg-3 col-6">
+  <div class="small-box bg-success shadow">
+    <div class="inner">
+      <h3>Load Average<sup style="font-size: 20px"></sup></h3>
+      <div class="info-box-content">
+        <span class="info-box-text">
+          CPU count: <span class="info-box-number2">
+          {{ .sysinfo.CPUList.List | len }}
+          </span>
+        </span><br>
+        <span class="info-box-number">
+          1m: <b>{{ .sysinfo.LoadAvg.One }}</b> &nbsp; &nbsp;
+          5m: <b>{{ .sysinfo.LoadAvg.Five }}</b> &nbsp; &nbsp;
+          15m: <b>{{ .sysinfo.LoadAvg.Fifteen }}</b><br/>
+        </span>
+      </div>
+    </div>
+    <div class="icon">
+      <i class="ion ion-stats-bars"></i>
+    </div>
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <div class="card-group" id="accordion">
+      </div>
+      <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div class="card-body text-center">
+          <span>For last 1, 5 and 10 minutes</span>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="col-lg-3 col-6">
+  <div class="small-box shadow" style="background-color:#ffc107; color: white;">
+    <div class="inner">
+      <h3>OS uptime</h3>
+      <span class="info-box-number">{{ .sysinfo.UptimeS }}</span><br/><br/>
+    </div>
+    <div class="icon">
+      <i class="ion ion-arrow-graph-up-right"></i>
+    </div>
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <div class="card-group" id="accordion">
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div class="card-body text-center">
+          <span>How long your server is running</span>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="col-lg-3 col-6">
+  <div class="small-box shadow" style="background-color: #e83e8c; color: white;">
+    <div class="inner">
+      <h3>Server Time</h3>
+      <span class="info-box-number">
+        {{ dateformat .sysinfo.CurrentTime "2006-01-02 15:04:05"}}
+      </span><br/><br/>
+    </div>
+    <div class="icon">
+      <i class="fa fa-clock-o"></i>
+    </div>
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <div class="card-group" id="accordion">
+      </div>
+      <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+        <div class="card-body text-center">
+          <span>Server time in it's local Time Zone</span>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+
+<h3 class="mt-4 mb-2">Memory usage</h3>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="progress-group">
+          <span class="progress-number">
+            Memory <b>{{ printmb .sysinfo.Memory.Used }}</b>
+            /
+            {{ printmb .sysinfo.Memory.Total }} MB
+            - {{percent .sysinfo.Memory.Used .sysinfo.Memory.Total}}%
+          </span>
+          <div class="progress progress-xs">
+            <div class="progress-bar bg-primary progress-bar-striped"
+              style="width: {{percent .sysinfo.Memory.Used .sysinfo.Memory.Total}}%">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="progress-group">
+          <span class="progress-number">
+            Swap <b>{{ printmb .sysinfo.Swap.Used }}</b>
+            /
+            {{ printmb .sysinfo.Swap.Total }} MB
+            - {{percent .sysinfo.Swap.Used .sysinfo.Swap.Total}}%
+          </span>
+          <div class="progress progress-xs">
+            <div class="progress-bar bg-primary progress-bar-striped"
+              style="width: {{percent .sysinfo.Swap.Used .sysinfo.Swap.Total}}%">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <div class="row">
   <div class="col-md-12">
@@ -203,23 +223,6 @@
       </div>
       <div class="box-footer clearfix">
       </div>
-      <!--
-      <table class="table no-margin">
-        <tr> Server restart</tr>
-        <td>
-          <a href="javascript:$.MyAPP.Restart('SIGUSR1')"
-            class="btn btn-xs btn-danger btn-flat"
-            title="Restart">Restart Server</a>
-        </td>
-        </tr>
-      </table>
-          -->
-      <!--
-      <div class="box-footer clearfix">
-        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-      </div>
-    -->
       <!-- /.box-footer -->
     </div>
     <!-- /.box -->
@@ -228,42 +231,31 @@
 <!-- /.col -->
 <!-- /.box-body -->
 
-<div class="row">
-  <div class="col-md-6 col-sm-12 col-xs-12">
-    <div class="info-box">
-      <span class="info-box-icon bg-white">
-        <i class="fa fa-info"></i>
-      </span>
-      <div class="info-box-content">
-      </span>
-      <span class="info-box-text">
-        OpenVPN version: <span class="info-box-number3">{{ .ovversion }}
-      </span>
-      <span class="info-box-text">
-        OpenVPN UI version: <span style="font-weight:bold; font-size:11px; overflow: visible;"> 0.9</span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
 
-  <div class="col-md-6 col-sm-12 col-xs-12">
-    <div class="info-box">
-      <span class="info-box-icon bg-white">
-        <i class="fa fa-gears"></i>
-      </span>
-      <div class="info-box-content">
-        <span class="info-box-text">Operating system:</span>
-        <span class="info-box-number3">{{ .sysinfo.Os }}</span>
-        <span class="info-box-text">Architecture: </span>
-        <span class="info-box-number3">{{ .sysinfo.Arch }} </span>
+<h3 class="mt-4 mb-2">Info Section</h3>
+
+  <div class="row">
+    <div class="col-md-6 col-sm-12 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-info"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">OpenVPN version</span>
+          <span class="info-box-number">11{{ .ovversion }}</span>
+        </div>
       </div>
-      <!-- /.info-box-content -->
     </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
+
+    <div class="col-md-6 col-sm-12 col-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-gears"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Operating system: <b>{{ .sysinfo.Os }}</b></span>
+          <span class="info-box-text">Architecture: <b>{{ .sysinfo.Arch }}</b></span>
+        </div>
+      </div>
+    </div>
+    
+</div>
 
   <!-- fix for small devices only -->
   <div class="clearfix visible-sm-block"></div>

@@ -5,19 +5,19 @@
 {{end}}
 
 {{define "body"}}
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">Client .ovpn profile configuration</h3>
-    <div class="pull-right box-tools">
-      <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+<div class="card card-primary">
+  <div class="card-header with-border">
+    <h3 class="card-title">Client .ovpn profile configuration</h3>
+    <div class="pull-right card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse">
       <i class="fa fa-minus"></i></button>
     </div>
   </div>
-  <!-- /.box-header -->
+  <!-- /.card-header -->
   <!-- form start -->
   {{template "common/alert.html" .}}
   <form role="form" action="{{urlfor "OVClientConfigController.Post"}}" method="post">
-    <div class="box-body">
+    <div class="card-body">
       <!-- Disabled Profile - yet another feature to implement.
       <div class="form-group">
          <label for="name">Profile</label>
@@ -50,7 +50,7 @@
           value="{{ .Settings.RedirectGateway }}">
           <span id="helpBlock" class="help-block">Used to redirect all Client traffic via OpenVPN Server. Comment it if you don't need this - &quot;#redirect-gateway def1&quot;</span>
       </div>
-<!--  comented out to avoid client/server confusion
+ <!--  comented out to avoid client/server confusion
       <div class="form-group">
         <label for="name">Device type</label>
         <input type="text" class="form-control" id="Device" name="Device" placeholder="tun"
@@ -74,14 +74,14 @@
         <input type="text" class="form-control" id="Auth" name="Auth" placeholder="SHA512"
           value="{{ .Settings.Auth }}">
       </div>
--->
+ -->
       {{ .xsrfdata }}
     </div>
-    <div class="box-footer">
+    <div class="card-footer">
       <button type="submit" style="width: 125px;" class="btn btn-primary" onclick="return confirm('Are you sure you want to Save new configuration file?\nCurrent configuration will be overwritten!');">Save Config</button> &nbsp; &nbsp;
       <button type="button" style="width: 125px;" class="btn btn-primary" data-toggle="modal" data-target="#config-view-modal">View config</button>
     </div>
-        <!-- /.box-body -->
+        <!-- /.card-body -->
   </form>
 </div>
 
@@ -94,14 +94,14 @@
         <h4 class="modal-title">{{ .BeeSettings.OVConfigPath }}/config/client.conf</h4>
       </div>
       <div class="modal-body">
-           <!-- /.box-header -->
+           <!-- /.card-header -->
             <!-- form start -->
            {{template "common/alert.html" .}}
             <form role="server-config" role="form" action="{{urlfor "OVClientConfigController.Edit"}}" method="post">
-              <div class="box-body">
+              <div class="card-body">
               
                 <div class="form-group">
-                    <div class="box-group" id="accordion">
+                    <div class="card-group" id="accordion">
                       <span >
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">
                           <i class="fa fa-fw fa-info-circle" style="color: #f39c12; font-size: 15px;"></i> <b style="color: #f39c12;">Please note</b>
@@ -109,7 +109,7 @@
                       </span>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                      <div class="box-body">
+                      <div class="card-body">
                         <span>Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
                         <span>It is better to update it via Configuration template.</span><br>
                       </div>
@@ -119,11 +119,11 @@
                 
                 {{ .xsrfdata }}
               </div>
-              <div class="box-footer">
+              <div class="card-footer">
                 <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button> &nbsp; &nbsp;
                 <button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save updated configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button>
               </div>
-                 <!-- /.box-body -->
+                 <!-- /.card-body -->
             </form>
             <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
       </div>
@@ -131,20 +131,20 @@
   </div>
 </div>
 
-<div class="box box-primary">
-  <!-- /.box-body -->
-  <!-- /.box-header -->
+<div class="card card-primary">
+  <!-- /.card-body -->
+  <!-- /.card-header -->
   <!-- form start -->
   <form role="form" action="{{urlfor "OVClientConfigController.Post"}}" method="post">
     {{ .xsrfdata }}
-    <div class="box-footer">
+    <div class="card-footer">
       <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
       <span style="color:grey;"> &nbsp; OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
     </div>
-      <!-- /.box-body -->
+      <!-- /.card-body -->
   </form>
 </div>
-<!-- /.box -->
+<!-- /.card -->
 {{end}}
 
 <script>

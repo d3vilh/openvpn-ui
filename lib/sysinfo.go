@@ -1,13 +1,15 @@
 package lib
 
 import (
+	"fmt"
 	"runtime"
+	"strconv"
 	"time"
 
 	sigar "github.com/cloudfoundry/gosigar"
 )
 
-//SystemInfo contains basic information about system load
+// SystemInfo contains basic information about system load
 type SystemInfo struct {
 	Memory      sigar.Mem
 	Swap        sigar.Swap
@@ -20,7 +22,7 @@ type SystemInfo struct {
 	CurrentTime time.Time
 }
 
-//GetSystemInfo returns short info about system load
+// GetSystemInfo returns short info about system load
 func GetSystemInfo() SystemInfo {
 	s := SystemInfo{}
 
@@ -33,6 +35,9 @@ func GetSystemInfo() SystemInfo {
 	avg := sigar.LoadAverage{}
 	if err := avg.Get(); err == nil {
 		s.LoadAvg = avg
+		s.LoadAvg.One = formatFloat(s.LoadAvg.One)
+		s.LoadAvg.Five = formatFloat(s.LoadAvg.Five)
+		s.LoadAvg.Fifteen = formatFloat(s.LoadAvg.Fifteen)
 	}
 
 	s.CurrentTime = time.Now()
@@ -56,4 +61,9 @@ func GetSystemInfo() SystemInfo {
 	s.Os = runtime.GOOS
 
 	return s
+}
+
+func formatFloat(f float64) float64 {
+	formatted, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", f), 64)
+	return formatted
 }
