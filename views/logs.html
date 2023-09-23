@@ -32,9 +32,20 @@
    </form>
 </div>
 
-<script>
+<!--script>
   createEditor("Logs", "700px", "clouds", "ovpn", true);
+</script-->
+
+<script>
+  // Check if "themeEditor" is set in localStorage
+  if (localStorage.getItem("theme") === "dark") {
+    createEditor("Logs", "700px", "clouds_midnight", "ovpn", true);
+  } else {
+    createEditor("Logs", "700px", "clouds", "ovpn", true);
+  }
 </script>
+
+
 
 <!-- /.box -->
 {{end}}

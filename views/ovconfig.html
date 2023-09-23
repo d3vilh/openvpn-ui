@@ -409,5 +409,10 @@
 {{end}}
 
 <script>
-  createEditor("ServerConfig", "550px", "clouds", "ovpn", false)
+  // Check if "themeEditor" is set in localStorage
+  if (localStorage.getItem("theme") === "dark") {
+    createEditor("ServerConfig", "550px", "clouds_midnight", "ovpn", false);
+  } else {
+    createEditor("ServerConfig", "550px", "clouds", "ovpn", false);
+  }
 </script>

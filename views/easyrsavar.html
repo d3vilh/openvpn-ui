@@ -178,5 +178,10 @@
 {{end}}
 
 <script>
-  createEditor("EasyRSAConfig", "600px", "clouds", "ovpn", true)
+  // Check if "themeEditor" is set in localStorage
+  if (localStorage.getItem("theme") === "dark") {
+    createEditor("EasyRSAConfig", "600px", "clouds_midnight", "ovpn", true);
+  } else {
+    createEditor("EasyRSAConfig", "600px", "clouds", "ovpn", true);
+  }
 </script>

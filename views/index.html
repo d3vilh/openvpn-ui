@@ -28,7 +28,7 @@
       </div>
       <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
         <div class="card-body text-center">
-          <span>Connected Clients and traffic</span>
+          <span>Connected Clients and All traffic</span>
         </div>
       </div>
     </div>
@@ -228,14 +228,14 @@
 <!-- /.box-body -->
 
 
-<h3 class="mt-4 mb-2">Info Section</h3>
+<!--h3 class="mt-4 mb-2">Info Section</h3-->
 
   <div class="row">
     <div class="col-md-6 col-sm-12 col-12">
       <div class="info-box">
-        <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-info"></i></span>
+        <span class="info-box-icon bg-danger elevation-1 border-width: 3px;" style="padding: 10px; width: 100px; height: 100px;"><i class="fa fa-info fa-2x"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">OpenVPN version</span>
+          <span class="info-box-text">OpenVPN version:</span>
           <span class="info-box-number">{{ .ovversion }}</span>
         </div>
       </div>
@@ -243,14 +243,16 @@
 
     <div class="col-md-6 col-sm-12 col-12">
       <div class="info-box">
-        <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-gears"></i></span>
+        <span class="info-box-icon bg-warning elevation-1 border-width: 3px;" style="padding: 10px; width: 100px; height: 100px;"><i class="fa fa-gears fa-2x"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">Operating system: <b>{{ .sysinfo.Os }}</b></span>
-          <span class="info-box-text">Architecture: <b>{{ .sysinfo.Arch }}</b></span>
+          <span class="info-box-text">Operating system:</span>
+          <span class="info-box-number3">{{ .sysinfo.Os }}</span>
+          <span class="info-box-text">Architecture: </span>
+          <span class="info-box-number3">{{ .sysinfo.Arch }} </span>
         </div>
       </div>
     </div>
-    
+
 </div>
 
   <!-- fix for small devices only -->
