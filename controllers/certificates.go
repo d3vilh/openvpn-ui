@@ -168,7 +168,7 @@ func (c *CertificatesController) Renew() {
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Success("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" and \"" + serial + "\" has been renewed")
+		flash.Success("Success! Certificate for the name \"" + name + "\"  and IP \"" + localip + "\" and Serial \"" + serial + "\" has been renewed")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()
