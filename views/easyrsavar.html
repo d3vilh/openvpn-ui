@@ -23,15 +23,15 @@
       <span class="text-muted">If you've already completed the automatic setup without modifying the EasyRSA vars and now wish to make changes, follow these steps:</span><br>
       <span class="text-muted"><b style="visibility: hidden;">Note</b>1. Save the new EasyRSA vars on this page.</span><br>
       <span class="text-muted"><b style="visibility: hidden;">Note</b>2. Navigate to &quot;Configuration > Maintenance&quot;.</span><br>
-      <span class="text-muted"><b style="visibility: hidden;">Note</b>3. Click the &quot;DELETE ALL&quot; button, followed by the &quot;INITIALIZE ALL&quot; button.</span><br>
-      <span class="text-muted"><a href="https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md#environmental-variables-reference" target="_blank"> EasyRSA VARs reference</a>.</span>
+      <span class="text-muted"><b style="visibility: hidden;">Note</b>3. Click the &quot;DELETE ALL&quot; button, followed by the &quot;INITIALIZE ALL&quot; button.</span>
     </div>
-  </div>
+
       <!-- /.card-header -->
       <!-- form start -->
       {{template "common/alert.html" .}}
       <form role="form" action="{{urlfor "EasyRSAConfigController.Post"}}" method="post">
-      <div class="card-body">
+
+        <span>EasyRSA vars reference with description for every parameter can be found<a href="https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md#environmental-variables-reference" target="_blank"> here</a>.</span><br><br>
           <!-- Disabled Profile - yet another feature to implement.
           <div class="form-group">
             <label for="name">Profile</label>
