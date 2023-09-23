@@ -204,7 +204,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
           Create Certificate
         </button>
-        <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+        <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
       </div>
     </div>
   </div>
@@ -227,66 +227,66 @@
             <div class="form-group has-success {{if field_error_exist .validation "Name" }}has-error{{end}}">
               <label class="control-label" for="name" title="Name should not have spaces."><i class="fa fa-bell-o"></i>Name</label>
               <input type="text" class="form-control" pattern="^[^\s]+$" placeholder="Certificate Name" id="Name" name="Name">
-              <span class="help-block" title="Name should not have spaces.">Common name of the certificate.<span>
+              <span class="text-muted" title="Name should not have spaces.">Common name of the certificate.<span>
             </div>
     
             <div class="form-group">
               <label for="name">Passphrase (Optional)</label>
               <input type="password" class="form-control" placeholder="Enter Password" id="password-input" id="passphrase" name="passphrase">
               <a href="#" class="password-control" title="Show or Hide Password"></a>
-              <span class="help-block">Passphrase is used for privte key protection.</span>
+              <span class="text-muted">Passphrase is used for privte key protection.</span>
             </div>
     
             <div class="form-group">
               <label for="name" title="IPv4 without subnet">Client Static IP (Optional)</label>
               <input type="text" class="form-control" placeholder="Enter Static IP" pattern="^(\d{1,3}\.){3}\d{1,3}$" id="staticip" name="staticip">
-              <span class="help-block">Client Static IP used as a local Client IP for subnet split.</span>
+              <span class="text-muted">Client Static IP used as a local Client IP for subnet split.</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_EMAIL">Client Email</label>
               <input type="email" class="form-control" placeholder="Client Email" id="EasyRSAReqEmail" name="EasyRSAReqEmail" value="{{ .EasyRSA.EasyRSAReqEmail }}">
-              <span class="help-block">The New Client e-mail address.</span>
+              <span class="text-muted">The New Client e-mail address.</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_COUNTRY">Expired Days</label>
               <input type="number" min="1" class="form-control" placeholder="825" pattern="^\d{1,6}$" id="EasyRSACertExpire" name="EasyRSACertExpire" value="{{ .EasyRSA.EasyRSACertExpire }}">
-              <span class="help-block">Number of days until Client certificate expire. The recommended value is 825.</span>
+              <span class="text-muted">Number of days until Client certificate expire. The recommended value is 825.</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="Cert days to expire">Client Country Name</label>
               <input type="text" class="form-control" placeholder="UA" pattern="^[A-Za-z]{2}$" id="EasyRSAReqCountry" name="EasyRSAReqCountry" value="{{ .EasyRSA.EasyRSAReqCountry }}">
-              <span class="help-block">The two-letter DN Organisational field for Country Code (e.g. UA).</span>
+              <span class="text-muted">The two-letter DN Organisational field for Country Code (e.g. UA).</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_PROVINCE">Client State or Region Name</label>
               <input type="text" class="form-control" placeholder="KY" pattern="^[A-Za-z]{2}$" id="EasyRSAReqProvince" name="EasyRSAReqProvince" value="{{ .EasyRSA.EasyRSAReqProvince }}">
-              <span class="help-block">The two-letter DN Organisational field for province code (e.g. KY for "Kyiv region").</span>
+              <span class="text-muted">The two-letter DN Organisational field for province code (e.g. KY for "Kyiv region").</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_CITY">Client City Name</label>
               <input type="text" class="form-control" placeholder="Kyiv" id="EasyRSAReqCity" name="EasyRSAReqCity" value="{{ .EasyRSA.EasyRSAReqCity }}">
-              <span class="help-block">The city of DN Organisation.</span>
+              <span class="text-muted">The city of DN Organisation.</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_ORG">Client Organisation</label>
               <input type="text" class="form-control" placeholder="SweetHome" id="EasyRSAReqOrg" name="EasyRSAReqOrg" value="{{ .EasyRSA.EasyRSAReqOrg }}">
-              <span class="help-block">The Client name of DN Organisation.</span>
+              <span class="text-muted">The Client name of DN Organisation.</span>
             </div>
 
             <div class="form-group">
               <label for="name" title="EASYRSA_REQ_OU">Client Organisation Unit Name</label>
               <input type="text" class="form-control" placeholder="GarageVPN" id="EasyRSAReqOu" name="EasyRSAReqOu" value="{{ .EasyRSA.EasyRSAReqOu }}">
-              <span class="help-block">The Client Organisational Unit of DN Organisation.</span>
+              <span class="text-muted">The Client Organisational Unit of DN Organisation.</span>
             </div>
 
 
-            <span class="help-block"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+            <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
           </div>
           <!-- /.box-body -->
 
@@ -311,7 +311,7 @@
   </div>
   <!-- /.box-header -->
   <div class="card-body">
-    <span id="helpBlock" class="help-block">If you are revoking Certificate, don't forget to restart OpenVPN Server to disconnect all active client sessions and make revocation to take the effect.<br/></span>
+    <span id="helpBlock" class="text-muted">If you are revoking Certificate, don't forget to restart OpenVPN Server to disconnect all active client sessions and make revocation to take the effect.<br/></span>
   </div>
   <div class="card-footer">
     <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 145px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>

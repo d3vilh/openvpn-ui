@@ -6,7 +6,6 @@
 
 {{define "body"}}
 
-
 <div class="row">
   <div class="col-lg-3 col-6">
     <div class="small-box bg-info shadow">
@@ -21,10 +20,10 @@
           </span>
         </div>
       </div>
-    <div class="icon">
-      <i class="fa fa-group"></i>
-    </div>
-    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <div class="icon">
+        <i class="fa fa-group"></i>
+      </div>
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
       <div class="card-group" id="accordion">
       </div>
       <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -32,83 +31,82 @@
           <span>Connected Clients and traffic</span>
         </div>
       </div>
+    </div>
   </div>
-</div>
 
-<div class="col-lg-3 col-6">
-  <div class="small-box bg-success shadow">
-    <div class="inner">
-      <h3>Load Average<sup style="font-size: 20px"></sup></h3>
-      <div class="info-box-content">
-        <span class="info-box-text">
-          CPU count: <span class="info-box-number2">
-          {{ .sysinfo.CPUList.List | len }}
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-success shadow">
+      <div class="inner">
+        <h3>Load Average<sup style="font-size: 20px"></sup></h3>
+        <div class="info-box-content">
+          <span class="info-box-text">
+            CPU count: <span class="info-box-number2">
+            {{ .sysinfo.CPUList.List | len }}
+            </span>
+          </span><br>
+          <span class="info-box-number">
+            1m: <b>{{ .sysinfo.LoadAvg.One }}</b> &nbsp; &nbsp;
+            5m: <b>{{ .sysinfo.LoadAvg.Five }}</b> &nbsp; &nbsp;
+            15m: <b>{{ .sysinfo.LoadAvg.Fifteen }}</b><br/>
           </span>
-        </span><br>
+        </div>
+      </div>
+      <div class="icon">
+        <i class="ion ion-stats-bars"></i>
+      </div>
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <div class="card-group" id="accordion">
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+          <div class="card-body text-center">
+            <span>For last 1, 5 and 10 minutes</span>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+    <div class="small-box shadow" style="background-color:#ffc107; color: white;">
+      <div class="inner">
+        <h3>OS uptime</h3>
+        <span class="info-box-number">{{ .sysinfo.UptimeS }}</span><br/><br/>
+      </div>
+      <div class="icon">
+        <i class="ion ion-arrow-graph-up-right"></i>
+      </div>
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <div class="card-group" id="accordion">
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+          <div class="card-body text-center">
+            <span>How long your server is running</span>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+    <div class="small-box shadow" style="background-color: #e83e8c; color: white;">
+      <div class="inner">
+        <h3>Server Time</h3>
         <span class="info-box-number">
-          1m: <b>{{ .sysinfo.LoadAvg.One }}</b> &nbsp; &nbsp;
-          5m: <b>{{ .sysinfo.LoadAvg.Five }}</b> &nbsp; &nbsp;
-          15m: <b>{{ .sysinfo.LoadAvg.Fifteen }}</b><br/>
-        </span>
+          {{ dateformat .sysinfo.CurrentTime "2006-01-02 15:04:05"}}
+        </span><br/><br/>
       </div>
-    </div>
-    <div class="icon">
-      <i class="ion ion-stats-bars"></i>
-    </div>
-    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      <div class="card-group" id="accordion">
+      <div class="icon">
+        <i class="fa fa-clock-o"></i>
       </div>
-      <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-        <div class="card-body text-center">
-          <span>For last 1, 5 and 10 minutes</span>
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <div class="card-group" id="accordion">
         </div>
-      </div>
+        <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+          <div class="card-body text-center">
+            <span>Server time in it's local Time Zone</span>
+          </div>
+        </div>
+    </div>
   </div>
 </div>
-
-<div class="col-lg-3 col-6">
-  <div class="small-box shadow" style="background-color:#ffc107; color: white;">
-    <div class="inner">
-      <h3>OS uptime</h3>
-      <span class="info-box-number">{{ .sysinfo.UptimeS }}</span><br/><br/>
-    </div>
-    <div class="icon">
-      <i class="ion ion-arrow-graph-up-right"></i>
-    </div>
-    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      <div class="card-group" id="accordion">
-      </div>
-      <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-        <div class="card-body text-center">
-          <span>How long your server is running</span>
-        </div>
-      </div>
-  </div>
-</div>
-
-<div class="col-lg-3 col-6">
-  <div class="small-box shadow" style="background-color: #e83e8c; color: white;">
-    <div class="inner">
-      <h3>Server Time</h3>
-      <span class="info-box-number">
-        {{ dateformat .sysinfo.CurrentTime "2006-01-02 15:04:05"}}
-      </span><br/><br/>
-    </div>
-    <div class="icon">
-      <i class="fa fa-clock-o"></i>
-    </div>
-    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      <div class="card-group" id="accordion">
-      </div>
-      <div id="collapseFour" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-        <div class="card-body text-center">
-          <span>Server time in it's local Time Zone</span>
-        </div>
-      </div>
-  </div>
-</div>
-</div>
-
 
 <h3 class="mt-4 mb-2">Memory usage</h3>
 <div class="row">
@@ -152,8 +150,6 @@
     </div>
   </div>
 </div>
-
-
 
 <div class="row">
   <div class="col-md-12">
@@ -240,7 +236,7 @@
         <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-info"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">OpenVPN version</span>
-          <span class="info-box-number">11{{ .ovversion }}</span>
+          <span class="info-box-number">{{ .ovversion }}</span>
         </div>
       </div>
     </div>
