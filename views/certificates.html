@@ -311,15 +311,11 @@
   </div>
   <!-- /.box-header -->
   <div class="card-body">
-    <span id="helpBlock" class="text-muted">If you are revoking Certificate, don't forget to restart OpenVPN Server to disconnect all active client sessions and make revocation to take the effect.<br/></span>
-  </div>
-  <div class="card-footer">
+    <span id="helpBlock" class="text-muted">If you are revoking Certificate, don't forget to restart OpenVPN Server to disconnect all active client sessions and make revocation to take the effect.<br/></span><br>
     <a href="javascript:$.MyAPP.Restart('SIGUSR1')"  class="btn btn-warning btn-primary" style="width: 145px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
     &nbsp; OpenVPN Server Conditional Restart to reinitiate all active client sessions. <br><br>
     <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger btn-primary" style="width: 145px;" title="Restart OpenVPN container">Restart Container</a> 
     &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
-  </div>
-  <div class="card-footer clearfix">
   </div>
   <!--
   <div class="box-footer clearfix">
@@ -330,4 +326,3 @@
   <!-- /.box-footer -->
 </div>
 {{end}}
-

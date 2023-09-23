@@ -16,6 +16,7 @@
   <!-- /.card-header -->
   <!-- form start -->
   {{template "common/alert.html" .}}
+  <div class="card-body">
   <form role="form" action="{{urlfor "OVClientConfigController.Post"}}" method="post">
     <div class="card-body">
       <!-- Disabled Profile - yet another feature to implement.
@@ -50,7 +51,7 @@
           value="{{ .Settings.RedirectGateway }}">
           <span id="helpBlock" class="text-muted">Used to redirect all Client traffic via OpenVPN Server. Comment it if you don't need this - &quot;#redirect-gateway def1&quot;</span>
       </div>
- <!--  comented out to avoid client/server confusion
+     <!--  comented out to avoid client/server confusion
       <div class="form-group">
         <label for="name">Device type</label>
         <input type="text" class="form-control" id="Device" name="Device" placeholder="tun"
@@ -74,24 +75,24 @@
         <input type="text" class="form-control" id="Auth" name="Auth" placeholder="SHA512"
           value="{{ .Settings.Auth }}">
       </div>
- -->
+     -->
       {{ .xsrfdata }}
-    </div>
-    <div class="card-footer">
+
       <button type="submit" style="width: 125px;" class="btn btn-primary" onclick="return confirm('Are you sure you want to Save new configuration file?\nCurrent configuration will be overwritten!');">Save Config</button> &nbsp; &nbsp;
       <button type="button" style="width: 125px;" class="btn btn-primary" data-toggle="modal" data-target="#config-view-modal">View config</button>
     </div>
         <!-- /.card-body -->
   </form>
 </div>
+</div>
 
 <div class="modal fade" id="config-view-modal">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">{{ .BeeSettings.OVConfigPath }}/config/client.conf</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
            <!-- /.card-header -->
@@ -110,16 +111,15 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                       <div class="card-body">
-                        <span>Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
-                        <span>It is better to update it via Configuration template.</span><br>
+                        <span class="text-muted">Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
+                        <span class="text-muted">It is better to update this config with Configuration template.</span><br>
                       </div>
                     </div>
                     <br><textarea type="text" class="form-control my-textarea" name="ClientTemplate" id="ClientTemplate" spellcheck="false" rows="15">{{ .ClientTemplate }}</textarea>
                 </div>
                 
                 {{ .xsrfdata }}
-              </div>
-              <div class="card-footer">
+
                 <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button> &nbsp; &nbsp;
                 <button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save updated configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button>
               </div>
@@ -131,18 +131,20 @@
   </div>
 </div>
 
-<div class="card card-primary">
+<div class="card card-default">
   <!-- /.card-body -->
   <!-- /.card-header -->
   <!-- form start -->
+  <div class="card-body">
   <form role="form" action="{{urlfor "OVClientConfigController.Post"}}" method="post">
     {{ .xsrfdata }}
-    <div class="card-footer">
+    <div class="card-boddy">
       <a href="javascript:$.MyAPP.Restart('SIGUSR1')" class="btn btn-warning btn-primary" style="width: 135px;" title="Conditional Restart (SIGUSR1)">Restart Server</a>
       <span style="color:grey;"> &nbsp; OpenVPN Server Conditional Restart will apply new configuration and re-initiate all active clients sessions.</span> 
     </div>
       <!-- /.card-body -->
   </form>
+</div>
 </div>
 <!-- /.card -->
 {{end}}

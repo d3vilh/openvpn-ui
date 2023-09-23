@@ -5,20 +5,20 @@
 {{end}}
 
 {{define "body"}}
-<div class="box box-primary">
-  <div class="box-header with-border">
-    <h3 class="box-title">OpenVPN UI settings</h3>
-    <div class="pull-right box-tools">
-      <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-      <i class="fa fa-minus"></i></button>
+<div class="card card-default">
+  <div class="card-header with-border">
+    <h3 class="card-title">OpenVPN UI settings</h3>
+    <div class="pull-right card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fa fa-minus"></i></button>
     </div>
   </div>
-  <!-- /.box-header -->
+  <!-- /.card-header -->
   <!-- form start -->
+  <div class="card-body">
   {{template "common/alert.html" .}}
   <form role="form" action="{{urlfor "SettingsController.Login"}}" method="post">
-    <div class="box-body">
-
+    <div class="card-body">
       <!-- Disabled Profile - yet another feature to implement.
       <div class="form-group">
         <label for="name">Profile</label>
@@ -26,7 +26,6 @@
           value=" {{ .Settings.Profile }} ">
       </div>
       Disabled profile -->
-
       <div class="form-group">
         <label for="name">Management interface address</label>
         <input type="text" class="form-control" id="MIAddress" title="OpenVPN management interface address."  name="MIAddress" placeholder="openvpn:2080"
@@ -52,14 +51,12 @@
       </div>
 
       {{ .xsrfdata }}
-    </div>
-    <!-- /.box-body -->
 
-    <div class="box-footer">
       <button type="submit" class="btn btn-primary" style="width: 125px;">Save Config</button>  
     </div>
+        <!-- /.card-body -->
   </form>
-
+</div>  
 </div>
-<!-- /.box -->
+<!-- /.card -->
 {{end}}
