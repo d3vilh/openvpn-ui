@@ -112,6 +112,9 @@ func (c *CertificatesController) Post() {
 			}
 		}
 	}
+	cfg := models.EasyRSAConfig{Profile: "default"}
+	_ = cfg.Read("Profile")
+	c.Data["EasyRSA"] = &cfg
 	c.showCerts()
 }
 
@@ -168,7 +171,7 @@ func (c *CertificatesController) Renew() {
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
 	} else {
-		flash.Success("Success! Certificate for the name \"" + name + "\"  and \"" + localip + "\" and \"" + serial + "\" has been renewed")
+		flash.Success("Success! Certificate for the name \"" + name + "\"  and IP \"" + localip + "\" and Serial \"" + serial + "\" has been renewed")
 		flash.Store(&c.Controller)
 	}
 	c.showCerts()

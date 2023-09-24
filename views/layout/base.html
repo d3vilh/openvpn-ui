@@ -4,35 +4,22 @@
 		{{template "common/header.html" .}}
 		{{template "head" .}}
 	</head>
-  <body class="hold-transition skin-blue layout-top-nav">
+  <body class="hold-transition layout-top-nav">
   <div class="wrapper">
-    <header class="main-header">
-      <nav class="navbar navbar-static-top">
+      <nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
         <div class="container">
-          <div class="navbar-header">
-            <a href="{{urlfor "MainController.Get"}}" class="navbar-brand"><b>OpenVPN</b> UI</a>
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-              <i class="fa fa-bars"></i>
-            </button>
-          </div>
+            <a href="{{urlfor "MainController.Get"}}" class="navbar-brand">
+              <img src="/static/img/openvpn-win.svg" alt="OpenVPN UI Logo" class="brand-image img-circle elevation-3"
+              style="opacity: .8">
+              <span class="brand-text font-weight-light"><b>OpenVPN</b> UI</span></a>
+              <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <div class="collapse navbar-collapse pull-left" id="navbarCollapse">
             {{ template "common/header-top-menu.html" . }}
           </div>
-               <!--- Experiment
-               <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <div class="theme-switch-wrapper nav-link">
-                    <label class="theme-switch" for="checkbox">
-                      <input type="checkbox" id="checkbox" />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                </li> 
-              </ul>
-          Experiment-->
-          
           <!-- /.navbar-collapse -->
           <!-- Navbar Right Menu -->
           <div class="navbar-custom-menu">
@@ -42,6 +29,16 @@
             </ul>
           </div>
           <!-- /.navbar-custom-menu -->
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="checkbox">
+            <label class="custom-control-label" for="checkbox" id="theme-label">Light</label>
+          </div>
+        </li>
+      </ul>
+
+
         </div>
         <!-- /.container-fluid -->
       </nav>
@@ -51,7 +48,6 @@
       <div class="container">
         {{ template "common/header-top-navigation.html" . }}
 
-
       <!-- Main content -->
       <section class="content">
         {{ template "body" . }}
@@ -60,3 +56,39 @@
 	{{template "common/footer.html" .}}
 	</body>
 </html>
+
+<script>
+  // Get a reference to the checkbox element
+  const checkbox = document.getElementById('checkbox');
+
+  // Get a reference to the label element
+	const themeLabel = document.getElementById('theme-label');
+
+
+  // Get a reference to the body element
+  const body = document.body;
+
+  // Check localStorage for the user's theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-mode');
+    checkbox.checked = true;
+    themeLabel.textContent = 'Dark';
+  }
+
+  // Add an event listener to the checkbox for changes
+  checkbox.addEventListener('change', function () {
+    // Toggle the "dark-mode" class on the body element
+    body.classList.toggle('dark-mode', checkbox.checked);
+    
+		// Update the label text based on the checkbox state
+		themeLabel.textContent = checkbox.checked ? 'Dark' : 'Light';
+
+    // Save the user's preference in localStorage
+    if (checkbox.checked) {
+      localStorage.setItem('theme', 'dark');
+    } else {
+      localStorage.removeItem('theme');
+    }
+  });
+</script>

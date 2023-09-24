@@ -1,45 +1,43 @@
-<ul class="nav navbar-nav">
+<ul class="navbar-nav">
 
-  <li {{if compare .RouterPattern "/"}}class="active"{{end}}>
-    <a href="{{urlfor "MainController.Get"}}">Home <span class="sr-only">(current)</span></a>
+  <li {{if compare .RouterPattern "/"}}class="nav-item"{{end}}>
+    <a href="{{urlfor "MainController.Get"}}" class="nav-link">Home <span class="sr-only">(current)</span></a>
   </li>
 
-
   <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      Configuration <span class="caret"></span>
-    </a>
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+      Configuration </a>
 
     <ul class="dropdown-menu" role="menu">
-      <li {{if compare .RouterPattern "/settings"}}class="active"{{end}}>
-        <a href="{{urlfor "SettingsController.Get"}}">OpenVPN UI</a>
+      <li {{if compare .RouterPattern "/settings"}}class="dropdown-item"{{end}}>
+        <a href="{{urlfor "SettingsController.Get"}}" class="dropdown-item">OpenVPN UI</a>
       </li>
 
-      <li {{if compare .RouterPattern "/ov/config"}}class="active"{{end}}>
-        <a href="{{urlfor "OVConfigController.Get"}}">OpenVPN Server</a>
+      <li {{if compare .RouterPattern "/ov/config"}}class="dropdown-item"{{end}}>
+        <a href="{{urlfor "OVConfigController.Get"}}" class="dropdown-item">OpenVPN Server</a>
       </li>
 
-      <li {{if compare .RouterPattern "/ov/clientconfig"}}class="active"{{end}}>
-        <a href="{{urlfor "OVClientConfigController.Get"}}">OpenVPN Client</a>
+      <li {{if compare .RouterPattern "/ov/clientconfig"}}class="dropdown-item"{{end}}>
+        <a href="{{urlfor "OVClientConfigController.Get"}}" class="dropdown-item">OpenVPN Client</a>
       </li>
 
-      <li {{if compare .RouterPattern "/easyrsa/config"}}class="active"{{end}}>
-        <a href="{{urlfor "EasyRSAConfigController.Get"}}">EasyRSA vars</a>
+      <li {{if compare .RouterPattern "/easyrsa/config"}}class="dropdown-item"{{end}}>
+        <a href="{{urlfor "EasyRSAConfigController.Get"}}" class="dropdown-item">EasyRSA vars</a>
       </li>
 
-      <li {{if compare .RouterPattern "/dangerzone"}}class="active"{{end}}>
-        <a href="{{urlfor "DangerController.Get"}}">Maintenance</a>
+      <li {{if compare .RouterPattern "/dangerzone"}}class="dropdown-item"{{end}}>
+        <a href="{{urlfor "DangerController.Get"}}" class="dropdown-item">Maintenance</a>
       </li>
 
 
     </ul>
   </li>
 
-  <li {{if compare .RouterPattern "/certificates"}}class="active"{{end}}>
-    <a href="{{urlfor "CertificatesController.Get"}}">Certificates</a>
+  <li {{if compare .RouterPattern "/certificates"}}class="nav-item"{{end}}>
+    <a href="{{urlfor "CertificatesController.Get"}}" class="nav-link">Certificates</a>
   </li>
 
-  <li {{if compare .RouterPattern "/logs"}}class="active"{{end}}>
-    <a href="{{urlfor "LogsController.Get"}}">Logs</a>
+  <li {{if compare .RouterPattern "/logs"}}class="nav-item"{{end}}>
+    <a href="{{urlfor "LogsController.Get"}}" class="nav-link">Logs</a>
   </li>
 </ul>
