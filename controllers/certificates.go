@@ -91,9 +91,6 @@ func (c *CertificatesController) showCerts() {
 // @router /certificates [post]
 func (c *CertificatesController) Post() {
 	c.TplName = "certificates.html"
-	cfg := models.EasyRSAConfig{Profile: "default"}
-	_ = cfg.Read("Profile")
-	c.Data["EasyRSA"] = &cfg
 	flash := web.NewFlash()
 
 	cParams := NewCertParams{}
@@ -115,6 +112,9 @@ func (c *CertificatesController) Post() {
 			}
 		}
 	}
+	cfg := models.EasyRSAConfig{Profile: "default"}
+	_ = cfg.Read("Profile")
+	c.Data["EasyRSA"] = &cfg
 	c.showCerts()
 }
 
