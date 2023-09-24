@@ -84,3 +84,54 @@ func validateUser(user models.User) map[string]map[string]string {
 	}
 	return nil
 }
+
+func (c *ProfileController) Create() {
+	user := models.User{}
+	if err := c.ParseForm(&user); err != nil {
+		logs.Error(err)
+		return
+	}
+	logs.Info("Creating new user with the following information:")
+	logs.Info("Login:", user.Login)
+	logs.Info("Name:", user.Name)
+	logs.Info("Email:", user.Email)
+	logs.Info("Password:", user.Password)
+	CreateNewUser(user.Login, user.Name, user.Email, user.Password)
+	// Redirect to the newly created user's profile page
+	// c.Ctx.Redirect(302, "/profile/"+user.Login)
+}
+
+// Create new user
+func CreateNewUser(NewLogin string, NewName string, NewEmail string, NewPassword string) {
+	o := orm.NewOrm()
+	var lastUser models.User
+	err := o.QueryTable("user").OrderBy("-id").One(&lastUser)
+	if err == orm.ErrNoRows {
+		lastUser.Id = 0
+	} else if err != nil {
+		logs.Error(err)
+		return
+	}
+	newUser := models.User{
+		Id:       lastUser.Id + 1,
+		Login:    NewLogin,
+		Name:     NewName,
+		Email:    NewEmail,
+		Password: NewPassword,
+	}
+	hash, err := passlib.Hash(newUser.Password)
+	if err != nil {
+		logs.Error("Unable to hash password", err)
+		return
+	}
+	newUser.Password = hash
+	if created, _, err := o.ReadOrCreate(&newUser, "Name"); err == nil {
+		if created {
+			logs.Info("New user account created")
+		} else {
+			logs.Debug(newUser)
+		}
+	} else {
+		logs.Error(err)
+	}
+}

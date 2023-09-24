@@ -166,4 +166,12 @@ func init() {
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:ProfileController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:ProfileController"],
+			web.ControllerComments{
+				Method:           "Create",
+				Router:           `/profile/create`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
 }

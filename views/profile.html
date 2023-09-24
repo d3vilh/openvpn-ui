@@ -52,6 +52,87 @@
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-primary">
+        <div class="card-header with-border">
+          <h3 class="card-title">Create New User</h3>
+          <div class="pull-left card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+          <!-- /.box-header -->
+          {{template "common/alert.html" .}}
+        <div class="card-body">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-newuser">
+            Create User
+          </button>
+          <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-newuser">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create New User</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <!-- /.box-header -->
+          <!-- form start -->
+         {{template "common/alert.html" .}}
+          <form role="form" action="{{urlfor "ProfileController.Create"}}" method="post">
+            <div class="box-body">
+              <div class="form-group has-success {{if field_error_exist .validation "Name" }}has-error{{end}}">
+                <label class="control-label" for="name" title="Name should not have spaces."><i class="fa fa-bell-o"></i>Login</label>
+                <input type="text" class="form-control is-warning" pattern="^[^\s]+$" placeholder="New User Login" id="Login" name="Login">
+                <span class="text-muted" title="New Login.">User Login.<span>
+              </div>
+      
+              <div class="form-group">
+                <label for="name">Password</label>
+                <input type="password" class="form-control" placeholder="Enter Password" id="Password" name="Password">
+                <a href="#" class="password-control" title="Show or Hide Password"></a>
+                <span class="text-muted">Secret User Password</span>
+              </div>
+      
+              <div class="form-group">
+                <label for="name" title="Enter Password">Name</label>
+                <input type="text" class="form-control" placeholder="Enter Name" id="Name" name="Name">
+                <span class="text-muted">Name of the User.</span>
+              </div>
+  
+              <div class="form-group">
+                <label for="name" title="User e-mail">User Email</label>
+                <input type="email" class="form-control" placeholder="User Email" id="Email" name="Email">
+                <span class="text-muted">User e-mail.</span>
+              </div>
+
+              <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+            </div>
+            <!-- /.box-body -->
+  
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
 </div>
 <!-- /.card -->
 {{end}}
