@@ -86,6 +86,10 @@ func validateUser(user models.User) map[string]map[string]string {
 }
 
 func (c *ProfileController) Create() {
+	c.TplName = "profile.html"
+	c.Data["profile"] = c.Userinfo
+
+	flash := web.NewFlash()
 	user := models.User{}
 	if err := c.ParseForm(&user); err != nil {
 		logs.Error(err)
@@ -97,8 +101,10 @@ func (c *ProfileController) Create() {
 	logs.Info("Email:", user.Email)
 	logs.Info("Password:", user.Password)
 	CreateNewUser(user.Login, user.Name, user.Email, user.Password)
+	logs.Info("Creating complete. Enjoy!")
 	// Redirect to the newly created user's profile page
 	// c.Ctx.Redirect(302, "/profile/"+user.Login)
+	flash.Store(&c.Controller)
 }
 
 // Create new user
