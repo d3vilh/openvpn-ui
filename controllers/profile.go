@@ -13,6 +13,14 @@ import (
 	"github.com/d3vilh/openvpn-ui/models"
 )
 
+type NewUser struct {
+	NewLogin      string `orm:"size(64);unique" form:"NewLogin" valid:"Required;"`
+	NewName       string `orm:"size(64);unique" form:"NewName" valid:"Required;"`
+	NewEmail      string `orm:"size(64);unique" form:"NewEmail" valid:"Required;Email"`
+	NewPassword   string `orm:"size(32)" form:"NewPassword" valid:"Required;MinSize(6)"`
+	NewRepassword string `orm:"-" form:"NewRepassword" valid:"Required"`
+}
+
 type ProfileController struct {
 	BaseController
 }
@@ -31,6 +39,18 @@ func (c *ProfileController) Get() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["profile"] = c.Userinfo
 	c.TplName = "profile.html"
+
+	// Get all users if user ID is 1
+	if c.Userinfo.Id == 1 {
+		o := orm.NewOrm()
+		var users []*models.User
+		if _, err := o.QueryTable("user").All(&users); err != nil {
+			logs.Error("Failed to retrieve user profiles:", err)
+			return
+		}
+		logs.Info("Retrieved", len(users), "user profiles")
+		c.Data["users"] = users
+	}
 }
 
 func (c *ProfileController) Post() {
@@ -85,6 +105,19 @@ func validateUser(user models.User) map[string]map[string]string {
 	return nil
 }
 
+func validateNewUser(nuser NewUser) map[string]map[string]string {
+	valid := validation.Validation{}
+	b, err := valid.Valid(&nuser)
+	if err != nil {
+		logs.Error(err)
+		return nil
+	}
+	if !b {
+		return lib.CreateValidationMap(valid)
+	}
+	return nil
+}
+
 func (c *ProfileController) Create() {
 	c.TplName = "profile.html"
 	c.Data["profile"] = c.Userinfo
@@ -97,12 +130,20 @@ func (c *ProfileController) Create() {
 		Repassword: c.GetString("NewRepassword"),
 	}
 
+	uParams := NewUser{
+		NewLogin:      c.GetString("NewLogin"),
+		NewName:       c.GetString("NewName"),
+		NewEmail:      c.GetString("NewEmail"),
+		NewPassword:   c.GetString("NewPassword"),
+		NewRepassword: c.GetString("NewRepassword"),
+	}
+
 	if err := c.ParseForm(&user); err != nil {
 		logs.Error(err)
 		return
 	}
 
-	if vMap := validateUser(user); vMap != nil {
+	if vMap := validateNewUser(uParams); vMap != nil {
 		c.Data["validation"] = vMap
 		return
 	}
@@ -154,4 +195,17 @@ func (c *ProfileController) Create() {
 	}
 
 	flash.Store(&c.Controller)
+}
+
+func (c *ProfileController) List() {
+	logs.Info("Went to List controller")
+	o := orm.NewOrm()
+	var users []*models.User
+	if _, err := o.QueryTable("user").All(&users); err != nil {
+		logs.Error("Failed to retrieve user profiles:", err)
+		return
+	}
+	logs.Info("Retrieved", len(users), "user profiles")
+	c.Data["users"] = users
+	c.TplName = "profile.html"
 }

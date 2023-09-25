@@ -12,7 +12,7 @@
   <!-- /.box-header -->
   <!-- form start -->
   {{template "common/alert.html" .}}
-  <form role="form" action="{{urlfor "ProfileController.Post"}}" method="post">
+  <form id="ProfileEdit" role="form" action="{{urlfor "ProfileController.Post"}}" method="post">
     <div class="card-body">
       <div class="form-group">
         <label for="name">Login</label>
@@ -34,7 +34,7 @@
         </div>
         <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Email" }}</span>
       </div>
-      <div class="form-group {{if field_error_exist .validation "Password" }}has-error{{end}}">
+      <div class="form-group {{ if field_error_exist .validation "Password" }}has-error{{end}}">
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" name="Password" placeholder="Password">
         <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Password" }}</span>
@@ -49,54 +49,28 @@
     <!-- /.card-body -->
 
     <div class="card-footer">
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary" form="ProfileEdit">Save</button>
     </div>
   </form>
+</div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card card-primary">
-        <div class="card-header with-border">
-          <h3 class="card-title">Create New User</h3>
-          <div class="pull-left card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-            <i class="fa fa-minus"></i></button>
-          </div>
-        </div>
-          <!-- /.box-header -->
-          {{template "common/alert.html" .}}
-        <div class="card-body">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-newuser">
-            Create User
-          </button>
-          <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
-        </div>
-      </div>
-    </div>
+<div class="card card-primary">
+  <div class="card-header with-border">
+    <h3 class="card-title">Create New User</h3>
   </div>
-
-  <div class="modal fade" id="modal-newuser">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Create New User</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <!-- /.box-header -->
-          <!-- form start -->
-         {{template "common/alert.html" .}}
-          <form role="form" action="{{urlfor "ProfileController.Create"}}" method="post">
-            <div class="box-body">
+  <!-- /.box-header -->
+  <!-- form start -->
+  {{template "common/alert.html" .}}
+          <form id="ProfileCreate" role="form" action="{{urlfor "ProfileController.Create"}}" method="post">
+            <div class="card-body">
               <div class="form-group">
                 <label for="name">Login</label>
-                <input type="text" class="form-control" id="login" name="NewLogin" placeholder="Enter login">
+                <input type="text" class="form-control" id="newlogin" name="NewLogin" placeholder="Enter login">
               </div>
 
               <div class="form-group {{if field_error_exist .validation "NewName" }}has-error{{end}}" >
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="NewName" placeholder="Enter name">
+                <input type="text" class="form-control" id="newname" name="NewName" placeholder="Enter name">
                 <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewName" }}</span>
               </div>
       
@@ -104,40 +78,101 @@
                 <label for="email">Email address</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                  <input type="email" class="form-control" id="email" name="NewEmail" placeholder="Enter email">
+                  <input type="email" class="form-control" id="newemail" name="NewEmail" placeholder="Enter email">
+                  <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewEmail" }}</span>
                 </div>
 
               <div class="form-group {{if field_error_exist .validation "NewPassword" }}has-error{{end}}">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="NewPassword" placeholder="Password">
+                <input type="password" class="form-control" id="newpassword" name="NewPassword" placeholder="Password">
                 <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewPassword" }}</span>
               </div>
               <div class="form-group {{if field_error_exist .validation "NewRepassword" }}has-error{{end}}">
                 <label for="Repassword">Repeat password</label>
-                <input type="password" class="form-control" id="repassword" name="NewRepassword" placeholder="Repeat password">
+                <input type="password" class="form-control" id="newrepassword" name="NewRepassword" placeholder="Repeat password">
                 <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewRepassword" }}</span>
               </div>
-
-              <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
             </div>
             <!-- /.box-body -->
   
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" formaction="{{urlfor "ProfileController.Create"}}">Create</button>
-                <a href="{{urlfor "ProfileController.Create"}}" class="btn btn-primary" style="width: 145px;" title="Restart OpenVPN container">Create a</a>
+              <button type="submit" class="btn btn-primary" formaction="{{urlfor "ProfileController.Create"}}" form="ProfileCreate">Create</button>
             </div>
   
           </form>
+</div>
+</div>
+
+
+
+<div class="card card-primary">
+  <div class="card-header with-border">
+    <h3 class="card-title">Users List</h3>
+  </div>
+
+      <!-- /.box-header -->
+      <!--form id="ProfileEdit" role="form" action="{{urlfor "ProfileController.List"}}" method="post"-->
+      <div class="card-body">
+        <!--if .ovstatus -->
+        <div class="table-responsive">
+          <table class="table no-margin">
+            <thead>
+            <tr>
+              <th>Id</th>
+              <th>Login</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Created</th>
+              <th>Lastlogintime</th>
+              <th>Updated</th>
+            </tr>
+            </thead>
+            <tbody>
+              {{range .users}}
+              <tr>
+                  <td>
+                      {{ .Id }}
+                  </td>
+                    <td>
+                      {{ .Login }}
+                    </td>
+                    <td>
+                      {{ .Name }}
+                    </td>
+                    <td>
+                      <a href="mailto:{{ .Email }}">{{ .Email }}</a>
+                    </td>
+                    <td>
+                      {{ dateformat .Created "2006-01-02 15:04" }}
+                    </td>
+                    {{ $lastLoginTime := dateformat .Lastlogintime "2006-01-02 15:04" }}
+                    {{if eq $lastLoginTime "0001-01-01 00:00"}}
+                    <td>
+                     Not used
+                    </td>
+                    {{else}}
+                    <td>
+                      {{ dateformat .Lastlogintime "2006-01-02 15:04" }}
+                    </td>
+                    {{end}}
+                    </td>
+                    <td>
+                      {{ dateformat .Updated "2006-01-02 15:04" }}
+                    </td>
+              </tr>
+
+              {{end}}
+              </tbody>
+            </table>
+          
         </div>
+
       </div>
-    </div>
+      <!--/form-->
+      <!-- /.box -->
   </div>
 
 
 
-
-
-</div>
 <!-- /.card -->
 {{end}}
