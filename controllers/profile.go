@@ -16,6 +16,7 @@ import (
 type NewUser struct {
 	NewLogin      string `orm:"size(64);unique" form:"NewLogin" valid:"Required;"`
 	NewName       string `orm:"size(64);unique" form:"NewName" valid:"Required;"`
+	NewIsAdmin    bool   `orm:"default(false)" form:"IsAdmin" valid:"Required;"`
 	NewEmail      string `orm:"size(64);unique" form:"NewEmail" valid:"Required;Email"`
 	NewPassword   string `orm:"size(32)" form:"NewPassword" valid:"Required;MinSize(6)"`
 	NewRepassword string `orm:"-" form:"NewRepassword" valid:"Required"`
@@ -128,6 +129,7 @@ func (c *ProfileController) Create() {
 		Email:      c.GetString("NewEmail"),
 		Password:   c.GetString("NewPassword"),
 		Repassword: c.GetString("NewRepassword"),
+		IsAdmin:    c.GetString("NewIsAdmin") == "on",
 	}
 
 	uParams := NewUser{
@@ -136,6 +138,7 @@ func (c *ProfileController) Create() {
 		NewEmail:      c.GetString("NewEmail"),
 		NewPassword:   c.GetString("NewPassword"),
 		NewRepassword: c.GetString("NewRepassword"),
+		NewIsAdmin:    c.GetString("NewIsAdmin") == "on",
 	}
 
 	if err := c.ParseForm(&user); err != nil {
@@ -172,6 +175,7 @@ func (c *ProfileController) Create() {
 	newUser := models.User{
 		Id:       lastUser.Id + 1,
 		Login:    user.Login,
+		IsAdmin:  user.IsAdmin,
 		Name:     user.Name,
 		Email:    user.Email,
 		Password: user.Password,

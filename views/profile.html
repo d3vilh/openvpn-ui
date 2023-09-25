@@ -68,6 +68,12 @@
                 <input type="text" class="form-control" id="newlogin" name="NewLogin" placeholder="Enter login">
               </div>
 
+              <div class="form-group {{if field_error_exist .validation "IsAdmin" }}has-error{{end}}">
+                <input type="checkbox" class="form-control" id="isadmin" name="IsAdmin" title="Is Admin?">
+                <label for="name">IsAdmin</label>
+              </div>
+
+
               <div class="form-group {{if field_error_exist .validation "NewName" }}has-error{{end}}" >
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="newname" name="NewName" placeholder="Enter name">
@@ -119,6 +125,7 @@
             <thead>
             <tr>
               <th>Id</th>
+              <th>Is Admin</th>
               <th>Login</th>
               <th>Name</th>
               <th>Email</th>
@@ -132,6 +139,9 @@
               <tr>
                   <td>
                       {{ .Id }}
+                  </td>
+                  <td>
+                    {{ .IsAdmin }}
                   </td>
                     <td>
                       {{ .Login }}
