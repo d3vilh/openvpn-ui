@@ -88,42 +88,52 @@ func validateUser(user models.User) map[string]map[string]string {
 func (c *ProfileController) Create() {
 	c.TplName = "profile.html"
 	c.Data["profile"] = c.Userinfo
-
 	flash := web.NewFlash()
-	user := models.User{}
+	user := models.User{
+		Login:      c.GetString("NewLogin"),
+		Name:       c.GetString("NewName"),
+		Email:      c.GetString("NewEmail"),
+		Password:   c.GetString("NewPassword"),
+		Repassword: c.GetString("NewRepassword"),
+	}
+
 	if err := c.ParseForm(&user); err != nil {
 		logs.Error(err)
 		return
 	}
-	logs.Info("Creating new user with the following information:")
-	logs.Info("Login:", user.Login)
-	logs.Info("Name:", user.Name)
-	logs.Info("Email:", user.Email)
-	logs.Info("Password:", user.Password)
-	CreateNewUser(user.Login, user.Name, user.Email, user.Password)
-	logs.Info("Creating complete. Enjoy!")
-	// Redirect to the newly created user's profile page
-	// c.Ctx.Redirect(302, "/profile/"+user.Login)
-	flash.Store(&c.Controller)
-}
 
-// Create new user
-func CreateNewUser(NewLogin string, NewName string, NewEmail string, NewPassword string) {
+	if vMap := validateUser(user); vMap != nil {
+		c.Data["validation"] = vMap
+		return
+	}
+
 	o := orm.NewOrm()
-	var lastUser models.User
-	err := o.QueryTable("user").OrderBy("-id").One(&lastUser)
-	if err == orm.ErrNoRows {
-		lastUser.Id = 0
-	} else if err != nil {
+	var existingUser models.User
+	err := o.QueryTable("user").Filter("Login", user.Login).One(&existingUser)
+	if err == nil {
+		flash.Warning("User with login \"" + user.Login + "\" is already exists")
+		flash.Store(&c.Controller)
+		logs.Info("User already exists:", user.Login)
+		return
+	} else if err != orm.ErrNoRows {
 		logs.Error(err)
+		return
+	}
+
+	var lastUser models.User
+	err1 := o.QueryTable("user").OrderBy("-id").One(&lastUser)
+	if err1 == orm.ErrNoRows {
+		lastUser.Id = 0
+	} else if err1 != nil {
+		logs.Error(err1)
 		return
 	}
 	newUser := models.User{
 		Id:       lastUser.Id + 1,
-		Login:    NewLogin,
-		Name:     NewName,
-		Email:    NewEmail,
-		Password: NewPassword,
+		Login:    user.Login,
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: user.Password,
 	}
 	hash, err := passlib.Hash(newUser.Password)
 	if err != nil {
@@ -133,11 +143,15 @@ func CreateNewUser(NewLogin string, NewName string, NewEmail string, NewPassword
 	newUser.Password = hash
 	if created, _, err := o.ReadOrCreate(&newUser, "Name"); err == nil {
 		if created {
-			logs.Info("New user account created")
+			logs.Info("New user with login \"" + user.Login + "\" created successfully")
+			flash.Success("New user with login \"" + user.Login + "\" created successfully")
+			flash.Store(&c.Controller)
 		} else {
 			logs.Debug(newUser)
 		}
 	} else {
 		logs.Error(err)
 	}
+
+	flash.Store(&c.Controller)
 }
