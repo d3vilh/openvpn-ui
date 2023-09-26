@@ -51,14 +51,14 @@ document.execCommand('copy');
 $tempTextArea.remove();
 });
 
-$(function() {
-  new Clipboard('.button-copy');
+//$(function() {
+//  new Clipboard('.button-copy');
 
-  //$( ".btn-disconnect" ).click(function() {
-  //  alert( "Handler for .click() called." );
-  //});
-  //window.location.reload();
-})
+  ////$( ".btn-disconnect" ).click(function() {
+  ////  alert( "Handler for .click() called." );
+  ////});
+  ////window.location.reload();
+//})
 
 function createEditor(name, size, theme, mode, readonly) {
   // find the textarea

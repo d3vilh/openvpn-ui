@@ -72,6 +72,7 @@ func (c *ProfileController) Post() {
 
 	if vMap := validateUser(user); vMap != nil {
 		c.Data["validation"] = vMap
+		c.List()
 		return
 	}
 
@@ -91,6 +92,7 @@ func (c *ProfileController) Post() {
 		flash.Success("Profile has been updated")
 	}
 	flash.Store(&c.Controller)
+	c.List()
 }
 
 func validateUser(user models.User) map[string]map[string]string {
@@ -119,6 +121,7 @@ func validateNewUser(nuser NewUser) map[string]map[string]string {
 	return nil
 }
 
+// @router /profile/create [Create]
 func (c *ProfileController) Create() {
 	c.TplName = "profile.html"
 	c.Data["profile"] = c.Userinfo
@@ -148,6 +151,7 @@ func (c *ProfileController) Create() {
 
 	if vMap := validateNewUser(uParams); vMap != nil {
 		c.Data["validation"] = vMap
+		c.List()
 		return
 	}
 
@@ -158,6 +162,7 @@ func (c *ProfileController) Create() {
 		flash.Warning("User with login \"" + user.Login + "\" is already exists")
 		flash.Store(&c.Controller)
 		logs.Info("User already exists:", user.Login)
+		c.List()
 		return
 	} else if err != orm.ErrNoRows {
 		logs.Error(err)
@@ -199,8 +204,10 @@ func (c *ProfileController) Create() {
 	}
 
 	flash.Store(&c.Controller)
+	c.List()
 }
 
+// @router /profile [post]
 func (c *ProfileController) List() {
 	logs.Info("Went to List controller")
 	o := orm.NewOrm()
@@ -212,4 +219,29 @@ func (c *ProfileController) List() {
 	logs.Info("Retrieved", len(users), "user profiles")
 	c.Data["users"] = users
 	c.TplName = "profile.html"
+}
+
+// @router /profile/delete/:key [get]
+func (c *ProfileController) DeleteUser() {
+	logs.Info("Went to Delete controller")
+	c.TplName = "profile.html"
+	flash := web.NewFlash()
+	//c.Data["profile"] = c.Userinfo
+	id, err := c.GetInt(":key")
+	if err != nil {
+		logs.Error("Failed to get user ID:", err)
+		return
+	}
+
+	o := orm.NewOrm()
+	user := models.User{Id: int64(id)}
+	if _, err := o.Delete(&user); err != nil {
+		logs.Error("Failed to delete user profile:", err)
+		return
+	}
+
+	logs.Info("Deleted user profile with ID", id)
+	flash.Success("User deleted successfully")
+	flash.Store(&c.Controller)
+	c.List()
 }

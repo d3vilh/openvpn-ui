@@ -174,4 +174,12 @@ func init() {
 				AllowHTTPMethods: []string{"post"},
 				Params:           nil})
 
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:ProfileController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:ProfileController"],
+			web.ControllerComments{
+				Method:           "DeleteUser",
+				Router:           `/profile/delete/:key`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
 }
