@@ -620,7 +620,9 @@ You can do the same from the `"Maintenance"` page.
 After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press `"Remove"` button.
 
 ### User Management
-Starting from `v.0.9.2` OpenVPN UI has user management feature. You can create and delete users with different privileges - Administrators or regular users:
+Starting from `v.0.9.2` OpenVPN UI has user management feature. 
+
+You can create and delete users with different privileges - Administrators or regular users:
 * Administrators has full access
 * Regular users has access to Home page, Certificates and Logs pages only. This users can create, renew, revoke and delete all the certificates.
 
@@ -664,6 +666,11 @@ Then you can Create new profile and manage other profiles:
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileCreate.png" alt="New OpenVPN UI Profile creation" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileManage.png" alt="OpenVPN UI Profiles management" width="1000" border="1" />
+
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
 
