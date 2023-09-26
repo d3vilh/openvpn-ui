@@ -32,7 +32,7 @@ func (c *ProfileController) NestPrepare() {
 		return
 	}
 	c.Data["breadcrumbs"] = &BreadCrumbs{
-		Title: "Profile",
+		Title: "Profile configuration",
 	}
 }
 

@@ -20,7 +20,7 @@
 
       <!--TAB1-->
       <div class="tab-pane active" id="tab_1">
-        <h3>Edit own profile</h3>
+        <h3>Editing {{ .Userinfo.Name }} profile</h3>
         {{template "common/alert.html" .}}
         <form id="ProfileEdit" role="form" action="{{urlfor "ProfileController.Post"}}" method="post">
           <div class="card-body">
