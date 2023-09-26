@@ -41,8 +41,8 @@ func (c *ProfileController) Get() {
 	c.Data["profile"] = c.Userinfo
 	c.TplName = "profile.html"
 
-	// Get all users if user ID is 1
-	if c.Userinfo.Id == 1 {
+	// Get all users if user has admin flag - show all users
+	if c.Userinfo.IsAdmin {
 		o := orm.NewOrm()
 		var users []*models.User
 		if _, err := o.QueryTable("user").All(&users); err != nil {
