@@ -626,7 +626,14 @@ Starting from `v.0.9.2` OpenVPN UI has user management feature. You can create a
 
 This functionality available via `"Users Profiles"` page:
 
-<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-AdminProfile.png" alt="Username > Profile" width="350" border="1" />
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileAdmin.png" alt="Username > Profile" width="350" border="1" />
+
+
+Then you can Create new profile and manage other profiles:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileCreate.png" alt="New OpenVPN UI Profile creation" width="350" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileManage.png" alt="OpenVPN UI Profiles management" width="350" border="1" />
 
 ### Screenshots:
 
