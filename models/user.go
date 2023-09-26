@@ -13,6 +13,7 @@ import (
 type User struct {
 	Id            int64
 	Login         string    `orm:"size(64);unique" form:"Login" valid:"Required;"`
+	IsAdmin       bool      `orm:"default(false)" form:"IsAdmin" valid:"Required;"`
 	Name          string    `orm:"size(64);unique" form:"Name" valid:"Required;"`
 	Email         string    `orm:"size(64);unique" form:"Email" valid:"Required;Email"`
 	Password      string    `orm:"size(32)" form:"Password" valid:"Required;MinSize(6)"`

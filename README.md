@@ -21,6 +21,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Change OpenVPN Server configuration via web interface
 * Easy to preview OpenVPN Server logs
 * Restart OpenVPN Server and OpenVPN UI from web interface
+* OpenVPN-UI users management. Administrators has full access, regular users to Certificates management, logs and status page only.
 * OpenVPN-UI Admin user and password can be passed via environment variables to container
 * Updated infrustracture:
   * Alpine Linux as fastest and secure base image
@@ -365,6 +366,7 @@ And you are done with the upgrade process.
   | **0.7** | **no schema changes** | **no schema changes**     | **no schema changes**           |
   | **0.8** | **no schema changes** | **no schema changes**     | **no schema changes**           |
   | **0.9** | **no schema changes** | **no schema changes**     | Donate here https://u24.gov.ua  |
+  | **0.9.2** | user             | is_admin                      | Your username > Profile              |
 
   </details>
 
@@ -617,6 +619,24 @@ You can do the same from the `"Maintenance"` page.
 
 After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press `"Remove"` button.
 
+### User Management
+Starting from `v.0.9.2` OpenVPN UI has user management feature. 
+
+You can create and delete users with different privileges - Administrators or regular users:
+* Administrators has full access
+* Regular users has access to Home page, Certificates and Logs pages only. This users can create, renew, revoke and delete all the certificates.
+
+This functionality available via `"Users Profiles"` page:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileAdmin.png" alt="Username > Profile" width="350" border="1" />
+
+
+Then you can Create new profile and manage other profiles:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileCreate.png" alt="New OpenVPN UI Profile creation" width="350" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileManage.png" alt="OpenVPN UI Profiles management" width="350" border="1" />
+
 ### Screenshots:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Login.png" alt="OpenVPN-UI Login screen" width="1000" border="1" />
@@ -646,6 +666,11 @@ After Revoking and Restarting the service, the client will be disconnected and w
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Config.png" alt="OpenVPN-UI Configuration screen" width="1000" border="1" />
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Profile.png" alt="OpenVPN-UI User Profile" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileCreate.png" alt="New OpenVPN UI Profile creation" width="1000" border="1" />
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileManage.png" alt="OpenVPN UI Profiles management" width="1000" border="1" />
+
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Logs.png" alt="OpenVPN-UI Logs screen" width="1000" border="1" />
 

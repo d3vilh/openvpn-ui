@@ -7,7 +7,7 @@
 {{define "body"}}
 <div class="card card-primary">
   <div class="card-header with-border">
-    <h3 class="card-title">Client .ovpn profile configuration</h3>
+    <h3 class="card-title">Client configuration template for .opvn file</h3>
     <div class="pull-right card-tools">
       <button type="button" class="btn btn-tool" data-card-widget="collapse">
       <i class="fa fa-minus"></i></button>
@@ -112,7 +112,7 @@
                     <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                       <div class="card-body">
                         <span class="text-muted">Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
-                        <span class="text-muted">It is better to update this config with Configuration template.</span><br>
+                        <span class="text-muted">Best practice is update Client template with Client configuration template.</span><br>
                       </div>
                     </div>
                     <br><textarea type="text" class="form-control my-textarea" name="ClientTemplate" id="ClientTemplate" spellcheck="false" rows="15">{{ .ClientTemplate }}</textarea>

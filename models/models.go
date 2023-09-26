@@ -53,6 +53,7 @@ func CreateDefaultUsers() {
 	user := User{
 		Id:       1,
 		Login:    os.Getenv("OPENVPN_ADMIN_USERNAME"),
+		IsAdmin:  true,
 		Name:     "Administrator",
 		Email:    "root@localhost",
 		Password: hash,

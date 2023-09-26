@@ -4,6 +4,8 @@
     <a href="{{urlfor "MainController.Get"}}" class="nav-link">Home <span class="sr-only">(current)</span></a>
   </li>
 
+
+{{ if .Userinfo.IsAdmin }}
   <li class="dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
       Configuration </a>
@@ -28,10 +30,11 @@
       <li {{if compare .RouterPattern "/dangerzone"}}class="dropdown-item"{{end}}>
         <a href="{{urlfor "DangerController.Get"}}" class="dropdown-item">Maintenance</a>
       </li>
-
-
     </ul>
   </li>
+  {{ else }}
+  {{ end }}
+
 
   <li {{if compare .RouterPattern "/certificates"}}class="nav-item"{{end}}>
     <a href="{{urlfor "CertificatesController.Get"}}" class="nav-link">Certificates</a>

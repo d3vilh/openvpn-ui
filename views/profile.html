@@ -5,53 +5,243 @@
 {{end}}
 
 {{define "body"}}
-<div class="card card-primary">
-  <div class="card-header with-border">
-    <h3 class="card-title">Edit your profile</h3>
-  </div>
-  <!-- /.box-header -->
-  <!-- form start -->
-  {{template "common/alert.html" .}}
-  <form role="form" action="{{urlfor "ProfileController.Post"}}" method="post">
-    <div class="card-body">
-      <div class="form-group">
-        <label for="name">Login</label>
-        <input type="text" class="form-control" id="login" name="Login" disabled
-          value="{{ .profile.Login }}">
-      </div>
-      <div class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}" >
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="Name" placeholder="Enter name"
-          value="{{ .profile.Name }}">
-        <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
-      </div>
-      <div class="form-group {{if field_error_exist .validation "Email" }}has-error{{end}}">
-        <label for="email">Email address</label>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-          <input type="email" class="form-control" id="email" name="Email" placeholder="Enter email"
-            value="{{ .profile.Email }}">
-        </div>
-        <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Email" }}</span>
-      </div>
-      <div class="form-group {{if field_error_exist .validation "Password" }}has-error{{end}}">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" name="Password" placeholder="Password">
-        <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Password" }}</span>
-      </div>
-      <div class="form-group {{if field_error_exist .validation "Repassword" }}has-error{{end}}">
-        <label for="Repassword">Repeat password</label>
-        <input type="password" class="form-control" id="Repassword" name="Repassword" placeholder="Repeat password">
-        <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Repassword" }}</span>
-      </div>
-      {{ .xsrfdata }}
-    </div>
-    <!-- /.card-body -->
 
-    <div class="card-footer">
-      <button type="submit" class="btn btn-primary">Save</button>
+
+<div class="card">
+  <div class="card-header d-flex p-0">
+    <ul class="nav nav-pills ml-left p-2">
+      <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Edit own Profile</a></li>
+      {{ if .Userinfo.IsAdmin }} <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Creating new Profiles</a></li> {{ else }}{{ end }}
+      {{ if .Userinfo.IsAdmin }} <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Managing Profiles</a></li> {{ else }}{{ end }}
+    </ul>
+  </div>
+  <div class="card-body">
+    <div class="tab-content">
+
+      <!--TAB1-->
+      <div class="tab-pane active" id="tab_1">
+        <h3>Editing {{ .Userinfo.Name }}'s profile</h3>{{ if .Userinfo.IsAdmin }}<span class="text-muted"> You are administrator. Wow!</span> {{ else }}{{ end }}
+        {{template "common/alert.html" .}}
+        <form id="ProfileEdit" role="form" action="{{urlfor "ProfileController.Post"}}" method="post">
+          <div class="card-body">
+
+            <div class="form-group">
+              <label class="col-form-label" for="login">Login</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" id="login" name="Login" placeholder="{{ .profile.Login }}" value="{{ .profile.Login }}" disabled>
+              </div>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}">
+              <label class="col-form-label" for="name">Name</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user-plus"></i></span>
+                </div>
+                <input type="text" class="form-control" id="name" name="Name" placeholder="Enter name" value="{{ .profile.Name }}">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Name" }}</span>
+              </div>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "Email" }}has-error{{end}}">
+              <label class="col-form-label" for="email">Email address</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input type="email" class="form-control" id="email" name="Email" placeholder="Enter email" value="{{ .profile.Email }}">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Email" }}</span>
+              </div>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "Password" }}has-error{{end}}">
+              <label class="col-form-label" for="password">Password</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" id="password" name="Password" placeholder="Enter password">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Password" }}</span>
+              </div>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "Repassword" }}has-error{{end}}">
+              <label class="col-form-label" for="Repassword">Repeat password</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" id="Repassword" name="Repassword" placeholder="Repeat password">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "Repassword" }}</span>
+              </div>
+            </div>
+
+            {{ .xsrfdata }}
+          </div>
+
+          <div class="modal-footer justify-content-between">
+            <button type="submit" class="btn btn-primary" form="ProfileEdit" style="width: 135px;">Save Profile</button>
+          </div>
+        </form>
+      </div>
+      
+
+      <!--TAB2-->
+      <div class="tab-pane" id="tab_2">
+        <h3>Create new profile</h3>
+        {{template "common/alert.html" .}}
+        <form id="ProfileCreate" role="form" action="{{urlfor "ProfileController.Create"}}" method="post">
+          <div class="card-body">
+
+            <div class="form-group">
+              <label class="col-form-label" for="newlogin">Login</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" id="newlogin" name="NewLogin" placeholder="Enter login">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox form-group {{if field_error_exist .validation "IsAdmin" }}has-error{{end}}">
+              <input class="custom-control-input custom-control-input-danger" type="checkbox" id="isadmin" name="IsAdmin">
+              <label for="isadmin" class="custom-control-label" style="color: #dd4b39;">Is user Admin?</label> <span class="text-muted"> 
+                &nbsp; For regular users Configuration and User management is not accessible. They can only maintain Certificates, view Logs and Connections.</span>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "NewName" }}has-error{{end}}">
+              <label class="col-form-label" for="newname">Name</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user-plus"></i></span>
+                </div>
+                <input type="text" class="form-control" id="newname" name="NewName" placeholder="Enter name">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewName" }}</span>
+              </div>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "NewEmail" }}has-error{{end}}">
+              <label class="col-form-label" for="email">Email address</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                </div>
+                <input type="email" class="form-control" id="newemail" name="NewEmail" placeholder="Enter email">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewEmail" }}</span>
+              </div>
+            </div>
+
+            <div class="form-group {{if field_error_exist .validation "NewPassword" }}has-error{{end}}">
+              <label class="col-form-label" for="newpassword">Repeat password</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" id="newpassword" name="NewPassword" placeholder="Repeat password">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewPassword" }}</span>
+              </div>
+            </div>
+            <div class="form-group {{if field_error_exist .validation "NewRepassword" }}has-error{{end}}">
+              <label class="col-form-label" for="newrepassword">Repeat password</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" id="newrepassword" name="NewRepassword" placeholder="Repeat password">
+                <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewRepassword" }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer justify-content-between">
+            <button type="submit" class="btn btn-primary" style="width: 135px;">Create Profile</button>
+          </div>
+
+        </form>
+      </div>
+ 
+
+      <!--TAB3-->
+      <div class="tab-pane" id="tab_3">
+        <h3>Profiles management</h3>
+        {{template "common/alert.html" .}}
+        <div class="table-responsive">
+          <table class="table no-margin">
+            <thead>
+            <tr>
+              <th>Id</th>
+              <th>Admin</th>
+              <th>Login</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Created</th>
+              <th>Last Login</th>
+              <th>Updated</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+              {{range .users}}
+              <tr>
+                  <td>
+                      {{ .Id }}
+                  </td>
+                  <td>
+                    {{ if .IsAdmin }}
+                    <i class="fa fa-fw fa-check-circle" style="color: #00a65a; font-size: 17px;" ></i>
+                    {{ else }}
+                    <i class="fa fa-fw fa-minus-circle" style="color: #dd4b39; font-size: 17px;" ></i>
+                    {{ end }}
+                  </td>
+                    <td>
+                      {{ .Login }}
+                    </td>
+                    <td>
+                      {{ .Name }}
+                    </td>
+                    <td>
+                      <a href="mailto:{{ .Email }}">{{ .Email }}</a>
+                    </td>
+                    <td>
+                      {{ dateformat .Created "2006-01-02 15:04" }}
+                    </td>
+                    {{ $lastLoginTime := dateformat .Lastlogintime "2006-01-02 15:04" }}
+                    {{if eq $lastLoginTime "0001-01-01 00:00"}}
+                    <td>
+                     Not used
+                    </td>
+                    {{else}}
+                    <td>
+                      {{ dateformat .Lastlogintime "2006-01-02 15:04" }}
+                    </td>
+                    {{end}}
+                    </td>
+                    <td>
+                      {{ dateformat .Updated "2006-01-02 15:04" }}
+                    </td>
+                    <td>
+                      {{ if eq .Id 1 }}
+                      <a class="btn btn-default btn-xs" disabled>Delete</a>
+                      {{else}}
+                      <a href="{{urlfor "ProfileController.DeleteUser" ":key" .Id}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 70%;">
+                        Delete
+                      </a>
+                      {{end}}
+                    </td>
+              </tr>
+
+              {{end}}
+              </tbody>
+            </table>
+          
+        </div>
+      </div>
+
     </div>
-  </form>
+  </div>
 </div>
-<!-- /.card -->
+
 {{end}}
