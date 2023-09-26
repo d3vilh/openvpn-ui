@@ -68,9 +68,9 @@
                 <input type="text" class="form-control" id="newlogin" name="NewLogin" placeholder="Enter login">
               </div>
 
-              <div class="form-group {{if field_error_exist .validation "IsAdmin" }}has-error{{end}}">
-                <input type="checkbox" class="form-control" id="isadmin" name="IsAdmin" title="Is Admin?">
-                <label for="name">IsAdmin</label>
+              <div class="custom-control custom-checkbox form-group {{if field_error_exist .validation "IsAdmin" }}has-error{{end}}">
+                <input class="custom-control-input custom-control-input-danger" type="checkbox" id="isadmin" name="IsAdmin">
+                <label for="isadmin" class="custom-control-label">Is user Admin?</label> <span class="text-muted"> &nbsp; For regular users Configuration and User Management is not accessible. They can only maintain Certificates, view Logs and connected Clients.</span>
               </div>
 
 

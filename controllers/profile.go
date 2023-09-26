@@ -17,7 +17,7 @@ type NewUser struct {
 	NewLogin      string `orm:"size(64);unique" form:"NewLogin" valid:"Required;"`
 	NewName       string `orm:"size(64);unique" form:"NewName" valid:"Required;"`
 	NewIsAdmin    bool   `orm:"default(false)" form:"IsAdmin" valid:"Required;"`
-	NewEmail      string `orm:"size(64);unique" form:"NewEmail" valid:"Required;Email"`
+	NewEmail      string `orm:"size(64)" form:"NewEmail" valid:"Required;Email"`
 	NewPassword   string `orm:"size(32)" form:"NewPassword" valid:"Required;MinSize(6)"`
 	NewRepassword string `orm:"-" form:"NewRepassword" valid:"Required"`
 }
