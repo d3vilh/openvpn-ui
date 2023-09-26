@@ -49,7 +49,7 @@ func (c *ProfileController) Get() {
 			logs.Error("Failed to retrieve user profiles:", err)
 			return
 		}
-		logs.Info("Retrieved", len(users), "user profiles")
+		//logs.Info("Retrieved", len(users), "user profiles")
 		c.Data["users"] = users
 	}
 }
@@ -209,24 +209,21 @@ func (c *ProfileController) Create() {
 
 // @router /profile [post]
 func (c *ProfileController) List() {
-	logs.Info("Went to List controller")
 	o := orm.NewOrm()
 	var users []*models.User
 	if _, err := o.QueryTable("user").All(&users); err != nil {
 		logs.Error("Failed to retrieve user profiles:", err)
 		return
 	}
-	logs.Info("Retrieved", len(users), "user profiles")
+	//logs.Info("Retrieved", len(users), "user profiles")
 	c.Data["users"] = users
 	c.TplName = "profile.html"
 }
 
 // @router /profile/delete/:key [get]
 func (c *ProfileController) DeleteUser() {
-	logs.Info("Went to Delete controller")
 	c.TplName = "profile.html"
 	flash := web.NewFlash()
-	//c.Data["profile"] = c.Userinfo
 	id, err := c.GetInt(":key")
 	if err != nil {
 		logs.Error("Failed to get user ID:", err)
@@ -236,12 +233,13 @@ func (c *ProfileController) DeleteUser() {
 	o := orm.NewOrm()
 	user := models.User{Id: int64(id)}
 	if _, err := o.Delete(&user); err != nil {
-		logs.Error("Failed to delete user profile:", err)
+		logs.Error("Failed to delete user \""+user.Login+"\" profile:", err)
+		flash.Error("Failed to delete user \"" + user.Login + "\" profile")
 		return
 	}
 
 	logs.Info("Deleted user profile with ID", id)
-	flash.Success("User deleted successfully")
+	flash.Success("User  \"" + user.Login + "\" deleted successfully")
 	flash.Store(&c.Controller)
 	c.List()
 }
