@@ -53,9 +53,11 @@ fi
 # Fix for /name in index.txt
 echo "Fixing Database..."
 sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}/" $EASY_RSA/pki/index.txt
+echo "Database fixed:"
+tail -1 $EASY_RSA/pki/index.txt
 # Certificate properties
 CA="$(cat $EASY_RSA/pki/ca.crt )"
-CERT="$(cat $EASY_RSA/pki/issued/${CERT_NAME}.crt | grep -zEo -e '-----BEGIN CERTIFICATE-----(\n|.)*-----END CERTIFICATE-----' | tr -d '\0')"
+CERT="$(awk '/-----BEGIN CERTIFICATE-----/{flag=1;next}/-----END CERTIFICATE-----/{flag=0}flag' ./pki/issued/${CERT_NAME}.crt | tr -d '\0')"
 KEY="$(cat $EASY_RSA/pki/private/${CERT_NAME}.key)"
 TLS_AUTH="$(cat $EASY_RSA/pki/ta.key)"
 
@@ -81,7 +83,7 @@ $TLS_AUTH
 echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
 
 # Check if 2FA was specified
-if  [[ -z $TFA_NAME ]]; then
+if  [[ ! -z $TFA_NAME ]]; then
     echo 'Generating 2FA ...'
 
     # Userhash. Random 30 chars
