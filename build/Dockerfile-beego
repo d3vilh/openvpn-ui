@@ -24,7 +24,7 @@ RUN go install github.com/beego/bee/v2@develop
 # qrencode build
 WORKDIR /app
 RUN git clone https://github.com/d3vilh/qrencode
-RUN cd qrencode && go build -o qrencode main.go && chmod +x qrencode
+#RUN cd qrencode && go build -o qrencode main.go && chmod +x qrencode
 
 # Set the working directory to /
 WORKDIR /
