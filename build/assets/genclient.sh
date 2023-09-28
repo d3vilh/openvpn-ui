@@ -80,7 +80,7 @@ $TLS_AUTH
 </tls-auth>
 " > "$OVPN_FILE_PATH"
 
-echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
+echo -e "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
 
 # Check if 2FA was specified
 if  [[ ! -z $TFA_NAME ]]; then
