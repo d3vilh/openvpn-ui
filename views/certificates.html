@@ -160,14 +160,12 @@ Debug: FuncMode:  {{ .SettingsC.FuncMode }} <br>
                         <dt class="copy-details">Registered Unit: </dt>
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
                         {{ if eq $.SettingsC.FuncMode 1 }}
-                        <dt class="copy-details">2FA QR Code:  {{ $.SettingsC.FuncMode }}</dt>
+                        <dt class="copy-details">2FA QR Code:</dt>
                         <dd class="copy-details">
-
                           {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
-                          <!--img src="{{ urlfor "CertificatesController.DisplayImage" ":imageName" .Details.Name }}" alt="Dynamic Image"--> 
-                          <img src="/displayimage/{{ .Details.Name }}" alt="Dynamic Image">
+                            <img src="/displayimage/{{ .Details.Name }}">
                           {{end}}
-                       </dd>
+                        </dd>
                         {{end}}
                       </dl>
                       <div class="modal-footer justify-content-between">
