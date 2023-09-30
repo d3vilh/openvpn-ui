@@ -14,6 +14,10 @@ auth-nocache
 tls-client
 {{ .RedirectGateway }}
 verb 3
+{{ .AuthUserPass }}
+{{ .CustomConfOne }}
+{{ .CustomConfTwo }}
+{{ .CustomConfThree }}
 <ca>
 {{ .Ca }}
 </ca>

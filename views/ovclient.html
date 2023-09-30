@@ -24,6 +24,22 @@
          <label for="name">Profile</label>
          <input type="text" class="form-control" name="Profile" id="Profile" value="{{ .Settings.Profile }}" style="visibility: hidden;" disabled>
      </div> -->
+
+     <div class="form-group" id="auth-mode">
+      <label>Authentication Mode</label>
+      <select name="FuncMode" id="FuncMode" class="form-control">
+        <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic</option>
+        <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>2FA</option>
+      </select>
+    </div>
+
+     <div class="form-group" id="a-user-pass">
+      <label for="name">AuthUserPass</label> 
+      <input type="text" class="form-control" id="authuserpass" name="AuthUserPass" placeholder="AuthUserPass"
+        value="{{if eq .Settings.FuncMode 0}} {{else}}auth-user-pass{{ end }}">
+        <span id="helpBlock" class="text-muted">Used for specific User Authorisation process (2FA, etc)</span>
+    </div>
+
       <div class="form-group">
         <label for="name">Connection Address</label>
         <input type="text" class="form-control" id="ServerAddress" name="ServerAddress" placeholder="Enter server address"
@@ -51,6 +67,28 @@
           value="{{ .Settings.RedirectGateway }}">
           <span id="helpBlock" class="text-muted">Used to redirect all Client traffic via OpenVPN Server. Comment it if you don't need this - &quot;#redirect-gateway def1&quot;</span>
       </div>
+
+      <div class="form-group">
+        <label for="name">Custom Client Template Option One</label> 
+        <input type="text" class="form-control" id="CustomConfOne" name="CustomConfOne" placeholder="#Custom Option One"
+          value="{{ .Settings.CustomConfOne }}">
+          <span id="helpBlock" class="text-muted">Custom Option for Client template. Literally anything. Full format option (to disable - comment with #)</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Custom Client Template Option Two</label> 
+        <input type="text" class="form-control" id="CustomConfTwo" name="CustomConfTwo" placeholder="#Custom Option Two"
+          value="{{ .Settings.CustomConfTwo }}">
+          <span id="helpBlock" class="text-muted">Custom Option for Client template. Literally anything. Full format option (to disable - comment with #)</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Custom Client Template Option Three</label> 
+        <input type="text" class="form-control" id="CustomConfThree" name="CustomConfThree" placeholder="#Custom Option Three"
+          value="{{ .Settings.CustomConfThree }}">
+          <span id="helpBlock" class="text-muted">Custom Option for Client template. Literally anything. Full format option (to disable - comment with #)</span>
+      </div>
+
      <!--  comented out to avoid client/server confusion
       <div class="form-group">
         <label for="name">Device type</label>
@@ -150,10 +188,28 @@
 {{end}}
 
 <script>
-  // Check if "themeEditor" is set in localStorage
+  const funcModeSelect = document.getElementById('FuncMode');
+  const authUserPass = document.getElementById('a-user-pass');
+  const authUserPassInput = document.getElementById('authuserpass');
+
+  function checkFuncMode() {
+    if (funcModeSelect.value === '0') {
+      authUserPass.style.display = 'none';
+      authUserPassInput.value = ' ';
+    } else {
+      authUserPass.style.display = 'block';
+      authUserPassInput.value = 'auth-user-pass';
+    }
+  }
+  funcModeSelect.addEventListener('change', checkFuncMode);
+
+window.addEventListener('load', () => {
+    // Check if "themeEditor" is set in localStorage
+  checkFuncMode();
   if (localStorage.getItem("theme") === "dark") {
     createEditor("ClientTemplate", "550px", "clouds_midnight", "ovpn", false);
   } else {
     createEditor("ClientTemplate", "550px", "clouds", "ovpn", false);
   }
+});
 </script>
