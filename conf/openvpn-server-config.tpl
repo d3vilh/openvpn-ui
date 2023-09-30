@@ -48,6 +48,7 @@ status-version {{ .OVConfigStatusLogVersion }}
 
 {{ .ScriptSecurity }}
 {{ .UserPassVerify }}
+
 {{ .CustomOptOne }}
 {{ .CustomOptTwo }}
 {{ .CustomOptThree }}

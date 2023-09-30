@@ -50,26 +50,6 @@
       </div>
       -->
 
-      <div class="form-group" id="auth-mode">
-        <label>Authentication Mode</label>
-        <select name="FuncMode" id="FuncMode" class="form-control">
-          <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic</option>
-          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>2FA</option>
-        </select>
-      </div>
-
-      <div class="form-group" id="script-sec">
-        <label for="ScriptSecurity">Script-security</label>
-        <input type="text" selector="vformdata" class="form-control" name="ScriptSecurity" id="scriptsecurity" placeholder="2FA configuration" 
-        value="{{if eq .Settings.FuncMode 0}}{{else}}script-security 2{{ end }}">
-      </div>
-
-      <div class="form-group" id="auth-user-pass-verify">
-        <label for="UserPassVerify">Auth-user-pass-verifys</label>
-        <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userpassverify" placeholder="2FA configuration"
-        value="{{if eq .Settings.FuncMode 0}}{{else}}auth-user-pass-verify /opt/app/bin/oath.sh via-file{{ end }}">
-      </div>
-
       <div class="form-group">
          <label for="name">Dev</label>
          <input type="text" selector="vformdata" class="form-control" name="Device" id="Device" placeholder="tun"
@@ -348,6 +328,26 @@
          </span>
       </div>
 
+      <div class="form-group" id="auth-mode">
+        <label>Authentication Mode</label>
+        <select name="FuncMode" id="FuncMode" class="form-control">
+          <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic</option>
+          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>2FA</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="script-sec">
+        <label for="ScriptSecurity">Script-security</label>
+        <input type="text" selector="vformdata" class="form-control" name="ScriptSecurity" id="scriptsecurity" placeholder="2FA configuration" 
+        value="{{if eq .Settings.FuncMode 0}} {{else}}script-security 2{{ end }}">
+      </div>
+
+      <div class="form-group" id="auth-user-pass-verify">
+        <label for="UserPassVerify">Auth-user-pass-verifys</label>
+        <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userpassverify" placeholder="2FA configuration"
+        value="{{if eq .Settings.FuncMode 0}} {{else}}auth-user-pass-verify /opt/app/bin/oath.sh via-file{{ end }}">
+      </div>
+
       <div class="form-group">
          <label for="name">Custom Option One</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
          <input type="text" class="form-control" name="CustomOptOne" id="CustomOptOne" placeholder="#Custom Option One"
@@ -439,8 +439,8 @@
     if (funcModeSelect.value === '0') {
       scriptSecurityDiv.style.display = 'none';
       userPassVerifyDiv.style.display = 'none';
-      scriptSecurityInput.value = '';
-      userPassVerifyInput.value = '';
+      scriptSecurityInput.value = ' ';
+      userPassVerifyInput.value = ' ';
     } else {
       scriptSecurityDiv.style.display = 'block';
       userPassVerifyDiv.style.display = 'block';
