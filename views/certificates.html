@@ -8,7 +8,6 @@
 
 Debug: FuncMode:  {{ .SettingsC.FuncMode }} <br>
 
-OpenVpnPath
 
 
 <div class="row">
@@ -162,7 +161,13 @@ OpenVpnPath
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
                         {{ if eq $.SettingsC.FuncMode 1 }}
                         <dt class="copy-details">2FA QR Code:  {{ $.SettingsC.FuncMode }}</dt>
-                        <dd class="copy-details"><img src="/static/img/openvpn-win.svg" alt="OpenVPN" width="74" height="74" style="filter: invert(25%);"></dd>
+                        <dd class="copy-details">
+
+                          {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
+                          <!--img src="{{ urlfor "CertificatesController.DisplayImage" ":imageName" .Details.Name }}" alt="Dynamic Image"--> 
+                          <img src="/displayimage/{{ .Details.Name }}" alt="Dynamic Image">
+                          {{end}}
+                       </dd>
                         {{end}}
                       </dl>
                       <div class="modal-footer justify-content-between">

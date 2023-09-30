@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -80,6 +82,42 @@ func (c *CertificatesController) Get() {
 	cfg1 := models.OVClientConfig{Profile: "default"}
 	_ = cfg1.Read("Profile")
 	c.Data["SettingsC"] = &cfg1
+
+	//imageName := c.Ctx.Input.Param(":imageName") // Get the image name from the URL parameter
+	// imagePath := "/path/to/images/" + imageName   // Construct the full path to the image on your server
+	//imagePath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients", imageName+".png")
+}
+
+func (c *CertificatesController) DisplayImage() {
+	imageName := c.Ctx.Input.Param(":imageName") // Get the image name from the URL parameter
+	logs.Info("Image name: %s", imageName)
+
+	imagePath := "./openvpn/clients/" + imageName + ".png" // Construct the full path to the image on your server
+	logs.Info("Image path: %s", imagePath)
+	//imagePath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients", imageName+".png")
+	// Check if the image file exists
+	data, err := ioutil.ReadFile(imagePath)
+	if err != nil {
+		c.Ctx.Output.SetStatus(404)
+		c.Ctx.WriteString("Image not found")
+		logs.Error("Error reading image file: %v", err)
+		return
+	}
+
+	// Get the image's content type (e.g., image/jpeg, image/png) based on the file extension
+	contentType := "image/png"
+	//logs.Info("Content type: %s", contentType)
+
+	// Encode the image data as base64
+	encodedData := base64.StdEncoding.EncodeToString(data)
+	//logs.Info("Encoded data: %s", encodedData)
+
+	// Generate an HTML image tag with the base64-encoded image data
+	htmlImageTag := `<img src="data:` + contentType + `;base64,` + encodedData + `" alt="Cert Image">`
+	logs.Info("HTML image tag: %s", htmlImageTag)
+
+	// Render the HTML page with the embedded image
+	c.Ctx.WriteString(htmlImageTag)
 }
 
 func (c *CertificatesController) showCerts() {
