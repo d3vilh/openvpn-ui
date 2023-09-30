@@ -86,7 +86,9 @@ func (c *CertificatesController) Get() {
 func (c *CertificatesController) DisplayImage() {
 	imageName := c.Ctx.Input.Param(":imageName")
 	logs.Info("Image name: %s", imageName)
-	imagePath := "./openvpn/clients/" + imageName + ".png"
+	imagePath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients/", imageName+".png")
+	// destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients", name+".ovpn")
+	//imagePath := "./openvpn/clients/" + imageName + ".png"
 	logs.Info("Image path: %s", imagePath)
 
 	// Check if the image file exists
