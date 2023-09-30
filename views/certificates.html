@@ -6,6 +6,11 @@
 
 {{define "body"}}
 
+Debug: FuncMode:  {{ .SettingsC.FuncMode }} <br>
+
+OpenVpnPath
+
+
 <div class="row">
   <div class="col-md-12">
     <div class="card card-default">
@@ -155,6 +160,10 @@
                         <dd class="copy-details">{{ .Details.Organisation }}</dd>
                         <dt class="copy-details">Registered Unit: </dt>
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
+                        {{ if eq $.SettingsC.FuncMode 1 }}
+                        <dt class="copy-details">2FA QR Code:  {{ $.SettingsC.FuncMode }}</dt>
+                        <dd class="copy-details"><img src="/static/img/openvpn-win.svg" alt="OpenVPN" width="74" height="74" style="filter: invert(25%);"></dd>
+                        {{end}}
                       </dl>
                       <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

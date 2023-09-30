@@ -332,7 +332,7 @@
         <label>Authentication Mode</label>
         <select name="FuncMode" id="FuncMode" class="form-control">
           <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic</option>
-          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>2FA</option>
+          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>Two Factor Authorisation (2FA)</option>
         </select>
       </div>
 
@@ -343,7 +343,7 @@
       </div>
 
       <div class="form-group" id="auth-user-pass-verify">
-        <label for="UserPassVerify">Auth-user-pass-verifys</label>
+        <label for="UserPassVerify">Auth-user-pass-verify</label>
         <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userpassverify" placeholder="2FA configuration"
         value="{{if eq .Settings.FuncMode 0}} {{else}}auth-user-pass-verify /opt/app/bin/oath.sh via-file{{ end }}">
       </div>

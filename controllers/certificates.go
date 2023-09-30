@@ -76,6 +76,10 @@ func (c *CertificatesController) Get() {
 	cfg := models.EasyRSAConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
 	c.Data["EasyRSA"] = &cfg
+
+	cfg1 := models.OVClientConfig{Profile: "default"}
+	_ = cfg1.Read("Profile")
+	c.Data["SettingsC"] = &cfg1
 }
 
 func (c *CertificatesController) showCerts() {
@@ -115,6 +119,11 @@ func (c *CertificatesController) Post() {
 	cfg := models.EasyRSAConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
 	c.Data["EasyRSA"] = &cfg
+
+	cfg1 := models.OVClientConfig{Profile: "default"}
+	_ = cfg.Read("Profile")
+	c.Data["ClientConfig"] = &cfg1
+
 	c.showCerts()
 }
 
