@@ -115,7 +115,12 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 	c := OVConfig{
 		Profile: "default",
 		Config: config.Config{
-			Management:               fmt.Sprintf("%s %s", address, network),
+			FuncMode:   0,
+			Management: fmt.Sprintf("%s %s", address, network),
+			//	ScriptSecurity:           "#! script-security 2",
+			//	UserPassVerify:           "#! auth-user-pass-verify /opt/app/bin/oath.sh via-file",
+			ScriptSecurity:           "",
+			UserPassVerify:           "",
 			Device:                   "tun",
 			Port:                     1194,
 			Proto:                    "udp",

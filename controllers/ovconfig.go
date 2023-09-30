@@ -53,27 +53,31 @@ func (c *OVConfigController) Get() {
 
 // @router /ov/config [Post]
 func (c *OVConfigController) Post() {
-	//logs.Info("Starting Post method in OVConfigController")
+	logs.Info("Starting Post method in OVConfigController")
 
 	c.TplName = "ovconfig.html"
 	flash := web.NewFlash()
 	cfg := models.OVConfig{Profile: "default"}
 	_ = cfg.Read("Profile")
 
-	//logs.Info("Post: Parsing form data")
+	logs.Info("Post: Parsing form data")
+	logs.Info("Form data before parsing: %v", c.Ctx.Request.Form)
 	if err := c.ParseForm(&cfg); err != nil {
 		logs.Warning(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		return
 	}
+	logs.Info("Form data after parsing: %v", c.Ctx.Request.Form)
 
-	//logs.Info("Post: Dumping configuration data")
+	logs.Info("Post: Dumping configuration data")
+	logs.Info("Configuration data: %v", cfg)
 	lib.Dump(cfg)
 	c.Data["Settings"] = &cfg
+	logs.Info("Settings data: %v", c.Data["Settings"])
 
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
-	//logs.Info("Post: Saving configuration to file according to template")
+	logs.Info("Post: Saving configuration to file according to template")
 	err := config.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-server-config.tpl"), cfg.Config, destPath)
 	if err != nil {
 		logs.Warning(err)
@@ -82,7 +86,7 @@ func (c *OVConfigController) Post() {
 		return
 	}
 
-	//logs.Info("Post: Updating configuration in database")
+	logs.Info("Post: Updating configuration in database")
 	o := orm.NewOrm()
 	if _, err := o.Update(&cfg); err != nil {
 		flash.Error(err.Error())
@@ -94,7 +98,7 @@ func (c *OVConfigController) Post() {
 		}
 	}
 
-	//logs.Info("Post: Reading updated server configuration from file")
+	logs.Info("Post: Reading updated server configuration from file")
 	serverConf, err := os.ReadFile(destPath)
 	if err != nil {
 		logs.Error("Error reading server config from file:", err)

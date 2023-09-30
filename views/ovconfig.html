@@ -50,6 +50,53 @@
       </div>
       -->
 
+      <div class="form-group" id="auth-mode">
+        <label>Authentication Mode</label>
+        <select name="FuncMode" id="FuncMode" class="form-control">
+          <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic</option>
+          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>2FA</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ScriptSecurity">Script-security</label>
+        <input type="text" selector="vformdata" class="form-control" name="ScriptSecurity" id="scriptsecurity" placeholder="2FA configuration" 
+        value="{{if eq .Settings.FuncMode 0}}{{ .Settings.ScriptSecurity }}{{else}}script-security 2{{ end }}">
+      </div>
+
+      <div class="form-group">
+        <label for="UserPassVerify">Auth-user-pass-verifys</label>
+        <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userpassverify" placeholder="2FA configuration"
+        value="{{if eq .Settings.FuncMode 0}}{{ .Settings.UserPassVerify }}{{else}}auth-user-pass-verify /opt/app/bin/oath.sh via-file{{ end }}">
+      </div>
+
+<!--
+      <div class="form-group" id="2fa-settings" {{if eq .Settings.FuncMode 0}}hidden{{end}}>
+        <label for="ScriptSecurity">Script-security (2FA)</label>
+        <input type="text" selector="vformdata" class="form-control" name="ScriptSecurity" id="scriptSecurity_2fa" placeholder="2FA configuration" 
+        value="{{ if ne .Settings.ScriptSecurity "" }}{{ .Settings.ScriptSecurity }}{{ else }}new 2FA ScriptSecurity{{ end }}">
+      </div>
+      
+      <div class="form-group" id="2fa-userpass-settings" {{if eq .Settings.FuncMode 0}}hidden{{end}}>
+        <label for="UserPassVerify">Auth-user-pass-verifys (2FA)</label>
+        <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userPassVerify_2fa" placeholder="2FA configuration"
+          value="{{ if ne .Settings.UserPassVerify "" }}{{ .Settings.UserPassVerify }}{{ else }}new 2FA UserPassVerify{{ end }}">
+      </div>
+      
+      <div class="form-group" id="classic-settings" {{if eq .Settings.FuncMode 1}}hidden{{end}}>
+        <label for="ScriptSecurity">Script-security (Classic)</label>
+        <input type="text" selector="vformdata" class="form-control" name="ScriptSecurity" id="ScriptSecurity" placeholder="Classic configuration"
+          value="{{ .Settings.ScriptSecurity }}">
+      </div>
+      
+      <div class="form-group" id="classic-userpass-settings" {{if eq .Settings.FuncMode 1}}hidden{{end}}>
+        <label for="UserPassVerify">Auth-user-pass-verifys (Classic)</label>
+        <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userPassVerify_c" placeholder="Classic configuration"
+          value="{{ .Settings.UserPassVerify }}">
+      </div>
+    -->
+
+
       <div class="form-group">
          <label for="name">Dev</label>
          <input type="text" selector="vformdata" class="form-control" name="Device" id="Device" placeholder="tun"
@@ -409,6 +456,24 @@
 {{end}}
 
 <script>
+
+const funcModeSelect = document.getElementById('FuncMode');
+  const scriptSecurityInput = document.getElementById('scriptsecurity');
+  const userPassVerifyInput = document.getElementById('userpassverify');
+
+  funcModeSelect.addEventListener('change', () => {
+    if (funcModeSelect.value === '0') {
+      scriptSecurityInput.value = '{{ .Settings.ScriptSecurity }}';
+      userPassVerifyInput.value = '{{ .Settings.UserPassVerify }}';
+    } else {
+      scriptSecurityInput.value = 'script-security 2';
+      userPassVerifyInput.value = 'auth-user-pass-verify /opt/app/bin/oath.sh via-file';
+    }
+  });
+
+
+
+
   // Check if "themeEditor" is set in localStorage
   if (localStorage.getItem("theme") === "dark") {
     createEditor("ServerConfig", "550px", "clouds_midnight", "ovpn", false);
