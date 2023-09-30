@@ -41,7 +41,6 @@ auth {{ .Auth }}
 {{ .DNSServer2 }}             # DNS2 server for VPN clients
 {{ .RedirectGW }}    # Redirect gateway for VPN clients
 
-
 log {{ .OVConfigLogfile }}
 verb {{ .OVConfigLogVerbose }}
 status {{ .OVConfigStatusLog }}
@@ -49,7 +48,6 @@ status-version {{ .OVConfigStatusLogVersion }}
 
 {{ .ScriptSecurity }}
 {{ .UserPassVerify }}
-
 {{ .CustomOptOne }}
 {{ .CustomOptTwo }}
 {{ .CustomOptThree }}
