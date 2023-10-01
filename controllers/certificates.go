@@ -243,6 +243,10 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	_ = OpenVpnServerPort.Read("Profile")
 	cfg.OpenVpnServerPort = OpenVpnServerPort.OpenVpnServerPort
 
+	AuthUserPass := models.OVClientConfig{Profile: "default"}
+	_ = AuthUserPass.Read("Profile")
+	cfg.AuthUserPass = AuthUserPass.AuthUserPass
+
 	ca, err := os.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
 	if err != nil {
 		return "", err

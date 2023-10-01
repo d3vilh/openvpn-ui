@@ -87,17 +87,14 @@
                     </td>
                   {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <!--a class="btn btn-success btn-xs" style="font-size: 50%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">CN: {{ .Details.CN }}</b></a-->
                       <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
                     </td>
                   {{else if and (eq .Revocation "") .IsExpiring}}
                     <td>
-                      <!--a class="btn btn-warning btn-xs" style="font-size: 50%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">CN: {{ .Details.CN }}</b></a-->
                       <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
                     </td>
                   {{else}}
                     <td>
-                      <!--a class="btn btn-danger btn-xs" style="font-size: 50%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">CN: {{ .Details.CN }}</b></a-->
                       <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
                     </td>
                   {{end}}
@@ -190,12 +187,6 @@
       end-->
       <div class="box-footer clearfix">
       </div>
-      <!--
-      <div class="box-footer clearfix">
-        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-      </div>
-    -->
       <!-- /.box-footer -->
     </div>
     <!-- /.box -->
@@ -345,29 +336,6 @@
     <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger btn-primary" style="width: 145px;" title="Restart OpenVPN container">Restart Container</a> 
     &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
   </div>
-  <!--
-  <div class="box-footer clearfix">
-    <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-  </div>
--->
   <!-- /.box-footer -->
 </div>
 {{end}}
-
-<!--script>
-  const funcModeSelect = document.getElementById('FuncMode');
-  const tFAIssuer = document.getElementById('tfa-issuer');
-  const tFAIssuerInput = document.getElementById('tfaissuer');
-
-  function checkFuncMode() {
-    if (funcModeSelect.value === '0') {
-      tFAIssuer.style.display = 'none';
-      tFAIssuerInput = 'none';
-    } else {
-      tFAIssuer.style.display = 'block';
-      //tFAIssuerInput.value = 'MFA%20OpenVPN-UI';
-    }
-  }
-  funcModeSelect.addEventListener('change', checkFuncMode);
-</script-->
