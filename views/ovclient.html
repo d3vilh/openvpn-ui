@@ -49,16 +49,23 @@
       <div class="form-group" id="auth-mode">
         <label>Authentication Mode</label>
         <select name="FuncMode" id="FuncMode" class="form-control">
-          <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic</option>
-          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>Two Factor Authorisation (2FA)</option>
+          <option value="0" {{if eq .Settings.FuncMode 0}}selected{{end}}>Classic Authentication (Certificate and optional password)</option>
+          <option value="1" {{if eq .Settings.FuncMode 1}}selected{{end}}>Two Factor Authentication (2FA)</option>
         </select>
       </div>
   
-       <div class="form-group" id="a-user-pass">
+      <div class="form-group" id="tfa-issuer">
+        <label for="name">2FA Issuer String</label> 
+        <input type="text" class="form-control" id="tfaissuer" name="TFAIssuer" placeholder="MFA%20OpenVPN-UI"
+          value="{{if eq .Settings.FuncMode 0}}{{else}}{{ .Settings.TFAIssuer }}{{ end }}">
+          <span id="helpBlock" class="text-muted">2FA Issuer string for Clients QR Code</span>
+      </div>
+
+      <div class="form-group" id="a-user-pass">
         <label for="name">AuthUserPass</label> 
         <input type="text" class="form-control" id="authuserpass" name="AuthUserPass" placeholder="AuthUserPass"
           value="{{if eq .Settings.FuncMode 0}} {{else}}auth-user-pass{{ end }}">
-          <span id="helpBlock" class="text-muted">Used for specific User Authorisation process (2FA, etc)</span>
+          <span id="helpBlock" class="text-muted">Used to set specific User Authentication process (2FA, Radius, etc)</span>
       </div>
 
       <div class="form-group">
@@ -190,15 +197,21 @@
 <script>
   const funcModeSelect = document.getElementById('FuncMode');
   const authUserPass = document.getElementById('a-user-pass');
+  const tFAIssuer = document.getElementById('tfa-issuer');
   const authUserPassInput = document.getElementById('authuserpass');
+  const tFAIssuerInput = document.getElementById('tfaissuer');
 
   function checkFuncMode() {
     if (funcModeSelect.value === '0') {
       authUserPass.style.display = 'none';
+      tFAIssuer.style.display = 'none';
       authUserPassInput.value = ' ';
+     // tFAIssuerInput = ' ';
     } else {
       authUserPass.style.display = 'block';
+      tFAIssuer.style.display = 'block';
       authUserPassInput.value = 'auth-user-pass';
+      //tFAIssuerInput.value = 'MFA%20OpenVPN-UI';
     }
   }
   funcModeSelect.addEventListener('change', checkFuncMode);

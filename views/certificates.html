@@ -6,10 +6,6 @@
 
 {{define "body"}}
 
-Debug: FuncMode:  {{ .SettingsC.FuncMode }} <br>
-
-
-
 <div class="row">
   <div class="col-md-12">
     <div class="card card-default">
@@ -160,10 +156,14 @@ Debug: FuncMode:  {{ .SettingsC.FuncMode }} <br>
                         <dt class="copy-details">Registered Unit: </dt>
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
                         {{ if eq $.SettingsC.FuncMode 1 }}
-                        <dt class="copy-details">2FA QR Code:</dt>
+                        <!--dt class="copy-details">2FA Issuer:</dt>
+                        <dd class="copy-details disabled">{{ $.SettingsC.TFAIssuer }}</dd-->
+                        <dt class="copy-details">Two Factor Authorisation (2FA) QR Code:</dt>
                         <dd class="copy-details">
                           {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
-                            <img src="/displayimage/{{ .Details.Name }}">
+                            <div class="text-left">
+                              <img src="/displayimage/{{ .Details.Name }}">
+                            </div>
                           {{end}}
                         </dd>
                         {{end}}

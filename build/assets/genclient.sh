@@ -7,8 +7,8 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_PASS=$3
-TFA_NAME=$4             # 2FA username in format: alice@wonderland.ua
-ISSUER='MFA%20OpenVPN'  # 2FA issuer
+TFA_NAME=$EASYRSA_REQ_EMAIL # 2FA username in format: alice@wonderland.ua. Using Email.
+ISSUER='MFA%20OpenVPN'      # 2FA issuer
 
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')

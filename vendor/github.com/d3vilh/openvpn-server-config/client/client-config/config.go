@@ -17,7 +17,8 @@ var defaultConfig = Config{
 	RedirectGateway:   "redirect-gateway def1",
 	Auth:              "SHA256",
 	Ca:                "ca.crt",
-	AuthUserPass:      "", // "auth-user-pass" when 2fa
+	AuthUserPass:      "",                 // "auth-user-pass" when 2fa
+	TFAIssuer:         "MFA%20OpenVPN-UI", // 2FA issuer
 	CustomConfOne:     "#Custom Option One",
 	CustomConfTwo:     "#Custom Option Two",
 	CustomConfThree:   "#Custom Option Three",
@@ -41,6 +42,7 @@ type Config struct {
 	RedirectGateway string
 	Auth            string
 	AuthUserPass    string
+	TFAIssuer       string
 
 	CustomConfOne   string
 	CustomConfTwo   string
