@@ -87,7 +87,9 @@ else
     ./easyrsa gen-crl
     chmod +r $EASY_RSA/pki/crl.pem
     # restoring the index.txt, new /name in index.txt (adding name and ip to the last line)
-    sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}\/2FAName=${TFA_NAME}/" $EASY_RSA/pki/index.txt
+    #sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}\/2FAName=${TFA_NAME}/" $EASY_RSA/pki/index.txt
+    # adding name, ip and 2fa-name to the same CERT serial
+    sed -i'.bak' "/${CERT_SERIAL}/ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}\/2FAName=${TFA_NAME}/" $EASY_RSA/pki/index.txt
 fi
 
 echo -e 'Done!\nIf you want to disconnect the user please restart the service using docker-compose restart openvpn.'
