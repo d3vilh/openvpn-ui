@@ -7,8 +7,8 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_PASS=$3
-TFA_NAME=$EASYRSA_REQ_EMAIL # 2FA username in format: alice@wonderland.ua. Using Email.
-ISSUER='MFA%20OpenVPN'      # 2FA issuer
+#TFA_NAME=$4 # 2FA username in format: alice@wonderland.ua. Using CENAME.Email.
+#ISSUER=$5 #'MFA%20OpenVPN'      # 2FA issuer
 
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
@@ -84,7 +84,7 @@ echo -e "OpenVPN Client configuration successfully generated!\nCheckout openvpn-
 
 # Check if 2FA was specified
 if  [[ ! -z $TFA_NAME ]]; then
-    echo 'Generating 2FA ...'
+    echo -e "Generating 2FA ...\nName: $TFA_NAME\nIssuer: $TFA_ISSUER"
 
     # Userhash. Random 30 chars
     USERHASH=$(head -c 10 /dev/urandom | openssl sha256 | cut -d ' ' -f2 | cut -b 1-30)
@@ -93,7 +93,7 @@ if  [[ ! -z $TFA_NAME ]]; then
     BASE32=$(oathtool --totp -v "$USERHASH" | grep Base32 | awk '{print $3}')
 
     # QRCODE STRING
-    QRSTRING="otpauth://totp/$ISSUER:$TFA_NAME?secret=$BASE32"
+    QRSTRING="otpauth://totp/$TFA_ISSUER:$TFA_NAME?secret=$BASE32"
 
     # QR code for user to pass to Google Authenticator or OpenVPN-UI
     echo "User String for QR:"

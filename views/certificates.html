@@ -155,9 +155,11 @@
                         <dd class="copy-details">{{ .Details.Organisation }}</dd>
                         <dt class="copy-details">Registered Unit: </dt>
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
-                        {{ if eq $.SettingsC.FuncMode 1 }}
-                        <!--dt class="copy-details">2FA Issuer:</dt>
-                        <dd class="copy-details disabled">{{ $.SettingsC.TFAIssuer }}</dd-->
+                        {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+                        <dt class="copy-details">2FA Issuer String: </dt>
+                        <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd>
+                        <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
+                        <dd class="copy-details">{{ .Details.TFAName }}</dd>
                         <dt class="copy-details">Two Factor Authorisation (2FA) QR Code:</dt>
                         <dd class="copy-details">
                           {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
@@ -230,7 +232,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="FuncMode" value="{{ $.SettingsC.FuncMode }}">
         <!-- /.box-header -->
         <!-- form start -->
        {{template "common/alert.html" .}}
@@ -241,6 +243,20 @@
               <input type="text" class="form-control is-warning" pattern="^[^\s]+$" placeholder="Certificate Name" id="Name" name="Name">
               <span class="text-muted" title="Name should not have spaces.">Common name of the certificate.<span>
             </div>
+
+            {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+            <div class="form-group has-success {{if field_error_exist .validation "TFAName" }}has-error{{end}}">
+              <label class="control-label" for="tfaname" title="2FAName should not have spaces."><i class="fa fa-bell-o"></i>2FA Name</label>
+              <input type="text" class="form-control is-warning" pattern="^[^\s]+$" placeholder="alice@wonderland.ua" id="TFAName" name="TFAName">
+              <span class="text-muted" title="Name should not have spaces.">Unique 2FA name of the certificate.<span>
+            </div>
+
+            <div class="form-group" id="tfa-issuer">
+              <label class="control-label" for="tfaname" title="TFAIssuer should have URL format."></i>2FA Issuer String</label>
+              <input type="text" class="form-control" placeholder="MFA%20OpenVPN-UI" id="tfaissuer" name="TFAIssuer" value="{{ $.SettingsC.TFAIssuer }}">
+              <span class="text-muted" title="Name should not have spaces.">2FA Issuer for the QR Code sting.<span>
+            </div>
+            {{end}}
     
             <div class="form-group">
               <label for="name">Passphrase (Optional)</label>
@@ -338,3 +354,20 @@
   <!-- /.box-footer -->
 </div>
 {{end}}
+
+<script>
+  const funcModeSelect = document.getElementById('FuncMode');
+  const tFAIssuer = document.getElementById('tfa-issuer');
+  const tFAIssuerInput = document.getElementById('tfaissuer');
+
+  function checkFuncMode() {
+    if (funcModeSelect.value === '0') {
+      tFAIssuer.style.display = 'none';
+      tFAIssuerInput = 'none';
+    } else {
+      tFAIssuer.style.display = 'block';
+      //tFAIssuerInput.value = 'MFA%20OpenVPN-UI';
+    }
+  }
+  funcModeSelect.addEventListener('change', checkFuncMode);
+</script>
