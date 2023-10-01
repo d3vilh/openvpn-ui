@@ -366,7 +366,15 @@ And you are done with the upgrade process.
   | **0.7** | **no schema changes** | **no schema changes**     | **no schema changes**           |
   | **0.8** | **no schema changes** | **no schema changes**     | **no schema changes**           |
   | **0.9** | **no schema changes** | **no schema changes**     | Donate here https://u24.gov.ua  |
-  | **0.9.2** | user             | is_admin                      | Your username > Profile              |
+  | **0.9.2** | user            | is_admin                      | Your username > Profile         |
+  | **0.9.3** | o_v_config      | func_mode                     | Configuration > OpenVPN Server  |
+  | **0.9.3** | o_v_config      | script_security               | Configuration > OpenVPN Server  |
+  | **0.9.3** | o_v_config      | user_pass_verify              | Configuration > OpenVPN Server  |    
+  | **0.9.3** | o_v_client_config | func_mode                   | Configuration > OpenVPN Client  |
+  | **0.9.3** | o_v_client_config | t_f_a_issuer                | Configuration > OpenVPN Client  |
+  | **0.9.3** | o_v_client_config | custom_conf_one             | Configuration > OpenVPN Client  |
+  | **0.9.3** | o_v_client_config | custom_conf_two             | Configuration > OpenVPN Client  |
+  | **0.9.3** | o_v_client_config | custom_conf_three           | Configuration > OpenVPN Client  |
 
   </details>
 
@@ -618,6 +626,15 @@ Certificate revoke won't kill active VPN connections, you'll have to restart the
 You can do the same from the `"Maintenance"` page.
 
 After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press `"Remove"` button.
+
+### Two Factor Authentication (2FA)
+Starting from vestion `0.9.3` OpenVPN-UI has Two Factor Authentication (2FA) feature.
+OpenVPN-UI uses oath-toolkit for two factor authentication. Means you don't need any ThirdParty 2FA provider. 
+When generating 2FA-enabled certificates OpenVPN-UI will provide QR code with 2FA secret, which you can scan with your 2FA app (Google Authenticator, Microsoft Authenticator, etc) to get 2FA token for connection with this certificate.
+
+#### To enable 2FA you have to:
+* Go to `"Configuration > OpenVPN Server"` page and enable `"Two Factor Authentication"` option for OpenVPN Server backend. Once 2FA is enabled for Server, OpenVPN-Server **will allow 2FA connections only** (non 2FA-ready certificates won't connect).
+* Go to `"Configuration > OpenVPN Client"` page and enable `"Two Factor Authentication"` option to switch Certificates interface to 2FA mode, so you can generate certificates with 2FA enabled and access 2FA QR code for already generated certificates.
 
 ### User Management
 Starting from `v.0.9.2` OpenVPN UI has user management feature. 
