@@ -117,6 +117,12 @@ func (c *CertificatesController) showCerts() {
 	}
 	lib.Dump(certs)
 	c.Data["certificates"] = &certs
+	cfg := models.EasyRSAConfig{Profile: "default"}
+	_ = cfg.Read("Profile")
+	c.Data["EasyRSA"] = &cfg
+	cfg1 := models.OVClientConfig{Profile: "default"}
+	_ = cfg1.Read("Profile")
+	c.Data["SettingsC"] = &cfg1
 }
 
 // @router /certificates [post]

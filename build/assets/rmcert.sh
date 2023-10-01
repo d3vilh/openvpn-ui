@@ -10,6 +10,8 @@ EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 echo 'EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR'
 OVPN_FILE_PATH="$OPENVPN_DIR/clients/$CERT_NAME.ovpn"
+QR_CODE_PATH="$OPENVPN_DIR/clients/$CERT_NAME.png" # 2FA QR code
+OATH_SECRETS="$OPENVPN_DIR/clients/oath.secrets"   # 2FA secrets file
 INDEX="$EASY_RSA/pki/index.txt"
 
 echo "Removing user: $CERT_NAME with Serial: $CERT_SERIAL"
@@ -54,6 +56,7 @@ $TLS_AUTH
 else
     echo "Removing certificate...\nRemoving *.ovpn file" 
     rm -f $OVPN_FILE_PATH
+    rm -f $QR_CODE_PATH
 
     # Fix index.txt by removing the user from the list following the serial number
     sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
