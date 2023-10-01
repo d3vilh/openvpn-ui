@@ -28,7 +28,7 @@ type NewCertParams struct {
 	City       string `form:"EasyRSAReqCity"`
 	Org        string `form:"EasyRSAReqOrg"`
 	OrgUnit    string `form:"EasyRSAReqOu"`
-	TFAName    string `form:"2FAName"`
+	TFAName    string `form:"TFAName"`
 	TFAIssuer  string `form:"TFAIssuer"`
 }
 
