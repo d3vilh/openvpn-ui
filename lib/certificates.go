@@ -116,6 +116,7 @@ func trim(s string) string {
 }
 
 func CreateCertificate(name string, staticip string, passphrase string, expiredays string, email string, country string, province string, city string, org string, orgunit string, tfaname string, tfaissuer string) error {
+	logs.Info("Lib: Creating certificate with parameters: name=%s, staticip=%s, passphrase=%s, expiredays=%s, email=%s, country=%s, province=%s, city=%s, org=%s, orgunit=%s, tfaname=%s, tfaissuer=%s", name, staticip, passphrase, expiredays, email, country, province, city, org, orgunit, tfaname, tfaissuer)
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
@@ -134,6 +135,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 	Dump(certs)
 	if !pass { // if no passphrase
 		if !exists && !haveip { // if no exists and no ip
+			logs.Info("No password and no ip")
 			staticip = "dynamic.pool"
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
@@ -159,6 +161,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 			return nil
 		}
 		if !exists && haveip { // if no exists and have ip
+			logs.Info("No password and but have ip")
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -186,7 +189,8 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 		return existsError
 	} else { // if passphrase
 		if !exists && !haveip { // if no exists and no ip
-			staticip = "not.defined"
+			logs.Info("Password and no IP")
+			staticip = "dynamic.pool"
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -211,6 +215,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 			return nil
 		}
 		if !exists && haveip { // if no exists and have ip
+			logs.Info("Password and IP")
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
