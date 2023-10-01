@@ -90,7 +90,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
 			web.ControllerComments{
 				Method:           "Burn",
-				Router:           `/certificates/burn/:key/:serial`,
+				Router:           `/certificates/burn/:key/:serial/:tfaname`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 

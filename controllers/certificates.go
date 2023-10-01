@@ -187,7 +187,8 @@ func (c *CertificatesController) Burn() {
 	flash := web.NewFlash()
 	CN := c.GetString(":key")
 	serial := c.GetString(":serial")
-	if err := lib.BurnCertificate(CN, serial); err != nil {
+	tfaname := c.GetString(":tfaname")
+	if err := lib.BurnCertificate(CN, serial, tfaname); err != nil {
 		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)

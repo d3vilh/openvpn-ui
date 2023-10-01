@@ -57,8 +57,9 @@ else
     echo "Removing certificate...\nRemoving *.ovpn file" 
     rm -f $OVPN_FILE_PATH
     rm -f $QR_CODE_PATH
-
-    # Fix index.txt by removing the user from the list following the serial number
+    # Remove user from oath.secrets
+    sed -i'.bak' "/${TFA_NAME}/d" $OATH_SECRETS
+    # Removing the user from the list following the serial number
     sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
     echo "Database fixed."
 fi

@@ -142,7 +142,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
 						"export TFA_NAME=%s &&"+
-						"export TFA_ISSUER=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -167,7 +167,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
 						"export TFA_NAME=%s &&"+
-						"export TFA_ISSUER=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -196,7 +196,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
 						"export TFA_NAME=%s &&"+
-						"export TFA_ISSUER=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -221,7 +221,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
 						"export TFA_NAME=%s &&"+
-						"export TFA_ISSUER=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -275,11 +275,12 @@ func Restart() error {
 	return nil
 }
 
-func BurnCertificate(CN string, serial string) error {
+func BurnCertificate(CN string, serial string, tfaname string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
-				"./rmcert.sh %s %s", CN, serial))
+				"export TFA_NAME=%s &&"+
+				"./rmcert.sh %s %s", tfaname, CN, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
