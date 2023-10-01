@@ -51,8 +51,14 @@ fi
 # Sign request
 ./easyrsa sign-req client "$CERT_NAME"
 # Fix for /name in index.txt
+
+# Check if 2FA was specified. If not - set to none.
+if [ -z "$TFA_NAME" ]; then
+    TFA_NAME="none"
+fi
+
 echo "Fixing Database..."
-sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}/" $EASY_RSA/pki/index.txt
+sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}\/2FAName=${TFA_NAME}/" $EASY_RSA/pki/index.txt
 echo "Database fixed:"
 tail -1 $EASY_RSA/pki/index.txt
 # Certificate properties
@@ -82,8 +88,8 @@ $TLS_AUTH
 
 echo -e "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
 
-# Check if 2FA was specified
-if  [[ ! -z $TFA_NAME ]]; then
+# Check if $TFA_NAME was specified and not equal to "none". then create 2FA and QR code
+if [[ ! -z $TFA_NAME ]] && [[ $TFA_NAME != "none" ]]; then
     echo -e "Generating 2FA ...\nName: $TFA_NAME\nIssuer: $TFA_ISSUER"
 
     # Userhash. Random 30 chars
