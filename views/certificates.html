@@ -103,13 +103,13 @@
                   {{end}}
                     <td class="align-middle">
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-primary btn-xs" title="Renew" style="font-size: 70%;">Renew</a>
+                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-primary btn-xs" title="Renew" style="font-size: 70%;">Renew</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Renew</a>
                   {{end}}
 
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Revoke</a>
                   {{end}}
@@ -252,7 +252,7 @@
             </div>
 
             <div class="form-group" id="tfa-issuer">
-              <label class="control-label" for="tfaname" title="TFAIssuer should have URL format."></i>2FA Issuer String</label>
+              <label class="control-label" for="tfaissuer" title="TFAIssuer should have URL format."></i>2FA Issuer String</label>
               <input type="text" class="form-control" placeholder="MFA%20OpenVPN-UI" id="tfaissuer" name="TFAIssuer" value="{{ $.SettingsC.TFAIssuer }}">
               <span class="text-muted" title="Name should not have spaces.">2FA Issuer for the QR Code sting.<span>
             </div>

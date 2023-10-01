@@ -244,12 +244,13 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 	}
 }
 
-func RevokeCertificate(name string, serial string) error {
+func RevokeCertificate(name string, serial string, tfaname string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./revoke.sh %s %s", name, name, serial))
+				"export TFA_NAME=%s &&"+
+				"./revoke.sh %s %s", name, tfaname, name, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -292,12 +293,13 @@ func BurnCertificate(CN string, serial string, tfaname string) error {
 	return nil
 }
 
-func RenewCertificate(name string, localip string, serial string) error {
+func RenewCertificate(name string, localip string, serial string, tfaname string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./renew.sh %s %s %s", name, name, localip, serial))
+				"export TFA_NAME=%s &&"+
+				"./renew.sh %s %s %s", name, tfaname, name, localip, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

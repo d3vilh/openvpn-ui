@@ -163,7 +163,8 @@ func (c *CertificatesController) Revoke() {
 	flash := web.NewFlash()
 	name := c.GetString(":key")
 	serial := c.GetString(":serial")
-	if err := lib.RevokeCertificate(name, serial); err != nil {
+	tfaname := c.GetString(":tfaname")
+	if err := lib.RevokeCertificate(name, serial, tfaname); err != nil {
 		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
@@ -181,7 +182,7 @@ func (c *CertificatesController) Restart() {
 	// return
 }
 
-// @router /certificates/burn/:key/:serial [get]
+// @router /certificates/burn/:key/:serial/:tfaname [get]
 func (c *CertificatesController) Burn() {
 	c.TplName = "certificates.html"
 	flash := web.NewFlash()
@@ -207,7 +208,8 @@ func (c *CertificatesController) Renew() {
 	name := c.GetString(":key")
 	localip := c.GetString(":localip")
 	serial := c.GetString(":serial")
-	if err := lib.RenewCertificate(name, localip, serial); err != nil {
+	tfaname := c.GetString(":tfaname")
+	if err := lib.RenewCertificate(name, localip, serial, tfaname); err != nil {
 		logs.Error(err)
 		//flash.Error(err.Error())
 		//flash.Store(&c.Controller)
