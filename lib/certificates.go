@@ -276,6 +276,7 @@ func Restart() error {
 }
 
 func BurnCertificate(CN string, serial string, tfaname string) error {
+	logs.Info("Lib: Burning certificate with parameters: CN=%s, serial=%s, tfaname=%s", CN, serial, tfaname)
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+

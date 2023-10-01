@@ -188,6 +188,7 @@ func (c *CertificatesController) Burn() {
 	CN := c.GetString(":key")
 	serial := c.GetString(":serial")
 	tfaname := c.GetString(":tfaname")
+	logs.Info("Controller: Burning certificate with parameters: CN=%s, serial=%s, tfaname=%s", CN, serial, tfaname)
 	if err := lib.BurnCertificate(CN, serial, tfaname); err != nil {
 		logs.Error(err)
 		//flash.Error(err.Error())
