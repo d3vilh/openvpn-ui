@@ -106,7 +106,7 @@
                   {{end}}
 
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-alert btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Revoke</a>
                   {{end}}
@@ -129,11 +129,11 @@
                       <!-- /.dl-header -->
                       <dl class="dl-horizontal" id="certificate-details">
                         <dt class="copy-details"><b><h4>Name: </h4></b></dt>
-                        <dd class="copy-details"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
+                        <dd class="copy-details cert-name"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
                         <dt class="copy-details">Status: </dt>
                         <dd class="copy-details">{{if eq .EntryType "V"}}<span class="badge bg-success">Valid</span>{{else if eq .EntryType "R"}}<span class="badge bg-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
                         <dt class="copy-details">Expiration Time: </dt>
-                        <dd class="copy-details">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> Will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
+                        <dd class="copy-details exp-time">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-warning">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> This Certificate will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
                         <dt class="copy-details">Revoke Time: </dt>
                         <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}Not Revoked{{end}}</dd>
                         <dt class="copy-details">IP Address: </dt>
@@ -141,7 +141,7 @@
                         <dt class="copy-details">Serial: </dt>
                         <dd class="copy-details">{{ .Serial }}</dd>
                         <dt class="copy-details">Registered e-mail: </dt>
-                        <dd class="copy-details"><a href="mailto:{{ .Details.Email }}">{{ .Details.Email }}</a></dd>
+                        <dd class="copy-details reg-email"><a href="mailto:{{ .Details.Email }}">{{ .Details.Email }}</a></dd>
                         <dt class="copy-details">Registered Country: </dt>
                         <dd class="copy-details">{{ .Details.Country }}</dd>
                         <dt class="copy-details">Registered State/Region: </dt>
@@ -156,11 +156,11 @@
                         <!--dt class="copy-details">2FA Issuer String: </dt>
                         <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
                         <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
-                        <dd class="copy-details">{{ .Details.TFAName }}</dd>
+                        <dd class="copy-details 2fa-name">{{ .Details.TFAName }}</dd>
                         <dt class="copy-details">Two Factor Authorisation (2FA) QR Code:</dt>
                         <dd class="copy-details">
                           {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
-                            <div class="text-left">
+                            <div class="text-left qr-code">
                               <img src="/displayimage/{{ .Details.Name }}">
                             </div>
                           {{end}}
@@ -170,6 +170,7 @@
                       <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary copy-btn copy-modal-data-btn" style="width: 135px;">Copy</button>
+                        <button type="button" class="btn btn-success send-email-with-qr-btn" style="width: 135px;">Send Email</button>
                       </div>
                       </div>
                     </div>
@@ -339,3 +340,62 @@
   <!-- /.box-footer -->
 </div>
 {{end}}
+
+<script>
+  // Attach a click event handler to the "Send Email" button
+  $('.send-email-with-qr-btn').on('click', function () {
+    var $modal = $(this).closest('.modal');
+  
+    // Extract the email address from the modal content (as before)
+    var emailAddress = $modal.find('.copy-details a[href^="mailto:"]').attr('href');
+    emailAddress = emailAddress.replace('mailto:', '');
+  
+    // Extract all modal content (as before)
+    var content = '';
+    $modal.find('.copy-details').each(function () {
+      content += $(this).text().replace(/:\s/g, ': ') + '\n';
+    });
+    content = content.replace(/:\s\n/g, ': ');
+  
+    // Prepare the email subject with the name (as before)
+    var emailSubject = 'Certificate Information for ' + $modal.find('.cert-name').text().trim();
+  
+    // Fetch the dynamic QR code image URL from the server
+    var imageName = $modal.find('.cert-name').text().trim(); // Use the name for the image URL
+    var qrCodeImageURL = '/displayimage/' + encodeURIComponent(imageName);
+  
+    // Fetch the QR code image data from the server
+    $.ajax({
+      url: qrCodeImageURL,
+      method: 'GET',
+      dataType: 'text',
+      success: function (qrCodeImageData) {
+        // Create a data URI for the image
+        var imageBase64 = 'data:image/png;base64,' + qrCodeImageData;
+  
+        // Create an <img> HTML tag to display the image in the email body
+        var imageTag = '<img src="' + imageBase64 + '" alt="QR Code Image">';
+  
+        // Append the image tag to the email body
+        var emailBody = 'Here is your new certificate information:\n\n' + content + '\n\n' + imageTag;
+  
+        // Encode the email body as a URI component
+        var encodedEmailBody = encodeURIComponent(emailBody);
+  
+        // Prepare the mailto link with the encoded email address, subject, and body
+        var mailtoLink = 'mailto:' + encodeURIComponent(emailAddress) +
+          '?subject=' + encodeURIComponent(emailSubject) +
+          '&body=' + encodedEmailBody;
+  
+        // Open the default email client with the mailto link
+        window.location.href = mailtoLink;
+      },
+      error: function () {
+        // Handle errors if the image data cannot be fetched
+        alert('Error fetching QR code image data.');
+      }
+    });
+  });
+  
+  </script>
+  

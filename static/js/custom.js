@@ -51,6 +51,7 @@ document.execCommand('copy');
 $tempTextArea.remove();
 });
 
+
 //$(function() {
 //  new Clipboard('.button-copy');
 
