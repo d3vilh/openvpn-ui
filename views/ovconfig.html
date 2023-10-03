@@ -345,7 +345,7 @@
       <div class="form-group" id="auth-user-pass-verify">
         <label for="UserPassVerify">Auth-user-pass-verify</label>
         <input type="text" selector="vformdata" class="form-control" name="UserPassVerify" id="userpassverify" placeholder="2FA configuration"
-        value="{{if eq .Settings.FuncMode 0}} {{else}}auth-user-pass-verify /opt/app/bin/oath.sh via-file{{ end }}">
+        value="{{if eq .Settings.FuncMode 0}} {{else}}auth-user-pass-verify /opt/app/oath.sh via-file{{ end }}">
       </div>
 
       <div class="form-group">
@@ -445,7 +445,7 @@
       scriptSecurityDiv.style.display = 'block';
       userPassVerifyDiv.style.display = 'block';
       scriptSecurityInput.value = 'script-security 2';
-      userPassVerifyInput.value = 'auth-user-pass-verify /opt/app/bin/oath.sh via-file';
+      userPassVerifyInput.value = 'auth-user-pass-verify /opt/app/oath.sh via-file';
     }
   }
   funcModeSelect.addEventListener('change', checkFuncMode);
