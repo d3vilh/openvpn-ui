@@ -342,60 +342,78 @@
 {{end}}
 
 <script>
-  // Attach a click event handler to the "Send Email" button
-  $('.send-email-with-qr-btn').on('click', function () {
-    var $modal = $(this).closest('.modal');
-  
-    // Extract the email address from the modal content (as before)
-    var emailAddress = $modal.find('.copy-details a[href^="mailto:"]').attr('href');
-    emailAddress = emailAddress.replace('mailto:', '');
-  
-    // Extract all modal content (as before)
-    var content = '';
-    $modal.find('.copy-details').each(function () {
-      content += $(this).text().replace(/:\s/g, ': ') + '\n';
-    });
-    content = content.replace(/:\s\n/g, ': ');
-  
-    // Prepare the email subject with the name (as before)
-    var emailSubject = 'Certificate Information for ' + $modal.find('.cert-name').text().trim();
-  
-    // Fetch the dynamic QR code image URL from the server
-    var imageName = $modal.find('.cert-name').text().trim(); // Use the name for the image URL
-    var qrCodeImageURL = '/displayimage/' + encodeURIComponent(imageName);
-  
-    // Fetch the QR code image data from the server
-    $.ajax({
-      url: qrCodeImageURL,
-      method: 'GET',
-      dataType: 'text',
-      success: function (qrCodeImageData) {
-        // Create a data URI for the image
-        var imageBase64 = 'data:image/png;base64,' + qrCodeImageData;
-  
-        // Create an <img> HTML tag to display the image in the email body
-        var imageTag = '<img src="' + imageBase64 + '" alt="QR Code Image">';
-  
-        // Append the image tag to the email body
-        var emailBody = 'Here is your new certificate information:\n\n' + content + '\n\n' + imageTag;
-  
-        // Encode the email body as a URI component
-        var encodedEmailBody = encodeURIComponent(emailBody);
-  
-        // Prepare the mailto link with the encoded email address, subject, and body
-        var mailtoLink = 'mailto:' + encodeURIComponent(emailAddress) +
-          '?subject=' + encodeURIComponent(emailSubject) +
-          '&body=' + encodedEmailBody;
-  
-        // Open the default email client with the mailto link
-        window.location.href = mailtoLink;
-      },
-      error: function () {
-        // Handle errors if the image data cannot be fetched
-        alert('Error fetching QR code image data.');
-      }
-    });
+// Attach a click event handler to the "Send Email" button
+$('.send-email-with-qr-btn').on('click', function () {
+  var $modal = $(this).closest('.modal');
+
+  // Extract the email address from the modal content (as before)
+  var emailAddress = $modal.find('.copy-details a[href^="mailto:"]').attr('href');
+  emailAddress = emailAddress.replace('mailto:', '');
+
+  // Extract all modal content (as before)
+  var content = '';
+  $modal.find('.copy-details').each(function () {
+    content += $(this).text().replace(/:\s/g, ': ') + '\n';
   });
-  
+  content = content.replace(/:\s\n/g, ': ');
+
+  // Extract additional details for the email body
+  var certName = $modal.find('.cert-name').text().trim();
+  var expirationDate = $modal.find('.exp-time').text();
+  var tfaName = $modal.find('.2fa-name').text();
+  var organisation = $modal.find('.copy-details.reg-email').text().trim();
+
+  // Prepare the email subject
+  var emailSubject = 'Certificate Information for ' + certName;
+
+  // Prepare the email body using the template
+  var emailBody = `Dear ${organisation},\n\n`
+    + `Here is your new certificate information:\n\n`
+    + `Name: ${certName}\n`
+    + `Two Factor Authentication (2FA) name: ${tfaName}\n`
+    + `The Certificate is registered on e-mail ${emailAddress} and will be valid until ${expirationDate}.\n\n`
+    + `Please take care.\n\n`
+    + `Sincerely yours ${organisation} engineering team.`;
+
+  // Encode the email body as a URI component
+  var encodedEmailBody = encodeURIComponent(emailBody);
+
+  // Fetch the dynamic QR code image URL from the server
+  var imageName = $modal.find('.cert-name').text().trim(); // Use the name for the image URL
+  var qrCodeImageURL = '/displayimage/' + encodeURIComponent(imageName);
+
+  // Fetch the QR code image data from the server
+  $.ajax({
+    url: qrCodeImageURL,
+    method: 'GET',
+    dataType: 'text',
+    success: function (qrCodeImageData) {
+      // Create a data URI for the image
+      var imageBase64 = 'data:image/png;base64,' + qrCodeImageData;
+
+      // Create an <img> HTML tag to display the image in the email body
+      var imageTag = '<img src="' + imageBase64 + '" alt="QR Code Image">';
+      
+      // Append the image tag to the email body
+      emailBody; // += '\n\n' + imageTag;
+
+      // Encode the updated email body as a URI component
+      var updatedEncodedEmailBody = encodeURIComponent(emailBody);
+
+      // Prepare the updated mailto link with the encoded email address, subject, and body
+      var mailtoLink = 'mailto:' + encodeURIComponent(emailAddress) +
+        '?subject=' + encodeURIComponent(emailSubject) +
+        '&body=' + updatedEncodedEmailBody;
+
+      // Open the default email client with the updated mailto link
+      window.location.href = mailtoLink;
+    },
+    error: function () {
+      // Handle errors if the image data cannot be fetched
+      alert('Error fetching QR code image data.');
+    }
+  });
+});
+
   </script>
   
