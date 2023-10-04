@@ -644,8 +644,11 @@ When generating 2FA-enabled certificates OpenVPN-UI will provide QR code with 2F
 
 #### To enable 2FA you have to:
 
-* Go to `"Configuration > OpenVPN Server"` page and enable `"Two Factor Authentication"` option for OpenVPN Server backend. Once 2FA is enabled for Server, OpenVPN-Server **will allow 2FA connections only** (non 2FA-ready certificates won't connect).
 * Go to `"Configuration > OpenVPN Client"` page and enable `"Two Factor Authentication"` option to switch Certificates interface to 2FA mode, so you can generate certificates with 2FA enabled and access 2FA QR code for already generated certificates.
+
+  > **Note**: You can generate 2FA-ready certificates at this stage, then deliver 2FA Certificates to all your client devices and enable 2FA Server support later, when you'll be ready to use it. Before that Server will still accept non 2FA-ready certificates only.
+
+* Go to `"Configuration > OpenVPN Server"` page and enable `"Two Factor Authentication"` option for OpenVPN Server backend. Once 2FA is enabled for Server, OpenVPN-Server **will allow 2FA connections only** (non 2FA-ready certificates won't connect).
 
 #### 2FA .OVPN profiles creation
   <details>
@@ -656,7 +659,7 @@ Procedure for 2FA generation is the same as for regular certificate, but you hav
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-Cert-Create.png" alt="2FA Certificate create" width="600" border="1" />
 
 **`Passphrase`** and **`Client Static IP`** are still optional parameters.
-When you complete all the fields, click on **`Create`** and your new Certificate will be ready.
+When you complete all the fields, click on **`Create`** and your new 2FA Certificate will be ready.
 
 Once this done, you can click on the new certificate in your certificates table to see all the details including QR code for 2FA token:
 
