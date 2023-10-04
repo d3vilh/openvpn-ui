@@ -112,7 +112,7 @@
                   {{end}}
 
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-alert btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Revoke</a>
                   {{end}}
@@ -139,7 +139,7 @@
                         <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
                         <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
                         <dd class="copy-details 2fa-name"><h4 style="color: #3c8dbc">{{ .Details.TFAName }}</h4></dd>
-                        <dt class="copy-details"><b>Certificate Name: </h4></b></dt>
+                        <dt class="copy-details"><b><h4>Certificate Name:</h4></b></dt>
                         <dd class="copy-details cert-name">{{ .Details.CN }}</dd>
                         {{else}}
                         <dt class="copy-details"><b><h4>Name: </h4></b></dt>
