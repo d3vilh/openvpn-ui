@@ -15,13 +15,14 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Status page that shows server statistics and list of connected clients
 * Supports OpenVPN **tunnel**(`dev tun`) or **bridge**(`dev tap`) server configurations
 * Easy to **generate**, **download**, **renew**, **revoke**, **delete** and **view** client certificates
-* Client can have secret passphrase and static IP assigned during client certificate generation
+* Client can have secret **passphrase** and **static IP** assigned during client certificate generation
+* Two factor authentication (**2FA**) support
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
 * **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
 * Change OpenVPN Server configuration via web interface
 * Easy to preview OpenVPN Server logs
 * Restart OpenVPN Server and OpenVPN UI from web interface
-* OpenVPN-UI users management. Administrators has full access, regular users to Certificates management, logs and status page only.
+* **OpenVPN-UI users management**. Administrators has full access, regular users to Certificates management, logs and status page only.
 * OpenVPN-UI Admin user and password can be passed via environment variables to container
 * Updated infrustracture:
   * Alpine Linux as fastest and secure base image
