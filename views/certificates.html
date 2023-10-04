@@ -10,12 +10,18 @@
   <div class="col-md-12">
     <div class="card card-default">
       <div class="card-header">
-        <h3 class="card-title">Clients certificates {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}2FA enabled{{end}} </h3>
+        <h3 class="card-title">Clients certificates</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse">
           <i class="fa fa-minus"></i></button>
         </div>
       </div>
+
+      {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+      <div class="card-body">
+        <h2 class="card-title">2FA Authorisation is <b style="color: #00a65a;">Enabled</b></h2>
+      </div>
+      {{end}}
       <!-- /.box-header -->
 
       <div class="card-body">
@@ -128,8 +134,17 @@
                     <div class="modal-body">
                       <!-- /.dl-header -->
                       <dl class="dl-horizontal" id="certificate-details">
+                        {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+                        <!--dt class="copy-details">2FA Issuer String: </dt>
+                        <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
+                        <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
+                        <dd class="copy-details 2fa-name"><h4 style="color: #3c8dbc">{{ .Details.TFAName }}</h4></dd>
+                        <dt class="copy-details"><b>Certificate Name: </h4></b></dt>
+                        <dd class="copy-details cert-name">{{ .Details.CN }}</dd>
+                        {{else}}
                         <dt class="copy-details"><b><h4>Name: </h4></b></dt>
                         <dd class="copy-details cert-name"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
+                        {{end}}
                         <dt class="copy-details">Status: </dt>
                         <dd class="copy-details">{{if eq .EntryType "V"}}<span class="badge bg-success">Valid</span>{{else if eq .EntryType "R"}}<span class="badge bg-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
                         <dt class="copy-details">Expiration Time: </dt>
@@ -155,8 +170,6 @@
                         {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
                         <!--dt class="copy-details">2FA Issuer String: </dt>
                         <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
-                        <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
-                        <dd class="copy-details 2fa-name">{{ .Details.TFAName }}</dd>
                         <dt class="copy-details">Two Factor Authorisation (2FA) QR Code:</dt>
                         <dd class="copy-details">
                           {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
@@ -367,13 +380,13 @@ $('.send-email-with-qr-btn').on('click', function () {
   var emailSubject = 'Certificate Information for ' + certName;
 
   // Prepare the email body using the template
-  var emailBody = `Dear ${organisation},\n\n`
-    + `Here is your new certificate information:\n\n`
+  var emailBody = `Dear ${certName},\n\n`
+    + `Below is your new VPN certificate details.\n\n`
     + `Name: ${certName}\n`
-    + `Two Factor Authentication (2FA) name: ${tfaName}\n`
+    + `Two Factor Authentication (2FA) name(if applicable): ${tfaName}\n`
     + `The Certificate is registered on e-mail ${emailAddress} and will be valid until ${expirationDate}.\n\n`
     + `Please take care.\n\n`
-    + `Sincerely yours ${organisation} engineering team.`;
+    + `Sincerely yours, ${organisation} engineering team.`;
 
   // Encode the email body as a URI component
   var encodedEmailBody = encodeURIComponent(emailBody);
@@ -395,8 +408,9 @@ $('.send-email-with-qr-btn').on('click', function () {
       var imageTag = '<img src="' + imageBase64 + '" alt="QR Code Image">';
       
       // Append the image tag to the email body
-      emailBody; // += '\n\n' + imageTag;
-
+      emailBody; // += '\n\n' + imageTag;  // Embedded QR CODE id disabled. 
+                                           // I cant figureout how to include it as a real image in email.body. My default Apple Mail app refuses to take it as <img> or base64.
+                                           // Will contiune to try in future versions. Help would be very much appreciated.
       // Encode the updated email body as a URI component
       var updatedEncodedEmailBody = encodeURIComponent(emailBody);
 

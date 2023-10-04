@@ -29,8 +29,8 @@ dh {{ .Dh }}
 {{ .TLSRemoteCert }}
 
 cipher {{ .Cipher }}
-ncp-ciphers {{ .OVConfigNcpCiphers }}   # Will be deprecated in future OpenVPN versions. we have to use data-ciphers below instead
-#data-ciphers {{ .OVConfigNcpCiphers }}
+# ncp-ciphers {{ .OVConfigNcpCiphers }}   # Deprecated since ver. 0.9.3. We have to use data-ciphers below instead
+data-ciphers {{ .OVConfigNcpCiphers }}
 
 auth {{ .Auth }}
 

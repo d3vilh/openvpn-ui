@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
+#VERSION 1.3 by d3vilh@github.com aka Mr. Philipp
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
@@ -7,8 +7,7 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_PASS=$3
-#TFA_NAME=$4 # 2FA username in format: alice@wonderland.ua. Using CENAME.Email.
-#ISSUER=$5 #'MFA%20OpenVPN'      # 2FA issuer
+# These VARS shoud be in your ENV before running certgen: TFA_NAME, ISSUER, EASYRSA_CERT_EXPIRE, EASYRSA_REQ_EMAIL, EASYRSA_REQ_COUNTRY, EASYRSA_REQ_PROVINCE, EASYRSA_REQ_CITY, EASYRSA_REQ_ORG, EASYRSA_REQ_OU
 
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
