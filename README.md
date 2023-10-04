@@ -575,7 +575,8 @@ All the Server and Client configuration located in Docker volume and can be ease
 ```
 
 ### Generating .OVPN client profiles
-
+  <details>
+      <summary>How to generate .OVPN client profile</summary>
 You can update external client IP and port address anytime under `"Configuration > OpenVPN Client"` menue. 
 
 For this go to `"Configuration > OpenVPN Client"`:
@@ -598,8 +599,11 @@ Deliver .OVPN profile to the client device and import it as a FILE, then connect
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Palm_import.png" alt="PalmTX Import" width="350" border="1" /> <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Palm_connected.png" alt="PalmTX Connected" width="350" border="1" />
 
-### Renew Certificates for client profiles
+  </details>
 
+### Renew Certificates for client profiles
+  <details>
+      <summary>How to renew old client profile</summary>
 To renew certificate, go to `"Certificates"` and press `"Renew"` button for the client you would like to renew certificate for:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-Cert-Renew.01.png" alt="Renew OpenVPN Certificate" width="600" border="1" />
@@ -611,8 +615,11 @@ Once you will deliver new client profile with renewed Certificate to you client,
 If, for some reason you still would like to keep old certificate you have to `"Revoke"` new profile, old certificate will be rolled back and new profile will be deleted from the list.
 
 Renewal process will not affect active VPN connections, old client will be disconnected only after you revoke old certificate or certificate term of use will expire.
+  </details>
 
 ### Revoking .OVPN profiles
+  <details>
+      <summary>How to revoke client certificate</summary>
 
 If you would like to prevent client to use yor VPN connection, you have to revoke client certificate and restart the OpenVPN daemon.
 You can do it via OpenVPN UI `"Certificates"` menue, by pressing `"Revoke"`` amber button:
@@ -626,36 +633,67 @@ Certificate revoke won't kill active VPN connections, you'll have to restart the
 You can do the same from the `"Maintenance"` page.
 
 After Revoking and Restarting the service, the client will be disconnected and will not be able to connect again with the same certificate. To delete the certificate from the server, you have to press `"Remove"` button.
+  </details>
 
 ### Two Factor Authentication (2FA)
 Starting from vestion `0.9.3` OpenVPN-UI has Two Factor Authentication (2FA) feature.
 OpenVPN-UI uses oath-toolkit for two factor authentication. Means you don't need any ThirdParty 2FA provider. 
 When generating 2FA-enabled certificates OpenVPN-UI will provide QR code with 2FA secret, which you can scan with your 2FA app (Google Authenticator, Microsoft Authenticator, etc) to get 2FA token for connection with this certificate.
 
+2FA Certificates `Renewal`, `Revoke` and `Delete` process is the same as for regular certificates.
+
 #### To enable 2FA you have to:
+
 * Go to `"Configuration > OpenVPN Server"` page and enable `"Two Factor Authentication"` option for OpenVPN Server backend. Once 2FA is enabled for Server, OpenVPN-Server **will allow 2FA connections only** (non 2FA-ready certificates won't connect).
 * Go to `"Configuration > OpenVPN Client"` page and enable `"Two Factor Authentication"` option to switch Certificates interface to 2FA mode, so you can generate certificates with 2FA enabled and access 2FA QR code for already generated certificates.
 
-#### 2FA certificates generation
-Proedure for 2FA generation is the same as for regular certificate, but you have to use uniq `2FA Name` in the e-mail kind format:
+#### 2FA .OVPN profiles creation
+  <details>
+      <summary>How to generate 2FA Certificate</summary>
+
+Procedure for 2FA generation is the same as for regular certificate, but you have to use uniq `2FA Name` in the e-mail kind format:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-Cert-Create.png" alt="2FA Certificate create" width="600" border="1" />
 
 **`Passphrase`** and **`Client Static IP`** are still optional parameters.
-Click to `Create` when you complete all the fileds and your new Certificate will be generated.
+When you complete all the fields, click on **`Create`** and your new Certificate will be ready.
 
-Once new certificate is ready, you can cleck on it to see all the details including QR code for 2FA token:
+Once this done, you can click on the new certificate in your certificates table to see all the details including QR code for 2FA token:
 
-You can copy or email this details directly to certificate owner.
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-Cert-details.png" alt="2FA Certificate details" width="600" border="1" />
+
+You can copy or email this information directly to certificate owner.
+  </details>
 
 #### 2FA certificates usage
-To use 2FA certificate you have to install 2FA app on your device (Google Authenticator, Microsoft Authenticator, etc) and scan QR code from the certificate details page.
+  <details>
+      <summary>How to add 2FA profile to client</summary>
 
-Then you can use 2FA token from your app to connect to OpenVPN Server.
+To use 2FA certificate you have to install 2FA app on your device (**Google Authenticator** [iOS](https://apps.apple.com/us/app/google-authenticator/id388497605), [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pcampaignid=web_share), **Microsoft Authenticator** [iOS](https://apps.apple.com/us/app/microsoft-authenticator/id983156458), [Android](https://play.google.com/store/apps/details?id=com.azure.authenticator&pcampaignid=web_share), etc) and scan QR code from the `Certificate details` page.
 
-2FA Certificates `Renewal`, `Revoke` and `Delete` process is the same as for regular certificates.
+After scanning QR-code, new Authenticator profile will be created in your 2FA app with the same name as your 2FA Certificate name:
 
-Once you shared the certificate (`certname.ovpn`) file and QR code with client. Client can import certificate to OpenVPN client and use it to connect to OpenVPN Server following by this steps 
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-mobi-authenticator.png" alt="2FA Authenticator" width="350" border="1" />
 
+Then you have to download and deliver `.OVPN profile` to [OpenVPN Connect app](https://openvpn.net/client/) and open it as a file. Following window appear:
 
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-mobi-profile-add.png" alt="2FA OpenVPN Connect profile add" width="350" border="1" />
+
+Click `Add` to add new profile to OpenVPN Connect. Then you will be asked to enter your Username and Password. As username use `2FA Name` which you used during Certificate/profile generation:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-mobi-username.png" alt="2FA OpenVPN Connect profile username" width="350" border="1" />
+
+When you'll be prompted to Enter the password, you have to enter your 2FA token from your 2FA app:
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-mobi-password.png" alt="2FA OpenVPN Connect profile 2FA password" width="350" border="1" />
+
+Connection will be suceeded if you entered correct 2FA token.
+
+You can use optional `Passphrase` when generating new Client certificate, to protect your 2FA token with additional password. In this case you have to enter your `Passphrase` as a `Private Key Password` and 2FA token as `Password`: 
+
+<img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-mobi-password-cert.png" alt="2FA OpenVPN Connect profile 2FA and Certificate passwords" width="350" border="1" />
+
+  </details>
 
 ### User Management
 Starting from `v.0.9.2` OpenVPN UI has user management feature. 
@@ -663,6 +701,10 @@ Starting from `v.0.9.2` OpenVPN UI has user management feature.
 You can create and delete users with different privileges - Administrators or regular users:
 * Administrators has full access
 * Regular users has access to Home page, Certificates and Logs pages only. This users can create, renew, revoke and delete all the certificates.
+
+
+<details>
+      <summary>How to manage OpenVPN-UI Users</summary>
 
 This functionality available via `"Users Profiles"` page:
 
@@ -674,6 +716,8 @@ Then you can Create new profile and manage other profiles:
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileCreate.png" alt="New OpenVPN UI Profile creation" width="600" border="1" />
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileManage.png" alt="OpenVPN UI Profiles management" width="600" border="1" />
+
+</details>
 
 ### Screenshots:
 
