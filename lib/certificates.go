@@ -36,6 +36,7 @@ type Details struct {
 	OrganisationUnit string
 	Email            string
 	LocalIP          string
+	TFAName          string
 }
 
 func ReadCerts(path string) ([]*Cert, error) {
@@ -98,6 +99,8 @@ func parseDetails(d string) *Details {
 				details.Email = fields[1]
 			case "LocalIP":
 				details.LocalIP = fields[1]
+			case "2FAName":
+				details.TFAName = fields[1]
 			default:
 				if line != "" && !strings.Contains(line, "name") && !strings.Contains(line, "LocalIP") {
 					logs.Warn(fmt.Sprintf("Undefined entry: %s", line))
@@ -112,7 +115,8 @@ func trim(s string) string {
 	return strings.Trim(strings.Trim(s, "\r\n"), "\n")
 }
 
-func CreateCertificate(name string, staticip string, passphrase string, expiredays string, email string, country string, province string, city string, org string, orgunit string) error {
+func CreateCertificate(name string, staticip string, passphrase string, expiredays string, email string, country string, province string, city string, org string, orgunit string, tfaname string, tfaissuer string) error {
+	logs.Info("Lib: Creating certificate with parameters: name=%s, staticip=%s, passphrase=%s, expiredays=%s, email=%s, country=%s, province=%s, city=%s, org=%s, orgunit=%s, tfaname=%s, tfaissuer=%s", name, staticip, passphrase, expiredays, email, country, province, city, org, orgunit, tfaname, tfaissuer)
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
@@ -129,14 +133,16 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 		}
 	}
 	Dump(certs)
-
-	if !pass {
-		if !exists && !haveip {
+	if !pass { // if no passphrase
+		if !exists && !haveip { // if no exists and no ip
+			logs.Info("No password and no ip")
 			staticip = "dynamic.pool"
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
+						"export TFA_NAME=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -144,7 +150,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 						"export EASYRSA_REQ_CITY=%s &&"+
 						"export EASYRSA_REQ_ORG=%s &&"+
 						"export EASYRSA_REQ_OU=%s &&"+
-						"./genclient.sh %s %s", name, expiredays, email, country, province, city, org, orgunit, name, staticip))
+						"./genclient.sh %s %s", name, tfaname, tfaissuer, expiredays, email, country, province, city, org, orgunit, name, staticip))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
@@ -154,11 +160,14 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 			}
 			return nil
 		}
-		if !exists && haveip {
+		if !exists && haveip { // if no exists and have ip
+			logs.Info("No password and but have ip")
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
+						"export TFA_NAME=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -167,7 +176,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 						"export EASYRSA_REQ_ORG=%s &&"+
 						"export EASYRSA_REQ_OU=%s &&"+
 						"./genclient.sh %s %s &&"+
-						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, staticip, name))
+						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, tfaname, tfaissuer, expiredays, email, country, province, city, org, orgunit, name, staticip, staticip, name))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
@@ -178,13 +187,16 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 			return nil
 		}
 		return existsError
-	} else {
-		if !exists && !haveip {
-			staticip = "not.defined"
+	} else { // if passphrase
+		if !exists && !haveip { // if no exists and no ip
+			logs.Info("Password and no IP")
+			staticip = "dynamic.pool"
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
+						"export TFA_NAME=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -192,7 +204,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 						"export EASYRSA_REQ_CITY=%s &&"+
 						"export EASYRSA_REQ_ORG=%s &&"+
 						"export EASYRSA_REQ_OU=%s &&"+
-						"./genclient.sh %s %s %s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase))
+						"./genclient.sh %s %s %s", name, tfaname, tfaissuer, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
@@ -202,11 +214,14 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 			}
 			return nil
 		}
-		if !exists && haveip {
+		if !exists && haveip { // if no exists and have ip
+			logs.Info("Password and IP")
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
 						"export KEY_NAME=%s &&"+
+						"export TFA_NAME=%s &&"+
+						"export TFA_ISSUER=\"%s\" &&"+
 						"export EASYRSA_CERT_EXPIRE=%s &&"+
 						"export EASYRSA_REQ_EMAIL=%s &&"+
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
@@ -215,7 +230,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 						"export EASYRSA_REQ_ORG=%s &&"+
 						"export EASYRSA_REQ_OU=%s &&"+
 						"./genclient.sh %s %s %s &&"+
-						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase, staticip, name))
+						"echo 'ifconfig-push %s 255.255.255.0' > /etc/openvpn/staticclients/%s", name, tfaname, tfaissuer, expiredays, email, country, province, city, org, orgunit, name, staticip, passphrase, staticip, name))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
 			output, err := cmd.CombinedOutput()
 			if err != nil {
@@ -229,12 +244,13 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 	}
 }
 
-func RevokeCertificate(name string, serial string) error {
+func RevokeCertificate(name string, serial string, tfaname string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./revoke.sh %s %s", name, name, serial))
+				"export TFA_NAME=%s &&"+
+				"./revoke.sh %s %s", name, tfaname, name, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -260,11 +276,13 @@ func Restart() error {
 	return nil
 }
 
-func BurnCertificate(CN string, serial string) error {
+func BurnCertificate(CN string, serial string, tfaname string) error {
+	logs.Info("Lib: Burning certificate with parameters: CN=%s, serial=%s, tfaname=%s", CN, serial, tfaname)
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
-				"./rmcert.sh %s %s", CN, serial))
+				"export TFA_NAME=%s &&"+
+				"./rmcert.sh %s %s", tfaname, CN, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -275,12 +293,13 @@ func BurnCertificate(CN string, serial string) error {
 	return nil
 }
 
-func RenewCertificate(name string, localip string, serial string) error {
+func RenewCertificate(name string, localip string, serial string, tfaname string) error {
 	cmd := exec.Command("/bin/bash", "-c",
 		fmt.Sprintf(
 			"cd /opt/scripts/ && "+
 				"export KEY_NAME=%s &&"+
-				"./renew.sh %s %s %s", name, name, localip, serial))
+				"export TFA_NAME=%s &&"+
+				"./renew.sh %s %s %s", name, tfaname, name, localip, serial))
 	cmd.Dir = state.GlobalCfg.OVConfigPath
 	output, err := cmd.CombinedOutput()
 	if err != nil {

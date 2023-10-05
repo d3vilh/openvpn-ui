@@ -9,7 +9,10 @@ import (
 
 // Don't think these defaults are ever used -- see models/models.go
 var defaultConfig = Config{
+	FuncMode:                 0, // 0 = standard authentication (cert, cert + password), 1 = 2FA authentication (cert + OTP)
 	Management:               "0.0.0.0 2080",
+	ScriptSecurity:           "",
+	UserPassVerify:           "",
 	Device:                   "tun",
 	Port:                     1194,
 	Proto:                    "udp",
@@ -48,10 +51,13 @@ var defaultConfig = Config{
 
 // Config model
 type Config struct {
-	Management string
-	Device     string
-	Port       int
-	Proto      string
+	FuncMode       int // 0 = standard authentication (cert, cert + password), 1 = 2FA authentication (cert + OTP)
+	Management     string
+	ScriptSecurity string
+	UserPassVerify string
+	Device         string
+	Port           int
+	Proto          string
 
 	OVConfigTopology string
 	Keepalive        string

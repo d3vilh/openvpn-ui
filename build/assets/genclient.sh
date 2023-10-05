@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
+#VERSION 1.3 by d3vilh@github.com aka Mr. Philipp
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
@@ -7,10 +7,13 @@ set -e
 CERT_NAME=$1
 CERT_IP=$2
 CERT_PASS=$3
+# These VARS shoud be in your ENV before running certgen: TFA_NAME, ISSUER, EASYRSA_CERT_EXPIRE, EASYRSA_REQ_EMAIL, EASYRSA_REQ_COUNTRY, EASYRSA_REQ_PROVINCE, EASYRSA_REQ_CITY, EASYRSA_REQ_ORG, EASYRSA_REQ_OU
+
 EASY_RSA=$(grep -E "^EasyRsaPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 OPENVPN_DIR=$(grep -E "^OpenVpnPath\s*=" ../openvpn-ui/conf/app.conf | cut -d= -f2 | tr -d '"' | tr -d '[:space:]')
 echo "EasyRSA path: $EASY_RSA OVPN path: $OPENVPN_DIR"
 OVPN_FILE_PATH="$OPENVPN_DIR/clients/$CERT_NAME.ovpn"
+OATH_SECRETS="$OPENVPN_DIR/clients/oath.secrets"   # 2FA secrets file
 
 # Validate username and check for duplicates
 if  [[ -z $CERT_NAME ]]; then
@@ -47,11 +50,19 @@ fi
 # Sign request
 ./easyrsa sign-req client "$CERT_NAME"
 # Fix for /name in index.txt
+
+# Check if 2FA was specified. If not - set to none.
+if [ -z "$TFA_NAME" ]; then
+    TFA_NAME="none"
+fi
+
 echo "Fixing Database..."
-sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}/" $EASY_RSA/pki/index.txt
+sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}\/2FAName=${TFA_NAME}/" $EASY_RSA/pki/index.txt
+echo "Database fixed:"
+tail -1 $EASY_RSA/pki/index.txt
 # Certificate properties
 CA="$(cat $EASY_RSA/pki/ca.crt )"
-CERT="$(cat $EASY_RSA/pki/issued/${CERT_NAME}.crt | grep -zEo -e '-----BEGIN CERTIFICATE-----(\n|.)*-----END CERTIFICATE-----' | tr -d '\0')"
+CERT="$(awk '/-----BEGIN CERTIFICATE-----/{flag=1;next}/-----END CERTIFICATE-----/{flag=0}flag' ./pki/issued/${CERT_NAME}.crt | tr -d '\0')"
 KEY="$(cat $EASY_RSA/pki/private/${CERT_NAME}.key)"
 TLS_AUTH="$(cat $EASY_RSA/pki/ta.key)"
 
@@ -74,4 +85,32 @@ $TLS_AUTH
 </tls-auth>
 " > "$OVPN_FILE_PATH"
 
-echo "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
+echo -e "OpenVPN Client configuration successfully generated!\nCheckout openvpn-server/clients/$CERT_NAME.ovpn"
+
+# Check if $TFA_NAME was specified and not equal to "none". then create 2FA and QR code
+if [[ ! -z $TFA_NAME ]] && [[ $TFA_NAME != "none" ]]; then
+    echo -e "Generating 2FA ...\nName: $TFA_NAME\nIssuer: $TFA_ISSUER"
+
+    # Userhash. Random 30 chars
+    USERHASH=$(head -c 10 /dev/urandom | openssl sha256 | cut -d ' ' -f2 | cut -b 1-30)
+
+    # Base32 secret from oathtool output
+    BASE32=$(oathtool --totp -v "$USERHASH" | grep Base32 | awk '{print $3}')
+
+    # QRCODE STRING
+    QRSTRING="otpauth://totp/$TFA_ISSUER:$TFA_NAME?secret=$BASE32"
+
+    # QR code for user to pass to Google Authenticator or OpenVPN-UI
+    echo "User String for QR:"
+    echo $QRSTRING
+
+    /opt/scripts/qrencode "$QRSTRING" > $OPENVPN_DIR/clients/$CERT_NAME.png
+
+    # New string for secrets file
+    echo "oath.secrets entry for BackEnd:"
+    echo "$TFA_NAME:$USERHASH" | tee -a $OATH_SECRETS
+
+    else
+    echo 'No 2FA specified. exiting'
+
+fi

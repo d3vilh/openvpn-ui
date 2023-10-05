@@ -49,6 +49,14 @@ func init() {
 	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"] =
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
 			web.ControllerComments{
+				Method:           "DisplayImage",
+				Router:           `/displayimage/:imageName`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
+			web.ControllerComments{
 				Method:           "Get",
 				Router:           `/certificates`,
 				AllowHTTPMethods: []string{"get"},
@@ -66,7 +74,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
 			web.ControllerComments{
 				Method:           "Revoke",
-				Router:           `/certificates/revoke/:key/:serial`,
+				Router:           `/certificates/revoke/:key/:serial/:tfaname`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
@@ -82,7 +90,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
 			web.ControllerComments{
 				Method:           "Burn",
-				Router:           `/certificates/burn/:key/:serial`,
+				Router:           `/certificates/burn/:key/:serial/:tfaname`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 
@@ -90,7 +98,7 @@ func init() {
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:CertificatesController"],
 			web.ControllerComments{
 				Method:           "Renew",
-				Router:           `/certificates/renew/:key/:localip/:serial`,
+				Router:           `/certificates/renew/:key/:localip/:serial/:tfaname`,
 				AllowHTTPMethods: []string{"get"},
 				Params:           nil})
 

@@ -115,7 +115,10 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 	c := OVConfig{
 		Profile: "default",
 		Config: config.Config{
+			FuncMode:                 0, // 0 = standard authentication (cert, cert + password), 1 = 2FA authentication (cert + OTP)
 			Management:               fmt.Sprintf("%s %s", address, network),
+			ScriptSecurity:           "",
+			UserPassVerify:           "",
 			Device:                   "tun",
 			Port:                     1194,
 			Proto:                    "udp",
@@ -174,6 +177,7 @@ func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address 
 	c := OVClientConfig{
 		Profile: "default",
 		Config: clientconfig.Config{
+			FuncMode:          0, // 0 = standard authentication (cert, cert + password), 1 = 2FA authentication (cert + OTP)
 			Device:            "tun",
 			Port:              1194,
 			Proto:             "udp",
@@ -182,6 +186,11 @@ func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address 
 			Cipher:            "AES-256-GCM",
 			RedirectGateway:   "redirect-gateway def1",
 			Auth:              "SHA512",
+			AuthUserPass:      "",                 // "auth-user-pass" when 2fa
+			TFAIssuer:         "MFA%20OpenVPN-UI", // 2FA issuer
+			CustomConfOne:     "#Custom Option One",
+			CustomConfTwo:     "#Custom Option Two",
+			CustomConfThree:   "#Custom Option Three",
 		},
 	}
 	o := orm.NewOrm()

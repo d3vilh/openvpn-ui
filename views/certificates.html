@@ -16,6 +16,12 @@
           <i class="fa fa-minus"></i></button>
         </div>
       </div>
+
+      {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+      <div class="card-body">
+        <h2 class="card-title">2FA Authorisation is <b style="color: #00a65a;">Enabled</b></h2>
+      </div>
+      {{end}}
       <!-- /.box-header -->
 
       <div class="card-body">
@@ -87,36 +93,33 @@
                     </td>
                   {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <!--a class="btn btn-success btn-xs" style="font-size: 50%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">CN: {{ .Details.CN }}</b></a-->
                       <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
                     </td>
                   {{else if and (eq .Revocation "") .IsExpiring}}
                     <td>
-                      <!--a class="btn btn-warning btn-xs" style="font-size: 50%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">CN: {{ .Details.CN }}</b></a-->
                       <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
                     </td>
                   {{else}}
                     <td>
-                      <!--a class="btn btn-danger btn-xs" style="font-size: 50%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">CN: {{ .Details.CN }}</b></a-->
                       <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
                     </td>
                   {{end}}
                     <td class="align-middle">
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial}}" class="btn btn-primary btn-xs" title="Renew" style="font-size: 70%;">Renew</a>
+                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-primary btn-xs" title="Renew" style="font-size: 70%;">Renew</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Renew</a>
                   {{end}}
 
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Revoke</a>
                   {{end}}
                   {{ if eq .Revocation ""}}
                       <a class="btn btn-default btn-xs" disabled>Delete</a>
                   {{else}}
-                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 70%;">Delete</a>
+                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 70%;">Delete</a>
                   {{end}}
                     </td>
               </tr>
@@ -131,12 +134,21 @@
                     <div class="modal-body">
                       <!-- /.dl-header -->
                       <dl class="dl-horizontal" id="certificate-details">
+                        {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+                        <!--dt class="copy-details">2FA Issuer String: </dt>
+                        <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
+                        <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
+                        <dd class="copy-details 2fa-name"><h4 style="color: #3c8dbc">{{ .Details.TFAName }}</h4></dd>
+                        <dt class="copy-details"><b><h4>Certificate Name:</h4></b></dt>
+                        <dd class="copy-details cert-name">{{ .Details.CN }}</dd>
+                        {{else}}
                         <dt class="copy-details"><b><h4>Name: </h4></b></dt>
-                        <dd class="copy-details"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
+                        <dd class="copy-details cert-name"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
+                        {{end}}
                         <dt class="copy-details">Status: </dt>
                         <dd class="copy-details">{{if eq .EntryType "V"}}<span class="badge bg-success">Valid</span>{{else if eq .EntryType "R"}}<span class="badge bg-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
                         <dt class="copy-details">Expiration Time: </dt>
-                        <dd class="copy-details">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-danger">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> Will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
+                        <dd class="copy-details exp-time">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-warning">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> This Certificate will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
                         <dt class="copy-details">Revoke Time: </dt>
                         <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}Not Revoked{{end}}</dd>
                         <dt class="copy-details">IP Address: </dt>
@@ -144,7 +156,7 @@
                         <dt class="copy-details">Serial: </dt>
                         <dd class="copy-details">{{ .Serial }}</dd>
                         <dt class="copy-details">Registered e-mail: </dt>
-                        <dd class="copy-details"><a href="mailto:{{ .Details.Email }}">{{ .Details.Email }}</a></dd>
+                        <dd class="copy-details reg-email"><a href="mailto:{{ .Details.Email }}">{{ .Details.Email }}</a></dd>
                         <dt class="copy-details">Registered Country: </dt>
                         <dd class="copy-details">{{ .Details.Country }}</dd>
                         <dt class="copy-details">Registered State/Region: </dt>
@@ -155,10 +167,23 @@
                         <dd class="copy-details">{{ .Details.Organisation }}</dd>
                         <dt class="copy-details">Registered Unit: </dt>
                         <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
+                        {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+                        <!--dt class="copy-details">2FA Issuer String: </dt>
+                        <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
+                        <dt class="copy-details">Two Factor Authorisation (2FA) QR Code:</dt>
+                        <dd class="copy-details">
+                          {{ if and (eq .EntryType "V") (ne .Details.Name "") }}
+                            <div class="text-left qr-code">
+                              <img src="/displayimage/{{ .Details.Name }}">
+                            </div>
+                          {{end}}
+                        </dd>
+                        {{end}}
                       </dl>
                       <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary copy-btn copy-modal-data-btn" style="width: 135px;">Copy</button>
+                        <button type="button" class="btn btn-success send-email-with-qr-btn" style="width: 135px;">Send Email</button>
                       </div>
                       </div>
                     </div>
@@ -176,12 +201,6 @@
       end-->
       <div class="box-footer clearfix">
       </div>
-      <!--
-      <div class="box-footer clearfix">
-        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-      </div>
-    -->
       <!-- /.box-footer -->
     </div>
     <!-- /.box -->
@@ -218,7 +237,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="FuncMode" value="{{ $.SettingsC.FuncMode }}">
         <!-- /.box-header -->
         <!-- form start -->
        {{template "common/alert.html" .}}
@@ -229,6 +248,20 @@
               <input type="text" class="form-control is-warning" pattern="^[^\s]+$" placeholder="Certificate Name" id="Name" name="Name">
               <span class="text-muted" title="Name should not have spaces.">Common name of the certificate.<span>
             </div>
+
+            {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
+            <div class="form-group has-success {{if field_error_exist .validation "TFAName" }}has-error{{end}}">
+              <label class="control-label" for="tfaname" title="2FAName should not have spaces."><i class="fa fa-bell-o"></i>2FA Name</label>
+              <input type="text" class="form-control is-warning" pattern="^[^\s]+$" placeholder="alice@wonderland.ua" id="TFAName" name="TFAName">
+              <span class="text-muted" title="Name should not have spaces.">Unique 2FA name of the certificate.<span>
+            </div>
+
+            <div class="form-group" id="tfa-issuer">
+              <label class="control-label" for="tfaissuer" title="TFAIssuer should have URL format."></i>2FA Issuer String</label>
+              <input type="text" class="form-control" placeholder="MFA%20OpenVPN-UI" id="tfaissuer" name="TFAIssuer" value="{{ $.SettingsC.TFAIssuer }}">
+              <span class="text-muted" title="Name should not have spaces.">2FA Issuer for the QR Code sting.<span>
+            </div>
+            {{end}}
     
             <div class="form-group">
               <label for="name">Passphrase (Optional)</label>
@@ -317,12 +350,84 @@
     <a href="{{urlfor "CertificatesController.Restart"}}" class="btn btn-danger btn-primary" style="width: 145px;" title="Restart OpenVPN container">Restart Container</a> 
     &nbsp; OpenVPN Container Restart to re-apply Firewall rules and restart OpenVPN Server. Will take more time than regular Restart. 
   </div>
-  <!--
-  <div class="box-footer clearfix">
-    <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-  </div>
--->
   <!-- /.box-footer -->
 </div>
 {{end}}
+
+<script>
+// Attach a click event handler to the "Send Email" button
+$('.send-email-with-qr-btn').on('click', function () {
+  var $modal = $(this).closest('.modal');
+
+  // Extract the email address from the modal content (as before)
+  var emailAddress = $modal.find('.copy-details a[href^="mailto:"]').attr('href');
+  emailAddress = emailAddress.replace('mailto:', '');
+
+  // Extract all modal content (as before)
+  var content = '';
+  $modal.find('.copy-details').each(function () {
+    content += $(this).text().replace(/:\s/g, ': ') + '\n';
+  });
+  content = content.replace(/:\s\n/g, ': ');
+
+  // Extract additional details for the email body
+  var certName = $modal.find('.cert-name').text().trim();
+  var expirationDate = $modal.find('.exp-time').text();
+  var tfaName = $modal.find('.2fa-name').text();
+  var organisation = $modal.find('.copy-details.reg-email').text().trim();
+
+  // Prepare the email subject
+  var emailSubject = 'Certificate Information for ' + certName;
+
+  // Prepare the email body using the template
+  var emailBody = `Dear ${certName},\n\n`
+    + `Below is your new VPN certificate details.\n\n`
+    + `Name: ${certName}\n`
+    + `Two Factor Authentication (2FA) name(if applicable): ${tfaName}\n`
+    + `The Certificate is registered on e-mail ${emailAddress} and will be valid until ${expirationDate}.\n\n`
+    + `Please take care.\n\n`
+    + `Sincerely yours, ${organisation} engineering team.`;
+
+  // Encode the email body as a URI component
+  var encodedEmailBody = encodeURIComponent(emailBody);
+
+  // Fetch the dynamic QR code image URL from the server
+  var imageName = $modal.find('.cert-name').text().trim(); // Use the name for the image URL
+  var qrCodeImageURL = '/displayimage/' + encodeURIComponent(imageName);
+
+  // Fetch the QR code image data from the server
+  $.ajax({
+    url: qrCodeImageURL,
+    method: 'GET',
+    dataType: 'text',
+    success: function (qrCodeImageData) {
+      // Create a data URI for the image
+      var imageBase64 = 'data:image/png;base64,' + qrCodeImageData;
+
+      // Create an <img> HTML tag to display the image in the email body
+      var imageTag = '<img src="' + imageBase64 + '" alt="QR Code Image">';
+      
+      // Append the image tag to the email body
+      emailBody; // += '\n\n' + imageTag;  // Embedded QR CODE id disabled. 
+                                           // I cant figureout how to include it as a real image in email.body. My default Apple Mail app refuses to take it as <img> or base64.
+                                           // Will contiune to try in future versions. Help would be very much appreciated.
+      // Encode the updated email body as a URI component
+      var updatedEncodedEmailBody = encodeURIComponent(emailBody);
+
+      // Prepare the updated mailto link with the encoded email address, subject, and body
+      var mailtoLink = 'mailto:' + encodeURIComponent(emailAddress) +
+        '?subject=' + encodeURIComponent(emailSubject) +
+        '&body=' + updatedEncodedEmailBody;
+
+      // Open the default email client with the updated mailto link
+      window.location.href = mailtoLink;
+    },
+    error: function () {
+      // Handle errors if the image data cannot be fetched
+      alert('Error fetching QR code image data.');
+    }
+  });
+});
+
+  </script>
+  

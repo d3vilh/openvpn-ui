@@ -3,7 +3,7 @@
 
 FROM DEFINE-YOUR-ARCH
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
-LABEL version="0.9.2"
+LABEL version="0.9.3"
 WORKDIR /opt
 EXPOSE 8080/tcp
 
@@ -13,6 +13,8 @@ RUN apk update \
     easy-rsa \
     curl \
     jq \
+    oath-toolkit \
+    oath-toolkit-oathtool \
  && rm -rf /var/cache/apk/* && chmod 755 /usr/share/easy-rsa/*
 
 ADD assets/start.sh /opt/start.sh
@@ -24,6 +26,7 @@ ADD assets/rmcert.sh /opt/scripts/rmcert.sh
 ADD assets/remove.sh /opt/scripts/remove.sh
 ADD assets/renew.sh /opt/scripts/renew.sh
 ADD openvpn-ui.tar.gz /opt/openvpn-ui/
+ADD qrencode /opt/scripts/qrencode
 RUN rm -f /opt/openvpn-ui/data.db
 ADD assets/app.conf /opt/openvpn-ui/conf/app.conf
 

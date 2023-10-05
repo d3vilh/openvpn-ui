@@ -45,16 +45,18 @@ printf "Dockerfiles updated \n\033[1;34mBuilding Golang and Bee enviroment.\033[
 
 # Build golang & bee environment
 docker build --platform=$PLATFORM -f Dockerfile-beego -t local/beego-v8 -t local/beego-v8:latest .
-printf "\033[1;34mBuilding OpenVPN-UI binary.\033[0m\n"
+printf "\033[1;34mBuilding OpenVPN-UI and qrencode binaries.\033[0m\n"
 ./openvpn-ui-pack2.sh
 
-printf "OpenVPN-UI built \n\033[1;34mBuilding OpenVPN-UI image.\033[0m\n"
+printf "OpenVPN-UI and qrencode were built \n\033[1;34mBuilding OpenVPN-UI image.\033[0m\n"
 # Build OpenVPN-UI image
 PKGFILE="openvpn-ui.tar.gz"
+QRFILE="qrencode"
 cp -f ../$PKGFILE ./
+cp -f ../$QRFILE ./
 
 docker build -t local/openvpn-ui .
-rm -f $PKGFILE; rm -f $(basename $PKGFILE)
+rm -f $PKGFILE; rm -f $(basename $PKGFILE); #rm -f $QRFILE; 
 printf "\033[1;34mAll done.\033[0m\n"
 # Benchmarking the end time record
 end_time=$(date +%s)
