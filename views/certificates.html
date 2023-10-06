@@ -10,18 +10,13 @@
   <div class="col-md-12">
     <div class="card card-default">
       <div class="card-header">
-        <h3 class="card-title">Clients certificates</h3>
+        <h3 class="card-title"> {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}2FA Authorisation is <b style="color: #00a65a;">Enabled</b></h3>{{else}}<h3 class="card-title"> Client Certifictes</h3>{{end}}
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse">
           <i class="fa fa-minus"></i></button>
         </div>
-      </div>
+      </div> 
 
-      {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
-      <div class="card-body">
-        <h2 class="card-title">2FA Authorisation is <b style="color: #00a65a;">Enabled</b></h2>
-      </div>
-      {{end}}
       <!-- /.box-header -->
 
       <div class="card-body">
@@ -139,8 +134,8 @@
                         <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
                         <dt class="copy-details"><b><h4>2FA Name: </h4></b></dt>
                         <dd class="copy-details 2fa-name"><h4 style="color: #3c8dbc">{{ .Details.TFAName }}</h4></dd>
-                        <dt class="copy-details"><b><h4>Certificate Name:</h4></b></dt>
-                        <dd class="copy-details cert-name">{{ .Details.CN }}</dd>
+                        <dt class="copy-details"><b><h5>Certificate Name:</h5></b></dt>
+                        <dd class="copy-details cert-name"><h5 style="color: #3c8dbc">{{ .Details.CN }}</h5></dd>
                         {{else}}
                         <dt class="copy-details"><b><h4>Name: </h4></b></dt>
                         <dd class="copy-details cert-name"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
@@ -150,23 +145,23 @@
                         <dt class="copy-details">Expiration Time: </dt>
                         <dd class="copy-details exp-time">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-warning">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> This Certificate will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
                         <dt class="copy-details">Revoke Time: </dt>
-                        <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}Not Revoked{{end}}</dd>
+                        <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}<span id="helpBlock" class="text-muted">Not Revoked</span>{{end}}</dd>
                         <dt class="copy-details">IP Address: </dt>
-                        <dd class="copy-details">{{ .Details.LocalIP }}</dd>
+                        <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Details.LocalIP }}</span></dd>
                         <dt class="copy-details">Serial: </dt>
-                        <dd class="copy-details">{{ .Serial }}</dd>
+                        <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Serial }}</span></dd>
                         <dt class="copy-details">Registered e-mail: </dt>
                         <dd class="copy-details reg-email"><a href="mailto:{{ .Details.Email }}">{{ .Details.Email }}</a></dd>
                         <dt class="copy-details">Registered Country: </dt>
-                        <dd class="copy-details">{{ .Details.Country }}</dd>
+                        <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Details.Country }}</span></dd>
                         <dt class="copy-details">Registered State/Region: </dt>
-                        <dd class="copy-details">{{ .Details.State }}</dd>
+                        <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Details.State }}</span></dd>
                         <dt class="copy-details">Registered City: </dt>
-                        <dd class="copy-details">{{ .Details.City }}</dd>
+                        <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Details.City }}</span></dd>
                         <dt class="copy-details">Registered Organisation: </dt>
-                        <dd class="copy-details">{{ .Details.Organisation }}</dd>
+                        <dd class="copy-details reg-org"><span id="helpBlock" class="text-muted">{{ .Details.Organisation }}</span></dd>
                         <dt class="copy-details">Registered Unit: </dt>
-                        <dd class="copy-details">{{ .Details.OrganisationUnit }}</dd>
+                        <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Details.OrganisationUnit }}</span></dd>
                         {{ if eq (printf "%d" $.SettingsC.FuncMode) "1" }}
                         <!--dt class="copy-details">2FA Issuer String: </dt>
                         <dd class="copy-details">{{ $.SettingsC.TFAIssuer }}</dd-->
@@ -374,7 +369,7 @@ $('.send-email-with-qr-btn').on('click', function () {
   var certName = $modal.find('.cert-name').text().trim();
   var expirationDate = $modal.find('.exp-time').text();
   var tfaName = $modal.find('.2fa-name').text();
-  var organisation = $modal.find('.copy-details.reg-email').text().trim();
+  var organisation = $modal.find('.reg-org').text().trim();
 
   // Prepare the email subject
   var emailSubject = 'Certificate Information for ' + certName;
