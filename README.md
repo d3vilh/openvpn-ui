@@ -16,7 +16,7 @@ Quick to deploy and easy to use, makes work with small OpenVPN environments a br
 * Supports OpenVPN **tunnel**(`dev tun`) or **bridge**(`dev tap`) server configurations
 * Easy to **generate**, **download**, **renew**, **revoke**, **delete** and **view** client certificates
 * Client can have secret **passphrase** and **static IP** assigned during client certificate generation
-* Two factor authentication (**2FA**) support
+* Two factor authentication (**[2FA/MFA](https://github.com/d3vilh/openvpn-ui#two-factor-authentication-2fa)**) support
 * **Change predefined EasyRSA vars** including certificates and CRL expiration time
 * **Maintain EasyRSA PKI infrastructure** (init, build-ca, gen-dh, build-crl, gen-ta, revoke)
 * Change OpenVPN Server configuration via web interface
@@ -277,7 +277,7 @@ docker pull d3vilh/openvpn-ui:latest
 2. Confirm new image is pulled with desired version:
 ```shell
 docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
-{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.8"}
+{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.9.3"}
 ```
 3. Stop and remove old container:
 ```shell
@@ -308,15 +308,11 @@ Now when new OpenVPN-UI version is deployed, the DB schema were updated to the l
 
 Now you need to go to `Configuration > OpenVPN Server` in OpenVPN UI webpage and review and update all options fields very carefully.
 
-Here is example of Server configuration page with new fields after the upgrade from version 0.3 to 0.6:
+Here is example of Server configuration page with new fields after the upgrade from version 0.3 to 0.9:
 
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPN-UI-Upgrade.01.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
-You have to update empty fields with options from your current `server.conf` and **only then** press **`Save Both Configs`** button on the same page below.
-
-Please pay attention that before saving config you have to update all the fields with new format, otherwise OpenVPN Server will not start.
-
-> **Important Note!**: In version 0.6 format of some fields has been changed!
+You have to update empty fields with options from your current `server.conf` and **only then** press **`Save Config`** button.
 
 All fields to review are **marked** with <strong><span style="color:#337ab7" title="New format in this version">!</span></strong> sign:
 
@@ -326,16 +322,18 @@ Here is how it should looks like:
 
 <img src="https://raw.githubusercontent.com/d3vilh/openvpn-ui/main/docs/images/OpenVPN-UI-Upgrade.03.png" alt="Openvpn-ui upgrade" width="500" border="1"/>
 
+> **Important Note!**: In version 0.6 format of some fields has been changed! Please pay attention that before saving config you have to update all the fields with new format, otherwise OpenVPN Server will not start.
+
 New `server.conf` file will be applied immedeately, after you press **`Save Config`** button.
 
-Then you have to update `OpenVPN UI`, `OpenVPN Client` and `EasyRSA vars` pages the same way.
+Next, you have to update `OpenVPN UI`, `OpenVPN Client` and `EasyRSA vars` pages the same way.
 
 And you are done with the upgrade process.
 
   <details>
       <summary>DB Schema changes</summary>
 
-   ##### DB Schema changes 0.3 to 0.8 versions
+   ##### DB Schema changes 0.3 to 0.9 versions
    You have nothing to do with the DB schema, just for your information.
 
   | Version | Table             | New Field                     | New OpenVPN UI gui location     |
@@ -638,10 +636,10 @@ After Revoking and Restarting the service, the client will be disconnected and w
 
 ### Two Factor Authentication (2FA)
 Starting from vestion `0.9.3` OpenVPN-UI has Two Factor Authentication (2FA) feature.
-OpenVPN-UI uses oath-toolkit for two factor authentication. Means you don't need any ThirdParty 2FA provider. 
-When generating 2FA-enabled certificates OpenVPN-UI will provide QR code with 2FA secret, which you can scan with your 2FA app (Google Authenticator, Microsoft Authenticator, etc) to get 2FA token for connection with this certificate.
+OpenVPN-UI uses [oath-toolkit](https://savannah.nongnu.org/projects/oath-toolkit/) for two factor authentication. Means you don't need any ThirdParty 2FA provider.
+When generating 2FA-enabled certificates OpenVPN-UI will provide QR code with 2FA secret, which you can scan with your 2FA app (Google Authenticator [iOS](https://apps.apple.com/us/app/google-authenticator/id388497605), [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pcampaignid=web_share), Microsoft Authenticator [iOS](https://apps.apple.com/us/app/microsoft-authenticator/id983156458), [Android](https://play.google.com/store/apps/details?id=com.azure.authenticator&pcampaignid=web_share), etc) to get 2FA token for connection with this certificate.
 
-2FA Certificates `Renewal`, `Revoke` and `Delete` process is the same as for regular certificates.
+2FA Certificates **`Renewal`**, **`Revoke`** and **`Delete`** process is the same as for regular certificates.
 
 #### To enable 2FA you have to:
 
@@ -655,25 +653,28 @@ When generating 2FA-enabled certificates OpenVPN-UI will provide QR code with 2F
   <details>
       <summary>How to generate 2FA Certificate</summary>
 
-Procedure for 2FA generation is the same as for regular certificate, but you have to use uniq `2FA Name` in the e-mail kind format:
+Procedure for 2FA generation is the same as for regular certificate, but you have to use the uniq `2FA Name` in the email-kind format:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-Cert-Create.png" alt="2FA Certificate create" width="600" border="1" />
 
-**`Passphrase`** and **`Client Static IP`** are still optional parameters.
+> **Note**: For Multifactor Authentication (MFA), you can add one more password by completing **`Passphrase`** option. 
+
+Both **`Passphrase`** and **`Client Static IP`** are optional parameters.
+
 When you complete all the fields, click on **`Create`** and your new 2FA Certificate will be ready.
 
-Once this done, you can click on the new certificate in your certificates table to see all the details including QR code for 2FA token:
+Once this done, you can click on the new certificate in the `Certificates` page to see all the details including QR code for 2FA token:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-2FA-Cert-details.png" alt="2FA Certificate details" width="600" border="1" />
 
-You can copy or email this information directly to certificate owner.
+You can copy or email this information directly to happy 2FA certificate owner.
   </details>
 
 #### 2FA certificates usage
   <details>
       <summary>How to add 2FA profile to client</summary>
 
-To use 2FA certificate you have to install 2FA app on your device (**Google Authenticator** [iOS](https://apps.apple.com/us/app/google-authenticator/id388497605), [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pcampaignid=web_share), **Microsoft Authenticator** [iOS](https://apps.apple.com/us/app/microsoft-authenticator/id983156458), [Android](https://play.google.com/store/apps/details?id=com.azure.authenticator&pcampaignid=web_share), etc) and scan QR code from the `Certificate details` page.
+To use 2FA certificate you have to install 2FA app on your device (**Google Authenticator** [iOS](https://apps.apple.com/us/app/google-authenticator/id388497605), [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pcampaignid=web_share), **Microsoft Authenticator** [iOS](https://apps.apple.com/us/app/microsoft-authenticator/id983156458), [Android](https://play.google.com/store/apps/details?id=com.azure.authenticator&pcampaignid=web_share), etc) and scan QR code from the `Certificates` details page.
 
 After scanning QR-code, new Authenticator profile will be created in your 2FA app with the same name as your 2FA Certificate name:
 
@@ -715,7 +716,7 @@ This functionality available via `"Users Profiles"` page:
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileAdmin.png" alt="Username > Profile" width="350" border="1" />
 
 
-Then you can Create new profile and manage other profiles:
+Then, if your user have enough privilegies you can Create new profile or manage profiles of other users:
 
 <img src="https://github.com/d3vilh/openvpn-ui/blob/main/docs/images/OpenVPN-UI-ProfileCreate.png" alt="New OpenVPN UI Profile creation" width="600" border="1" />
 
