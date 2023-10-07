@@ -78,7 +78,7 @@ It has all the necessary scripts for easy installation and lot of additional fea
        restart: always
 ```
 
-You can couple OpenVPN-UI with recommended [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image and here is updated `docker-compose.yml` for it:
+You can couple OpenVPN-UI with recommended [d3vilh/openvpn-server](https://github.com/d3vilh/openvpn-server) image and here is updated `docker-compose.yml` for it:
 
 ```yaml
 ---
@@ -438,7 +438,7 @@ Thats it you are back to the previous version.
 **OpenVPN UI** can be accessed on own port (*e.g. http://localhost:8080), the default user and password is `admin/gagaZush` preconfigured in `config.yml` if you are using Raspberry-Gateway or Openvpn-aws projects. For standalone installation, you can pass your own credentials via environment variables to container (refer to [Manual installation](https://github.com/d3vilh/openvpn-ui#manual-installation)).
 
 ### Container volume
-The container volume can be initialized by using the [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) image with included scripts to automatically generate everything you need on the first run:
+The container volume can be initialized by using the [d3vilh/openvpn-server](https://github.com/d3vilh/openvpn-server) image with included scripts to automatically generate everything you need on the first run:
  - Diffie-Hellman parameters
  - an EasyRSA CA key and certificate
  - a new private key
@@ -479,9 +479,9 @@ This setup use `tun` mode by default, because it works on the widest range of de
 
 The default topology is `subnet`, because it works on the widest range of OS. `p2p`, for instance, does not work on Windows.
 
-The server config by default [specifies](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L40) `push redirect-gateway def1 bypass-dhcp`, meaning that after establishing the VPN connection, all traffic will go through the VPN. This might cause problems if you use local DNS recursors which are not directly reachable, since you will try to reach them through the VPN and they might not answer to you. If that happens, use public DNS resolvers like those of OpenDNS (`208.67.222.222` and `208.67.220.220`) or Google (`8.8.4.4` and `8.8.8.8`).
+The server config by default [specifies](https://github.com/d3vilh/openvpn-server/tree/main/config/server.conf#L35) `push redirect-gateway def1 bypass-dhcp`, meaning that after establishing the VPN connection, all traffic will go through the VPN. This might cause problems if you use local DNS recursors which are not directly reachable, since you will try to reach them through the VPN and they might not answer to you. If that happens, use public DNS resolvers like those of OpenDNS (`208.67.222.222` and `208.67.220.220`) or Google (`8.8.4.4` and `8.8.8.8`).
 
-If you wish to use your local DNS server (Pi-Hile?), you have to modify a [dns-configuration](https://github.com/d3vilh/raspberry-gateway/blob/master/openvpn/config/server.conf#L21) with your local DNS IP address. 
+If you wish to use your local DNS server (Pi-Hile?), you have to modify a [dns-configuration](https://github.com/d3vilh/openvpn-server/tree/main/config/server.conf#L21) with your local DNS IP address. 
 
 This also can be done easy via `"Configuration" > "OpenVPN Server" > "Push DHCP"` options on OpenVPN UI webpage.
 
@@ -501,7 +501,7 @@ To do that, just enter `"Static IP (optional)"` field in `"Certificates"` page a
 
 ### Firewall rules
 
-By default `docker_entrypoint.sh` of [d3vilh/openvpn-server](https://github.com/d3vilh/raspberry-gateway/tree/master/openvpn-server/openvpn-docker) OpenVPN Server container will apply following Firewall rules:
+By default `docker_entrypoint.sh` of [d3vilh/openvpn-server](https://github.com/d3vilh/openvpn-server) OpenVPN Server container will apply following Firewall rules:
 
 ```shell
 IPT MASQ Chains:
