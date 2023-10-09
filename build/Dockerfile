@@ -13,7 +13,6 @@ RUN apk update \
     easy-rsa \
     curl \
     jq \
-    oath-toolkit \
     oath-toolkit-oathtool \
  && rm -rf /var/cache/apk/* && chmod 755 /usr/share/easy-rsa/*
 
