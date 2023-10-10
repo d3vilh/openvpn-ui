@@ -6,7 +6,7 @@ LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 
 # Set the working directory to /tmp1
 WORKDIR /tmp1
-RUN apt-get update && apt-get install git upx-ucl musl-tools -y
+RUN apt-get update && apt-get install git musl-tools -y
 
 # Enable go modules
 ENV GO111MODULE=on
