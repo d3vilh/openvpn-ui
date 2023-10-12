@@ -3,7 +3,7 @@ dev {{ .Device }}
 proto {{ .Proto}}
 remote {{ .ServerAddress }} {{ .OpenVpnServerPort }} {{ .Proto }}
 resolv-retry infinite
-user {{ .OVConfigUser }}
+user nobody
 group nogroup
 persist-tun
 persist-key
