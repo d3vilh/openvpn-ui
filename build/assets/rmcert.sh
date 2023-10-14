@@ -58,7 +58,11 @@ else
     rm -f $OVPN_FILE_PATH
     rm -f $QR_CODE_PATH
     # Remove user from oath.secrets
-    sed -i'.bak' "/${TFA_NAME}/d" $OATH_SECRETS
+    if [ -f "$OATH_SECRETS" ]; then
+      sed -i'.bak' "/${TFA_NAME}/d" "$OATH_SECRETS"
+    else
+      echo "No $OATH_SECRETS nothing to remove"
+    fi
     # Removing the user from the list following the serial number
     sed -i'.bak' "/${CERT_SERIAL}/d" $INDEX
     echo "Database fixed."
