@@ -40,7 +40,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Connection Proto</label>
+        <label for="name">Proto</label>
         <input type="text" class="form-control" id="OpenVpnProto" name="OpenVpnProto" placeholder="Enter external server protocol"
           value="{{ .Settings.Proto }}">
           <span id="helpBlock" class="text-muted">Protocol used by Client for connection</span>
@@ -147,26 +147,26 @@
               <div class="card-body">
               
                 <div class="form-group">
-                    <div class="card-group" id="accordion">
+                    <!--div class="card-group" id="accordion">
                       <span >
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">
                           <i class="fa fa-fw fa-info-circle" style="color: #f39c12; font-size: 15px;"></i> <b style="color: #f39c12;">Please note</b>
                         </a>
                       </span>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                    </div-->
+                    <!--div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                       <div class="card-body">
                         <span class="text-muted">Manual configuration will not push new changes into OpenVPN UI templates DB.</span><br>
                         <span class="text-muted">Best practice is update Client template with Client configuration template.</span><br>
                       </div>
-                    </div>
+                    </div-->
                     <br><textarea type="text" class="form-control my-textarea" name="ClientTemplate" id="ClientTemplate" spellcheck="false" rows="15">{{ .ClientTemplate }}</textarea>
                 </div>
                 
                 {{ .xsrfdata }}
 
                 <button type="button" class="btn btn-default pull-left" style="width: 135px;" data-dismiss="modal">Close</button> &nbsp; &nbsp;
-                <button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save updated configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button>
+                <!--button type="submit" class="btn btn-primary" style="width: 135px;" onclick="return confirm('Are you sure you want to Save updated configuration file?\nTemplate will not be updated!'); window.location.reload();">Save</button-->
               </div>
                  <!-- /.card-body -->
             </form>
@@ -220,9 +220,9 @@ window.addEventListener('load', () => {
     // Check if "themeEditor" is set in localStorage
   checkFuncMode();
   if (localStorage.getItem("theme") === "dark") {
-    createEditor("ClientTemplate", "550px", "clouds_midnight", "ovpn", false);
+    createEditor("ClientTemplate", "550px", "clouds_midnight", "ovpn", true);
   } else {
-    createEditor("ClientTemplate", "550px", "clouds", "ovpn", false);
+    createEditor("ClientTemplate", "550px", "clouds", "ovpn", true);
   }
 });
 </script>
