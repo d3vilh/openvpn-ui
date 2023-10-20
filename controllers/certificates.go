@@ -236,16 +236,29 @@ func validateCertParams(cert NewCertParams) map[string]map[string]string {
 func (c *CertificatesController) saveClientConfig(keysPath string, name string) (string, error) {
 	cfg := clientconfig.New()
 	keysPathCa := filepath.Join(state.GlobalCfg.OVConfigPath, "pki")
-	ServerAddress := models.OVClientConfig{Profile: "default"}
-	_ = ServerAddress.Read("Profile")
-	cfg.ServerAddress = ServerAddress.ServerAddress
-	OpenVpnServerPort := models.OVClientConfig{Profile: "default"}
-	_ = OpenVpnServerPort.Read("Profile")
-	cfg.OpenVpnServerPort = OpenVpnServerPort.OpenVpnServerPort
 
-	AuthUserPass := models.OVClientConfig{Profile: "default"}
-	_ = AuthUserPass.Read("Profile")
-	cfg.AuthUserPass = AuthUserPass.AuthUserPass
+	ovClientConfig := &models.OVClientConfig{Profile: "default"}
+	if err := ovClientConfig.Read("Profile"); err != nil {
+		return "", err
+	}
+	cfg.ServerAddress = ovClientConfig.ServerAddress
+	cfg.OpenVpnServerPort = ovClientConfig.OpenVpnServerPort
+	cfg.AuthUserPass = ovClientConfig.AuthUserPass
+	cfg.ResolveRetry = ovClientConfig.ResolveRetry
+	cfg.OVClientUser = ovClientConfig.OVClientUser
+	cfg.OVClientGroup = ovClientConfig.OVClientGroup
+	cfg.PersistTun = ovClientConfig.PersistTun
+	cfg.PersistKey = ovClientConfig.PersistKey
+	cfg.RemoteCertTLS = ovClientConfig.RemoteCertTLS
+	cfg.RedirectGateway = ovClientConfig.RedirectGateway
+	// cfg.Proto = ovClientConfig.Proto // this will be set from server config
+	cfg.Device = ovClientConfig.Device
+	cfg.AuthNoCache = ovClientConfig.AuthNoCache
+	cfg.TlsClient = ovClientConfig.TlsClient
+	cfg.Verbose = ovClientConfig.Verbose
+	cfg.CustomConfOne = ovClientConfig.CustomConfOne
+	cfg.CustomConfTwo = ovClientConfig.CustomConfTwo
+	cfg.CustomConfThree = ovClientConfig.CustomConfThree
 
 	ca, err := os.ReadFile(filepath.Join(keysPathCa, "ca.crt"))
 	if err != nil {
