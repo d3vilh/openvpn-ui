@@ -88,15 +88,15 @@
                     </td>
                   {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
+                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">{{ .Details.Email }}</b></a>
                     </td>
                   {{else if and (eq .Revocation "") .IsExpiring}}
                     <td>
-                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
+                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">{{ .Details.Email }}</b></a>
                     </td>
                   {{else}}
                     <td>
-                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">Email: {{ .Details.Email }}</b></a>
+                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">{{ .Details.Email }}</b></a>
                     </td>
                   {{end}}
                     <td class="align-middle">

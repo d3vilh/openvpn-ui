@@ -2,18 +2,18 @@ client
 dev {{ .Device }}
 proto {{ .Proto}}
 remote {{ .ServerAddress }} {{ .OpenVpnServerPort }} {{ .Proto }}
-resolv-retry infinite
-user nobody
-group nogroup
-persist-tun
-persist-key
-remote-cert-tls server
+{{ .ResolveRetry }}
+user {{ .OVClientUser }}
+group {{ .OVClientGroup }}
+{{ .PersistTun }}
+{{ .PersistKey }}
+{{ .RemoteCertTLS }}
 cipher {{ .Cipher }}
 auth {{ .Auth }}
-auth-nocache
-tls-client
+{{ .AuthNoCache }}
+{{ .TlsClient }}
 {{ .RedirectGateway }}
-verb 3
+verb {{ .Verbose }}
 {{ .AuthUserPass }}
 {{ .CustomConfOne }}
 {{ .CustomConfTwo }}

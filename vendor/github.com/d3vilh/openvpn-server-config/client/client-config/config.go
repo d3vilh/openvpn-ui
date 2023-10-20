@@ -13,9 +13,18 @@ var defaultConfig = Config{
 	ServerAddress:     "127.0.0.1",
 	Port:              1194,
 	OpenVpnServerPort: "1194",
+	ResolveRetry:      "resolv-retry infinite",
+	OVClientUser:      "nobody",
+	OVClientGroup:     "nogroup",
+	PersistTun:        "persist-tun",
+	PersistKey:        "persist-key",
+	RemoteCertTLS:     "remote-cert-tls server",
 	Cipher:            "AES-256-GCM",
 	RedirectGateway:   "redirect-gateway def1",
 	Auth:              "SHA256",
+	AuthNoCache:       "auth-nocache",
+	TlsClient:         "tls-client",
+	Verbose:           "3",
 	Ca:                "ca.crt",
 	AuthUserPass:      "",                 // "auth-user-pass" when 2fa
 	TFAIssuer:         "MFA%20OpenVPN-UI", // 2FA issuer
@@ -30,6 +39,12 @@ type Config struct {
 	Device            string
 	ServerAddress     string
 	Port              int
+	ResolveRetry      string
+	OVClientUser      string
+	OVClientGroup     string
+	PersistTun        string
+	PersistKey        string
+	RemoteCertTLS     string
 	OpenVpnServerPort string
 	Proto             string
 
@@ -41,6 +56,9 @@ type Config struct {
 	Cipher          string
 	RedirectGateway string
 	Auth            string
+	AuthNoCache     string
+	TlsClient       string
+	Verbose         string
 	AuthUserPass    string
 	TFAIssuer       string
 

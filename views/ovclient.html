@@ -76,6 +76,81 @@
       </div>
 
       <div class="form-group">
+        <label for="name">Resolv-retry</label> <strong><span style="color:#337ab7" title="&quot;resolv-retry infinite&quot;">!</span></strong>
+        <input type="text" class="form-control" id="ResolveRetry" name="ResolveRetry" placeholder="resolv-retry infinite"
+          value="{{ .Settings.ResolveRetry }}">
+          <span id="helpBlock" class="text-muted">Used by Client to. Comment it if you don't need this - &quot;#resolv-retry infinite&quot;</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">User</label> <strong><span style="color:#337ab7" title="&quot;nobody&quot;">!</span></strong>
+        <input type="text" class="form-control" id="OVClientUser" name="OVClientUser" placeholder="nobody"
+          value="{{ .Settings.OVClientUser }}">
+          <span id="helpBlock" class="text-muted">Used by Client to.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Group</label> <strong><span style="color:#337ab7" title="&quot;nogroup&quot;">!</span></strong>
+        <input type="text" class="form-control" id="OVClientGroup" name="OVClientGroup" placeholder="nogroup"
+          value="{{ .Settings.OVClientGroup }}">
+          <span id="helpBlock" class="text-muted">Used by Client to.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Persist-tun</label> <strong><span style="color:#337ab7" title="&quot;persist-tun&quot;">!</span></strong>
+        <input type="text" class="form-control" id="PersistTun" name="PersistTun" placeholder="persist-tun"
+          value="{{ .Settings.PersistTun }}">
+          <span id="helpBlock" class="text-muted">Used by Client to.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Persist-key</label> <strong><span style="color:#337ab7" title="&quot;persist-key&quot;">!</span></strong>
+        <input type="text" class="form-control" id="PersistKey" name="PersistKey" placeholder="persist-key"
+          value="{{ .Settings.PersistKey }}">
+          <span id="helpBlock" class="text-muted">Used by Client to.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Remote-cert-tls</label> <strong><span style="color:#337ab7" title="&quot;remote-cert-tls server&quot;">!</span></strong>
+        <input type="text" class="form-control" id="RemoteCertTLS" name="RemoteCertTLS" placeholder="remote-cert-tls server"
+          value="{{ .Settings.RemoteCertTLS }}">
+          <span id="helpBlock" class="text-muted">Used by Client to. Comment it if you don't need this - &quot;#remote-cert-tls server&quot;</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Cipher</label>
+        <input type="text" class="form-control" id="Cipher" name="Cipher" placeholder="AES-256-CBC"
+          value="{{ .Settings.Cipher }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Auth</label>
+        <input type="text" class="form-control" id="Auth" name="Auth" placeholder="SHA512"
+          value="{{ .Settings.Auth }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Auth-nocache</label> <strong><span style="color:#337ab7" title="&quot;auth-nocache&quot;">!</span></strong>
+        <input type="text" class="form-control" id="AuthNoCache" name="AuthNoCache" placeholder="auth-nocache"
+          value="{{ .Settings.AuthNoCache }}">
+          <span id="helpBlock" class="text-muted">Used by Client to. Comment it if you don't need this - &quot;#auth-nocache&quot;</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Tls-client</label> <strong><span style="color:#337ab7" title="&quot;tls-client&quot;">!</span></strong>
+        <input type="text" class="form-control" id="TlsClient" name="TlsClient" placeholder="tls-client"
+          value="{{ .Settings.TlsClient }}">
+          <span id="helpBlock" class="text-muted">Used by Client to. Comment it if you don't need this - &quot;#tls-client&quot;</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Verbose</label> <strong><span style="color:#337ab7" title="&quot;3&quot;">!</span></strong>
+        <input type="text" class="form-control" id="Verbose" name="Verbose" placeholder="3"
+          value="{{ .Settings.Verbose }}">
+          <span id="helpBlock" class="text-muted">Client logs verbose level. 0 to 4, where 0 is no logs, 4 - everything.</span>
+      </div>
+
+      <div class="form-group">
         <label for="name">Custom Client Template Option One</label> 
         <input type="text" class="form-control" id="CustomConfOne" name="CustomConfOne" placeholder="#Custom Option One"
           value="{{ .Settings.CustomConfOne }}">
@@ -109,17 +184,6 @@
           value="{{ .Settings.Proto }}">
       </div>
 
-      <div class="form-group">
-        <label for="name">Cipher</label>
-        <input type="text" class="form-control" id="Cipher" name="Cipher" placeholder="AES-256-CBC"
-          value="{{ .Settings.Cipher }}">
-      </div>
-
-      <div class="form-group">
-        <label for="name">Auth</label>
-        <input type="text" class="form-control" id="Auth" name="Auth" placeholder="SHA512"
-          value="{{ .Settings.Auth }}">
-      </div>
      -->
       {{ .xsrfdata }}
 

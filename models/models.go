@@ -183,9 +183,18 @@ func CreateDefaultOVClientConfig(configDir string, ovConfigPath string, address 
 			Proto:             "udp",
 			ServerAddress:     "127.0.0.1",
 			OpenVpnServerPort: "1194",
+			ResolveRetry:      "resolv-retry infinite",
+			OVClientUser:      "nobody",
+			OVClientGroup:     "nogroup",
+			PersistTun:        "persist-tun",
+			PersistKey:        "persist-key",
+			RemoteCertTLS:     "remote-cert-tls server",
 			Cipher:            "AES-256-GCM",
 			RedirectGateway:   "redirect-gateway def1",
 			Auth:              "SHA512",
+			AuthNoCache:       "auth-nocache",
+			TlsClient:         "tls-client",
+			Verbose:           "3",
 			AuthUserPass:      "",                 // "auth-user-pass" when 2fa
 			TFAIssuer:         "MFA%20OpenVPN-UI", // 2FA issuer
 			CustomConfOne:     "#Custom Option One",
