@@ -277,7 +277,7 @@ docker pull d3vilh/openvpn-ui:latest
 2. Confirm new image is pulled with desired version:
 ```shell
 docker inspect --format='{{json .Config.Labels}}' d3vilh/openvpn-ui:latest
-{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.9.3"}
+{"maintainer":"Mr.Philipp <d3vilh@github.com>","version":"0.9.4"}
 ```
 3. Stop and remove old container:
 ```shell
