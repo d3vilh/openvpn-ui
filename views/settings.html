@@ -27,27 +27,43 @@
       </div>
       Disabled profile -->
       <div class="form-group">
-        <label for="name">Management interface address</label>
-        <input type="text" class="form-control" id="MIAddress" title="OpenVPN management interface address."  name="MIAddress" placeholder="openvpn:2080"
-          value="{{ .Settings.MIAddress }}">
+        <label class="col-form-label" for="name">Management interface address</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-gear"></i></span>
+          </div>
+          <input type="text" class="form-control" id="MIAddress" title="OpenVPN management interface address."  name="MIAddress" placeholder="openvpn:2080" value="{{ .Settings.MIAddress }}">
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="name">Management interface protocol</label>
-        <input type="text" class="form-control" id="MINetwork" title="OpenVPN management interface protocol." name="MINetwork" placeholder="tcp"
-          value="{{ .Settings.MINetwork }}">
+        <label class="col-form-label" for="name">Management interface protocol</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-exchange"></i></span>
+          </div>
+          <input type="text" class="form-control" id="MINetwork" title="OpenVPN management interface protocol." name="MINetwork" placeholder="tcp" value="{{ .Settings.MINetwork }}">
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="name">OpenVPN ConfigPath</label>
-        <input type="text" class="form-control" id="OVConfigPath" name="OVConfigPath" title="OpenVPN configuration path." placeholder="/etc/openvpn"
-          value="{{ .Settings.OVConfigPath }}">
+        <label class="col-form-label" for="name">OpenVPN ConfigPath</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-folder"></i></span>
+          </div>
+          <input type="text" class="form-control" id="OVConfigPath" name="OVConfigPath" title="OpenVPN configuration path." placeholder="/etc/openvpn" value="{{ .Settings.OVConfigPath }}">
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="name">EasyRSA ConfigPath</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
-        <input type="text" class="form-control" id="EasyRSAPath" name="EasyRSAPath" title="EasyRSA configuration path." placeholder="/usr/share/easy-rsa"
-          value="{{ .Settings.EasyRSAPath }}">
+        <label class="col-form-label" for="name">EasyRSA ConfigPath</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-folder"></i></span>
+          </div>
+          <input type="text" class="form-control" id="EasyRSAPath" name="EasyRSAPath" title="EasyRSA configuration path." placeholder="/usr/share/easy-rsa" value="{{ .Settings.EasyRSAPath }}">
+        </div>
       </div>
 
       {{ .xsrfdata }}

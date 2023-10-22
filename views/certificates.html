@@ -30,7 +30,7 @@
               <th>Static IP</th>
               <th>Expiration</th>
               <th>Revocation</th>
-              <th>Serial</th>
+              <!--th>Serial</th-->
               <th>Details</th>
               <th>Actions</th>
             </tr>
@@ -64,15 +64,15 @@
 
                   {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
+                      <a class="btn btn-success btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{else if and (eq .Revocation "") .IsExpiring}}
                     <td>
-                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
+                      <a class="btn btn-warning btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{else}}
                     <td>
-                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
+                      <a class="btn btn-danger btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{end}}
 
@@ -80,41 +80,44 @@
                     <td></td>
                   {{else}}
                     <td>
-                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 70%;">{{ dateformat .RevocationT "2006-01-02 15:04"}}</b></a>
+                      <a class="btn btn-danger btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ dateformat .RevocationT "2006-01-02 15:04"}}</b></a>
                     </td>
                   {{end}}
-                    <td>
+                    <!--td>
                       <p class="text-muted" style="font-size: 70%;">{{ .Serial }}</p>
-                    </td>
+                    </td-->
                   {{if and (eq .Revocation "") (not .IsExpiring)}}
                     <td>
-                      <a class="btn btn-success btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">{{ .Details.Email }}</b></a>
+                      <a class="btn btn-success btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ .Details.CN }}</b></a>
+                      <a class="btn btn-success btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ .Details.Email }}</b></a>
                     </td>
                   {{else if and (eq .Revocation "") .IsExpiring}}
                     <td>
-                      <a class="btn btn-warning btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">{{ .Details.Email }}</b></a>
+                      <a class="btn btn-warning btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ .Details.CN }}</b></a>
+                      <a class="btn btn-warning btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ .Details.Email }}</b></a>
                     </td>
                   {{else}}
                     <td>
-                      <a class="btn btn-danger btn-xs" style="font-size: 70%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 75%;">{{ .Details.Email }}</b></a>
+                      <a class="btn btn-danger btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ .Details.CN }}</b></a>
+                      <a class="btn btn-danger btn-xs" style="font-size: 80%;" data-toggle="modal" data-target="#{{ .Details.CN }}-modal"><b style="font-size: 80%;">{{ .Details.Email }}</b></a>
                     </td>
                   {{end}}
                     <td class="align-middle">
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-primary btn-xs" title="Renew" style="font-size: 70%;">Renew</a>
+                      <a href="{{urlfor "CertificatesController.Renew" ":key" .Details.Name ":localip" .Details.LocalIP ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-primary btn-xs" title="Renew" style="font-size: 80%;">Renew</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Renew</a>
                   {{end}}
 
                   {{ if and (eq .Revocation "") (ne .Details.Name "") }}
-                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 70%;">Revoke</a>
+                      <a href="{{urlfor "CertificatesController.Revoke" ":key" .Details.Name ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-warning btn-xs" title="Revoke" style="font-size: 80%;">Revoke</a>
                   {{else}}
                       <a class="btn btn-default btn-xs" disabled>Revoke</a>
                   {{end}}
                   {{ if eq .Revocation ""}}
                       <a class="btn btn-default btn-xs" disabled>Delete</a>
                   {{else}}
-                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 70%;">Delete</a>
+                      <a href="{{urlfor "CertificatesController.Burn" ":key" .Details.CN ":serial" .Serial ":tfaname" .Details.TFAName}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 80%;">Delete</a>
                   {{end}}
                     </td>
               </tr>
@@ -141,11 +144,11 @@
                         <dd class="copy-details cert-name"><h4 style="color: #3c8dbc">{{ .Details.CN }}</h4></dd>
                         {{end}}
                         <dt class="copy-details">Status: </dt>
-                        <dd class="copy-details">{{if eq .EntryType "V"}}<span class="badge bg-success">Valid</span>{{else if eq .EntryType "R"}}<span class="badge bg-danger">Revoked</span>{{else}}Unknown{{end}}</dd>
+                        <dd class="copy-details">{{if eq .EntryType "V"}}<span class="badge bg-success" style="font-size: 110%;" >Valid</span>{{else if eq .EntryType "R"}}<span class="badge bg-danger" style="font-size: 110%;">Revoked</span>{{else}}Unknown{{end}}</dd>
                         <dt class="copy-details">Expiration Time: </dt>
-                        <dd class="copy-details exp-time">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-warning">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span><b> This Certificate will soon expire!</b>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
+                        <dd class="copy-details exp-time">{{ if and .IsExpiring (eq .Revocation "") (ne .Details.Name "") }}<span class="badge bg-warning" style="font-size: 110%;">{{ dateformat .ExpirationT "2006-01-02 15:04"}} <b> This Certificate will soon expire!</b></span>{{else}}<span class="badge bg-success">{{ dateformat .ExpirationT "2006-01-02 15:04"}}</span>{{end}}</dd>
                         <dt class="copy-details">Revoke Time: </dt>
-                        <dd class="copy-details">{{if ne .Revocation ""}} {{ dateformat .RevocationT "2006-01-02 15:04"}} {{else}}<span id="helpBlock" class="text-muted">Not Revoked</span>{{end}}</dd>
+                        <dd class="copy-details">{{if ne .Revocation ""}} <span class="badge bg-warning" style="font-size: 110%;">{{ dateformat .RevocationT "2006-01-02 15:04"}}</span> {{else}}<span id="helpBlock" class="text-muted">Not Revoked</span>{{end}}</dd>
                         <dt class="copy-details">IP Address: </dt>
                         <dd class="copy-details"><span id="helpBlock" class="text-muted">{{ .Details.LocalIP }}</span></dd>
                         <dt class="copy-details">Serial: </dt>
