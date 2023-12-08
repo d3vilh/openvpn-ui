@@ -1,6 +1,7 @@
 #!/bin/bash
 # Exit immediately if a command exits with a non-zero status
 # VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
+# based on bugsyb@github.com script - https://github.com/bugsyb/openvpn-web-ui-docker-build/blob/a791ea279deaf9459fd4a2049a0fdb2fe222e37a/build_openvpn-ui.sh
 set -e
 
 # Determine the machine architecture
