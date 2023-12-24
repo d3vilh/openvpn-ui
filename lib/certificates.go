@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 
@@ -137,6 +138,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 		if !exists && !haveip { // if no exists and no ip
 			logs.Info("No password and no ip")
 			staticip = "dynamic.pool"
+			org = strings.Trim(strconv.Quote(org), "\"")
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
