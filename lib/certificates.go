@@ -150,7 +150,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
 						"export EASYRSA_REQ_PROVINCE=%s &&"+
 						"export EASYRSA_REQ_CITY=%s &&"+
-						"export EASYRSA_REQ_ORG=%s &&"+
+						"export EASYRSA_REQ_ORG=\"%s\" &&"+
 						"export EASYRSA_REQ_OU=%s &&"+
 						"./genclient.sh %s %s", name, tfaname, tfaissuer, expiredays, email, country, province, city, org, orgunit, name, staticip))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
