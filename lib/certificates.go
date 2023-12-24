@@ -121,6 +121,9 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
+	//org = strings.Trim(strconv.Quote(org), "\"")
+	org = strconv.Quote(org)
+	logs.Info("Org set to: %v", org)
 	existsError := errors.New("Error! There is already a valid or invalid certificate for the name \"" + name + "\"")
 	certs, err := ReadCerts(path)
 	if err != nil {
@@ -138,7 +141,6 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 		if !exists && !haveip { // if no exists and no ip
 			logs.Info("No password and no ip")
 			staticip = "dynamic.pool"
-			org = strings.Trim(strconv.Quote(org), "\"")
 			cmd := exec.Command("/bin/bash", "-c",
 				fmt.Sprintf(
 					"cd /opt/scripts/ && "+
@@ -150,7 +152,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 						"export EASYRSA_REQ_COUNTRY=%s &&"+
 						"export EASYRSA_REQ_PROVINCE=%s &&"+
 						"export EASYRSA_REQ_CITY=%s &&"+
-						"export EASYRSA_REQ_ORG=\"%s\" &&"+
+						"export EASYRSA_REQ_ORG=%s &&"+
 						"export EASYRSA_REQ_OU=%s &&"+
 						"./genclient.sh %s %s", name, tfaname, tfaissuer, expiredays, email, country, province, city, org, orgunit, name, staticip))
 			cmd.Dir = state.GlobalCfg.OVConfigPath
