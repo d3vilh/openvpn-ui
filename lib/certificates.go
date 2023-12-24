@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 	"time"
 
@@ -122,9 +121,9 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 	haveip := staticip != ""
 	pass := passphrase != ""
 	// Quote the org string
-	org = strconv.Quote(org)
+	//org = strconv.Quote(org)
 	// Escape any dots within the org string
-	org = strings.ReplaceAll(org, ".", "\\.")
+	//org = strings.ReplaceAll(org, ".", "\\.")
 	logs.Info("Org set to: %v", org)
 	existsError := errors.New("Error! There is already a valid or invalid certificate for the name \"" + name + "\"")
 	certs, err := ReadCerts(path)
