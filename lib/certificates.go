@@ -120,11 +120,7 @@ func CreateCertificate(name string, staticip string, passphrase string, expireda
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
 	haveip := staticip != ""
 	pass := passphrase != ""
-	// Quote the org string
-	//org = strconv.Quote(org)
-	// Escape any dots within the org string
-	//org = strings.ReplaceAll(org, ".", "\\.")
-	logs.Info("Org set to: %v", org)
+	//logs.Info("Org set to: %v", org)
 	existsError := errors.New("Error! There is already a valid or invalid certificate for the name \"" + name + "\"")
 	certs, err := ReadCerts(path)
 	if err != nil {
