@@ -1,10 +1,8 @@
 #!/bin/bash
-# Exit immediately if a command exits with a non-zero status
-# VERSION 1.2 by d3vilh@github.com aka Mr. Philipp
-# based on bugsyb@github.com script - https://github.com/bugsyb/openvpn-web-ui-docker-build/blob/a791ea279deaf9459fd4a2049a0fdb2fe222e37a/build_openvpn-ui.sh
-set -e
+# VERSION 1.3 by d3vilh@github.com aka Mr. Philipp. Thanks bugsyb@github.com for all the efforts ;)
+set -e  # Exit immediately if a command exits with a non-zero status. Set -x option for debugging
 
-# Determine the machine architecture
+# Define the machine architecture
 # PLATFORM="linux/amd64" # arm64v8 = "linux/arm64/v8", arm32v5 - "linux/arm/v5", arm32v7 - "linux/arm/v7", amd64 - "linux/amd64"
 ARCH=$(uname -m)
 case $ARCH in
@@ -47,24 +45,33 @@ printf "Dockerfiles updated \n\033[1;34mBuilding Golang and Bee enviroment.\033[
 # Build golang & bee environment
 docker build --platform=$PLATFORM -f Dockerfile-beego -t local/beego-v8 -t local/beego-v8:latest .
 printf "\033[1;34mBuilding OpenVPN-UI and qrencode binaries.\033[0m\n"
-./openvpn-ui-pack2.sh
 
+# Run a beego-v8 container to build qrencode and execute bee pack
+time docker run \
+    -v "$PWD/../":/go/src/github.com/d3vilh/openvpn-ui \
+    -e GO111MODULE='auto' \
+    -e CGO_ENABLED=1 \
+    --rm \
+    -w /usr/src/myapp \
+    local/beego-v8 \
+sh -c "cd /go/src/github.com/d3vilh/openvpn-ui/ && go env -w GOFLAGS="-buildvcs=false" && bee version && CGO_ENABLED=1 CC=musl-gcc bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs' && cd /app/qrencode && go build -o qrencode main.go && chmod +x /app/qrencode/qrencode && cp -p /app/qrencode/qrencode /go/src/github.com/d3vilh/openvpn-ui/"
 printf "OpenVPN-UI and qrencode were built \n\033[1;34mBuilding OpenVPN-UI image.\033[0m\n"
-# Build OpenVPN-UI image
-PKGFILE="openvpn-ui.tar.gz"
-QRFILE="qrencode"
-cp -f ../$PKGFILE ./
-cp -f ../$QRFILE ./
 
+# Build OpenVPN-UI image
+QRFILE="qrencode"
+UIFILE="openvpn-ui.tar.gz"
+cp -f ../$QRFILE ./
+cp -f ../$UIFILE ./
+
+# Build openvpn-ui image
 docker build -t local/openvpn-ui .
-rm -f $PKGFILE; rm -f $(basename $PKGFILE); #rm -f $QRFILE; 
+rm -f $UIFILE; rm -f $(basename $UIFILE); #rm -f $QRFILE; 
 printf "\033[1;34mAll done.\033[0m\n"
+
 # Benchmarking the end time record
 end_time=$(date +%s)
-
 # Calculate the execution time in seconds
 execution_time=$((end_time - start_time))
-
 # Calculate the execution time in minutes and seconds
 minutes=$((execution_time / 60))
 seconds=$((execution_time % 60))
