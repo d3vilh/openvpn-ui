@@ -4,8 +4,8 @@ FROM DEFINE-YOUR-ARCH
 
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 
-# Set the working directory to /tmp1
-WORKDIR /tmp1
+# Set the working directory to /beego and installing dependencies
+WORKDIR /beego
 RUN apt-get update && apt-get install git musl-tools -y
 
 # Enable go modules
@@ -21,10 +21,9 @@ RUN go mod download
 # Install the beego and bee packages
 RUN go install github.com/beego/bee/v2@develop
 
-# qrencode build
+# Setting working directory to /app and getting qrencode from github
 WORKDIR /app
 RUN git clone https://github.com/d3vilh/qrencode
-#RUN cd qrencode && go build -o qrencode main.go && chmod +x qrencode
 
 # Set the working directory to /
 WORKDIR /
