@@ -46,8 +46,11 @@ For the best experience, it is recommended to deploy it within a Docker environm
 
 However it works fine as standalone application with standalove OpenVPN server as well.
 ### Intel x86 and AMD64 platforms
-For Baremetal x86-64 servers, Cloud or VM installation, please use [openvpn-aws](https://github.com/d3vilh/openvpn-aws) project.
-It includes all the necessary scripts for easy installation of OpenVPN-UI and OpenVPN server on any x86-64 platform.
+You can run both containers from the official [openvpn-server](https://github.com/d3vilh/openvpn-server) repository, `docker-compose-openvpnui.yml`.
+It includes all the files in its main directory. 
+
+For automated installation on baremetal x86-64 servers, Cloud or VM installation, please use [openvpn-aws](https://github.com/d3vilh/openvpn-aws) project.
+It, as well, includes all the necessary scripts for easy installation of OpenVPN-UI and OpenVPN server on any x86-64 platform.
 
 ### Raspberry-pi and other ARM platforms
 For Raspberry-Pi and other ARM devices, consider [Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway) project.
