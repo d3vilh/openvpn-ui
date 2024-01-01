@@ -56,6 +56,9 @@ It, as well, includes all the necessary scripts for easy installation of OpenVPN
 For Raspberry-Pi and other ARM devices, consider [Raspberry-Gateway](https://github.com/d3vilh/raspberry-gateway) project.
 It has all the necessary scripts for easy installation and lot of additional features.
 
+You can run both containers from the [openvpn-server](https://github.com/d3vilh/openvpn-server) repository as well (use `docker-compose-openvpnui.yml`).
+It includes all the files in its main directory, as well. 
+
 ### Manual installation
 
   <details>
