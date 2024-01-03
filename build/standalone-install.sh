@@ -65,14 +65,12 @@ bee version
 bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs'
 
 # Build qrencode
+echo "Building qrencode"
 cd build/qrencode
 go build -o qrencode main.go
 chmod +x qrencode
+echo "Moving qrencode to GOPATH"
 mv qrencode $(go env GOPATH)/bin
 cd ../
-
-echo "Your application is packed, enjoy - "
-
-printf "OpenVPN-UI and qrencode were built \n\033[1;34mBuilding OpenVPN-UI image.\033[0m\n"
 
 printf "\033[1;34mAll done.\033[0m\n"
