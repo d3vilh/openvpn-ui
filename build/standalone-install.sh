@@ -19,6 +19,7 @@ fi
 # How to install Golang 1.21 on x86 linux:
 # wget https://golang.org/dl/go1.21.5.linux-amd64.tar.gz
 # sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+# export PATH=$PATH:/usr/local/go/bin
 # echo "export PATH=$PATH:$(go env GOPATH)/bin" >> ~/.bashrc
 # source ~/.bashrc
 
@@ -46,6 +47,7 @@ go mod download
 
 echo "Installing BeeGo v2"
 go install github.com/beego/bee/v2@develop
+source ~/.bashrc # reload bashrc to get bee command
 echo "Clonning qrencode into build directory"
 git clone https://github.com/d3vilh/qrencode
 
