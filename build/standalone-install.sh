@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# VERSION 0.1 by d3vilh@github.com aka Mr. Philipp.
 #
 #  DRAFT! DO NOT USE IT!
 #
