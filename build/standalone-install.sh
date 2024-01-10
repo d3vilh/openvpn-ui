@@ -1,27 +1,37 @@
 #!/bin/bash
 # VERSION 0.1 by d3vilh@github.com aka Mr. Philipp.
 #
-#  DRAFT! DO NOT USE IT!
+# DRAFT! DO NOT USE IT!
 #
 
 # All the variables
-QRFILE="qrencode"
-UIFILE="openvpn-ui.tar.gz"
+GOVERSION="1.21.5"
 
 # Check if Go is installed and the version is 1.21
-go_version=$(go version | awk '{print $3}' | tr -d "go")
-if [[ -z "$go_version" || "$go_version" < "1.21" ]]
+go_version=$(go version 2>/dev/null | awk '{print $3}' | tr -d "go")
+if [[ -z "$go_version" || "$go_version" < $GOVERSION ]]
 then
-    echo "Golang is not installed or the version is less than 1.21!"
-    exit 1
+    echo "Golang version 1.21 is not installed."
+    read -p "Would you like to install it? (y/n) " -n 1 -r
+    echo    # move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        # Install Go
+        wget https://golang.org/dl/go1.21.5.linux-amd64.tar.gz # x86_64 only, at the monment.
+        sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
+        echo "export PATH=$PATH:$(go env GOPATH)/bin" >> ~/.bashrc
+        source ~/.bashrc
+    else
+        read -p "Would you like to continue without Golang 1.21 installation? (y/n) " -n 1 -r
+        echo    # move to a new line
+        if [[ ! $REPLY =~ ^[Yy]$ ]]
+        then
+            echo "Installation terminated by user."
+            exit 1
+        fi
+    fi
 fi
-
-# How to install Golang 1.21 on x86 linux:
-# wget https://golang.org/dl/go1.21.5.linux-amd64.tar.gz
-# sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
-# export PATH=$PATH:/usr/local/go/bin
-# echo "export PATH=$PATH:$(go env GOPATH)/bin" >> ~/.bashrc
-# source ~/.bashrc
 
 # Description
 echo "This script will install OpenVPN-UI and all the dependencies on your local environment. No containers will be used."
@@ -39,7 +49,7 @@ echo "Updating current enviroment with apt-get update"
 sudo apt-get update -y
 
 # Install necessary tools
-echo "Installing dependencies (go bee sed gcc)"
+echo "Installing dependencies (sed, gcc, git, musl-tools, easy-rsa, curl, jq, oathtool)"
 sudo apt-get install -y sed gcc git musl-tools easy-rsa curl jq oathtool
 
 echo "Downloading all go modules (go mod download)"
@@ -58,7 +68,7 @@ export CC=musl-gcc
 
 # Change project directory
 cd ../
-
+echo "Building and packing OpenVPN-UI"
 # Execute bee pack
 go env -w GOFLAGS="-buildvcs=false"
 bee version
