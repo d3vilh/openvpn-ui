@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 0.1 by d3vilh@github.com aka Mr. Philipp.
+# VERSION 0.2 by d3vilh@github.com aka Mr. Philipp.
 #
 # DRAFT! DO NOT USE IT!
 #
@@ -45,42 +45,76 @@ then
 fi
 
 # Update your system
-echo "Updating current enviroment with apt-get update"
-sudo apt-get update -y
+read -p "Would you like to run apt-get update? (y/n) " -n 1 -r
+echo    # move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    # Update your system
+    echo "Updating current environment with apt-get update"
+    sudo apt-get update -y
+fi
 
 # Install necessary tools
-echo "Installing dependencies (sed, gcc, git, musl-tools, easy-rsa, curl, jq, oathtool)"
-sudo apt-get install -y sed gcc git musl-tools easy-rsa curl jq oathtool
+read -p "Would you like to install the dependencies (sed, gcc, git, musl-tools, easy-rsa, curl, jq, oathtool)? (y/n) " -n 1 -r
+echo    # move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    # Install necessary tools
+    echo "Installing dependencies (sed, gcc, git, musl-tools, easy-rsa, curl, jq, oathtool)"
+    sudo apt-get install -y sed gcc git musl-tools easy-rsa curl jq oathtool
+fi
 
-echo "Downloading all go modules (go mod download)"
-go mod download
+# Go Modules download
+read -p "Would you like to download all necessary Go modules? (y/n) " -n 1 -r
+echo    # move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    # Download all Go modules
+    echo "Downloading all Go modules (go mod download)"
+    go mod download
+fi
 
-echo "Installing BeeGo v2"
-go install github.com/beego/bee/v2@develop
-source ~/.bashrc # reload bashrc to get bee command
-echo "Clonning qrencode into build directory"
-git clone https://github.com/d3vilh/qrencode
+read -p "Would you like to install Beego v2? (y/n) " -n 1 -r
+echo    # move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    # Install Beego
+    echo "Installing BeeGo v2"
+    go install github.com/beego/bee/v2@develop
+fi
 
-# Set environment variables
-export GO111MODULE='auto'
-export CGO_ENABLED=1
-export CC=musl-gcc 
+# Installing OpenVPN-UI and qrencode
+read -p "Would you like to install OpenVPN-UI and qrencode? (y/n) " -n 1 -r
+echo    # move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    # Install OpenVPN-UI and qrencode
+    echo "Installing OpenVPN-UI and qrencode"
+    source ~/.bashrc # reload bashrc to get bee command
+    echo "Cloning qrencode into build directory"
+    git clone https://github.com/d3vilh/qrencode
 
-# Change project directory
-cd ../
-echo "Building and packing OpenVPN-UI"
-# Execute bee pack
-go env -w GOFLAGS="-buildvcs=false"
-bee version
-bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs'
+    # Set environment variables
+    export GO111MODULE='auto'
+    export CGO_ENABLED=1
+    export CC=musl-gcc 
 
-# Build qrencode
-echo "Building qrencode"
-cd build/qrencode
-go build -o qrencode main.go
-chmod +x qrencode
-echo "Moving qrencode to GOPATH"
-mv qrencode $(go env GOPATH)/bin
-cd ../
+    # Packing openvpn-ui
+    cd ../
+    echo "Building and packing OpenVPN-UI"
+    # Execute bee pack
+    go env -w GOFLAGS="-buildvcs=false"
+    bee version
+    bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs'
+
+    # Build qrencode
+    echo "Building qrencode"
+    cd build/qrencode
+    go build -o qrencode main.go
+    chmod +x qrencode
+    echo "Moving qrencode to GOPATH"
+    mv qrencode $(go env GOPATH)/bin
+    cd ../
+fi
 
 printf "\033[1;34mAll done.\033[0m\n"
