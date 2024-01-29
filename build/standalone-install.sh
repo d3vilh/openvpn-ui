@@ -104,6 +104,7 @@ then
     echo "Building and packing OpenVPN-UI"
     # Execute bee pack
     go env -w GOFLAGS="-buildvcs=false"
+    source ~/.bashrc
     bee version
     bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs'
 
