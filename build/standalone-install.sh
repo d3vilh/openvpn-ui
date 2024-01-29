@@ -103,6 +103,7 @@ then
     cd ../
     echo "Building and packing OpenVPN-UI"
     # Execute bee pack
+    export PATH=$PATH:$(go env GOPATH)/bin
     go env -w GOFLAGS="-buildvcs=false"
     source ~/.bashrc
     bee version
