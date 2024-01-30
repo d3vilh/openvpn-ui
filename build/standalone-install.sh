@@ -1,11 +1,19 @@
 #!/bin/bash
 # VERSION 0.2 by d3vilh@github.com aka Mr. Philipp.
 #
-# DRAFT! DO NOT USE IT!
-#
 
 # All the variables
 GOVERSION="1.21.5"
+
+# Description
+echo "This script will install OpenVPN-UI and all the dependencies on your local environment. No containers will be used."
+# Ask for confirmation
+read -p "Do you want to continue? (y/n)" -n 1 -r
+echo    # move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
 
 # Check if Go is installed and the version is 1.21
 go_version=$(go version 2>/dev/null | awk '{print $3}' | tr -d "go")
@@ -31,17 +39,6 @@ then
             exit 1
         fi
     fi
-fi
-
-# Description
-echo "This script will install OpenVPN-UI and all the dependencies on your local environment. No containers will be used."
-echo "THIS SCRIPT IS IN DEVELOPMENT AND NOT READY FOR ANY USE."
-# Ask for confirmation
-read -p "Do you want to continue? (y/n)" -n 1 -r
-echo    # move to a new line
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit 1
 fi
 
 # Update your system
