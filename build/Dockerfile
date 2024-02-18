@@ -3,7 +3,7 @@
 
 FROM DEFINE-YOUR-ARCH
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
-LABEL version="0.9.4.1"
+LABEL version="0.9.5.1"
 WORKDIR /opt
 EXPOSE 8080/tcp
 

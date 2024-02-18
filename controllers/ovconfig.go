@@ -37,7 +37,7 @@ func (c *OVConfigController) Get() {
 	_ = besettings.Read("Profile")
 	c.Data["BeeSettings"] = &besettings
 
-	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
+	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "server.conf")
 	serverConf, err := os.ReadFile(destPath)
 	if err != nil {
 		logs.Error(err)
@@ -76,7 +76,7 @@ func (c *OVConfigController) Post() {
 	c.Data["Settings"] = &cfg
 	logs.Info("Settings data: %v", c.Data["Settings"])
 
-	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
+	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "server.conf")
 	logs.Info("Post: Saving configuration to file according to template")
 	err := config.SaveToFile(filepath.Join(c.ConfigDir, "openvpn-server-config.tpl"), cfg.Config, destPath)
 	if err != nil {
@@ -130,7 +130,7 @@ func (c *OVConfigController) Edit() {
 	c.Data["Settings"] = &cfg
 
 	//logs.Info("Starting Edit method in OVConfigController")
-	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "config/server.conf")
+	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "server.conf")
 
 	err := lib.ConfSaveToFile(destPath, c.GetString("ServerConfig"))
 	if err != nil {
