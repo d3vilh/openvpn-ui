@@ -162,7 +162,7 @@ func CreateDefaultOVConfig(configDir string, ovConfigPath string, address string
 		} else {
 			logs.Debug(c)
 		}
-		serverConfig := filepath.Join(ovConfigPath, "config/server.conf")
+		serverConfig := filepath.Join(ovConfigPath, "server.conf")
 		if _, err = os.Stat(serverConfig); os.IsNotExist(err) {
 			if err = config.SaveToFile(filepath.Join(configDir, "openvpn-server-config.tpl"), c.Config, serverConfig); err != nil {
 				logs.Error(err)

@@ -535,12 +535,12 @@ Check detailed subnets description on [here](https://github.com/d3vilh/openvpn-u
 All the Server and Client configuration located in Docker volume and can be easely tuned. Here are tree of volume content:
 
 ```shell
+|-- server.conf   //OpenVPN server configuration file
 |-- clients
 |   |-- your_client1.ovpn
 |-- config
 |   |-- client.conf
 |   |-- easy-rsa.vars //EasyRSA vars draft, see below real vars file.
-|   |-- server.conf
 |-- db
 |   |-- data.db       //OpenVPN UI DB
 |-- log
