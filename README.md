@@ -233,11 +233,11 @@ The new image will have `openvpn-ui` name.
 If you have your OpenVPN server up and running on the same host, you can install OpenVPN-UI as standalone application.
 For this you need to have GoLang installed on your host to build all the necessary binaries on the server itself.
 
-To simplify this process, in version 0.9.5, [`standalone-install.sh`](https://github.com/d3vilh/openvpn-ui/blob/e2f452d2872a022147f8c58213fa4306f61e65e8/build/standalone-install.sh) script was added, which will guide you thrue installation process, starting from GoLang download and installation and following binaries build at the end.
+To make installation easier, version 0.9.5 now includes a [`standalone-install.sh`](https://github.com/d3vilh/openvpn-ui/blob/e2f452d2872a022147f8c58213fa4306f61e65e8/build/standalone-install.sh) script. This script helps you step by step, starting with downloading and installing GoLang, and ending with building the binaries.
 
-At the moment this script supports Debian based systems only.
+At the moment script supports Debian based systems only.
 
-Here is sample output of the script:
+Here is installation process example:
 ```bash
 superdude@bookworm64:~/build/openvpn-ui/build$ ./standalone-install.sh
 This script will install OpenVPN-UI and all the dependencies on your local environment. No containers will be used.
@@ -257,7 +257,7 @@ Would you like to install Beego v2? (y/n) y
 Installing BeeGo v2
 go: downloading github.com/beego/bee/v2 v2.0.2-0.20230830024958-01d397161933
 go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.4
-Would you like to install OpenVPN-UI and qrencode? (y/n) y
+Would you like to build OpenVPN-UI and install qrencode? (y/n) y
 Installing OpenVPN-UI and qrencode
 Cloning qrencode into build directory
 Cloning into 'qrencode'...
@@ -284,7 +284,7 @@ After build and installation is complete:
 2. Uncompress it with `tar -xzf openvpn-ui.tar.gz`.
 3. Double check openvpn-ui binary has +x permissions for your user.
 4. Create `db` directory in the same directory where `openvpn-ui` binary is located.
-5. Update `OpenVpnPath` and `EasyRsaPath` with real location of your OpenVPN server config (`/etc/openvpn`) and EasyRSA (`/usr/share/easy-rsa`) in ./conf/app.conf file. 
+5. Update `OpenVpnPath` and `EasyRsaPath` with real location of your OpenVPN server config (`/etc/openvpn`) and EasyRSA (`/usr/share/easy-rsa`) in `./conf/app.conf` file. 
 6. Set `EnableAdmin = false` and `RunMode = prod` in the same file, if you don't need to run BeeGo in development mode and don't need BeeGo admin console to run.
 7. Run `./openvpn-ui` binary.
 
