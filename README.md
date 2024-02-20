@@ -239,9 +239,54 @@ At the moment this script supports Debian based systems only.
 
 Here is sample output of the script:
 ```bash
-TDB :)
+superdude@bookworm64:~/build/openvpn-ui/build$ ./standalone-install.sh
+This script will install OpenVPN-UI and all the dependencies on your local environment. No containers will be used.
+Do you want to continue? (y/n)y
+Golang version 1.21 is not installed.
+Would you like to install it? (y/n) y
+--2024-02-20 16:37:47--  https://golang.org/dl/go1.21.5.linux-amd64.tar.gz
+go1.21.5.linux-amd64.tar.gz      100%[========================================================>]  63.53M  3.01MB/s    in 20s
+2024-02-20 16:38:08 (3.23 MB/s) - 'go1.21.5.linux-amd64.tar.gz' saved [66618285/66618285]
+Would you like to run apt-get update? (y/n) y
+Updating current environment with apt-get update
+[sudo] password for superdude:
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Would you like to download all necessary Go modules? (y/n) y
+Downloading all Go modules (go mod download)
+Would you like to install Beego v2? (y/n) y
+Installing BeeGo v2
+go: downloading github.com/beego/bee/v2 v2.0.2-0.20230830024958-01d397161933
+go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.4
+Would you like to install OpenVPN-UI and qrencode? (y/n) y
+Installing OpenVPN-UI and qrencode
+Cloning qrencode into build directory
+Cloning into 'qrencode'...
+remote: Enumerating objects: 35, done.
+Resolving deltas: 100% (8/8), done.
+Building and packing OpenVPN-UI
+2024/02/20 17:15:07 INFO     ▶ 0001 Getting bee latest version...
+2024/02/20 17:15:08 INFO     ▶ 0002 Your bee are up to date
+______
+| ___ \
+| |_/ /  ___   ___
+| ___ \ / _ \ / _ \
+| |_/ /|  __/|  __/
+\____/  \___| \___| v2.1.0
+2024/02/20 17:20:55 SUCCESS  ▶ 0004 Build Successful!
+2024/02/20 17:21:02 SUCCESS  ▶ 0009 Application packed!
+Building qrencode
+Moving qrencode to GOPATH
+All done.
+superdude@bookworm64:~/build/openvpn-ui/build$ 
 ```
-
+After build and installation is complete:
+1. Put archive `openvpn-ui.tar.gz` with binaries to the desired directory where you would like to run OpenVPN-UI from.
+2. Uncompress it with `tar -xzf openvpn-ui.tar.gz`.
+3. Double check openvpn-ui binary has +x permissions for your user.
+4. Create `db` directory in the same directory where `openvpn-ui` binary is located.
+5. Update `OpenVpnPath` and `EasyRsaPath` with real location of your OpenVPN server config (`/etc/openvpn`) and EasyRSA (`/usr/share/easy-rsa`) in ./conf/app.conf file. 
+6. Set `EnableAdmin = false` and `RunMode = prod` in the same file, if you don't need to run BeeGo in development mode and don't need BeeGo admin console to run.
+7. Run `./openvpn-ui` binary.
 
   </details>
 
