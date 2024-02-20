@@ -225,6 +225,27 @@ The new image will have `openvpn-ui` name.
 
   </details>
 
+  <details>
+    <summary>Standalone installation</summary>
+
+#### Standalone installation without docker and docker-compose
+
+If you have your OpenVPN server up and running on the same host, you can install OpenVPN-UI as standalone application.
+For this you need to have GoLang installed on your host to build all the necessary binaries on the server itself.
+
+To simplify this process, in version 0.9.5, [`standalone-install.sh`](https://github.com/d3vilh/openvpn-ui/blob/e2f452d2872a022147f8c58213fa4306f61e65e8/build/standalone-install.sh) script was added, which will guide you thrue installation process, starting from GoLang download and installation and following binaries build at the end.
+
+At the moment this script supports Debian based systems only.
+
+Here is sample output of the script:
+```bash
+TDB :)
+```
+
+
+  </details>
+
+
 ### Upgrade to new Version
 During the installtion or upgrade process OpenVPN-UI by itself does not do any changes to your OpenVPN server configuration or PKI infrastructure. However it is recommended to perform backup of your `PKI infrastructure`, `server.conf`, `client.conf` and `data.db` before following with upgrade steps.
 
