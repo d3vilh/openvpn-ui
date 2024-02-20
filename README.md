@@ -286,7 +286,8 @@ After build and installation is complete:
 4. Create `db` directory in the same directory where `openvpn-ui` binary is located.
 5. Update `OpenVpnPath` and `EasyRsaPath` with real location of your OpenVPN server config (`/etc/openvpn`) and EasyRSA (`/usr/share/easy-rsa`) in `./conf/app.conf` file. 
 6. Set `EnableAdmin = false` and `RunMode = prod` in the same file, if you don't need to run BeeGo in development mode and don't need BeeGo admin console to run.
-7. Run `./openvpn-ui` binary.
+7. On the first run set `OPENVPN_ADMIN_USERNAME` and `OPENVPN_ADMIN_PASSWORD` environment variables to create admin user with secret password (`export OPENVPN_ADMIN_USERNAME=admin; export OPENVPN_ADMIN_PASSWORD=$3kR3tPa$Sw0rd`). This is necessary to do on the first start only.
+8. Run `./openvpn-ui` binary. Login with your credentials.
 
   </details>
 
