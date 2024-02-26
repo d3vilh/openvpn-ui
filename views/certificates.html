@@ -389,43 +389,13 @@ $('.send-email-with-qr-btn').on('click', function () {
   // Encode the email body as a URI component
   var encodedEmailBody = encodeURIComponent(emailBody);
 
-  // Fetch the dynamic QR code image URL from the server
-  var imageName = $modal.find('.cert-name').text().trim(); // Use the name for the image URL
-  var qrCodeImageURL = '/displayimage/' + encodeURIComponent(imageName);
+  // Prepare the mailto link with the encoded email address, subject, and body
+  var mailtoLink = 'mailto:' + encodeURIComponent(emailAddress) +
+    '?subject=' + encodeURIComponent(emailSubject) +
+    '&body=' + encodedEmailBody;
 
-  // Fetch the QR code image data from the server
-  $.ajax({
-    url: qrCodeImageURL,
-    method: 'GET',
-    dataType: 'text',
-    success: function (qrCodeImageData) {
-      // Create a data URI for the image
-      var imageBase64 = 'data:image/png;base64,' + qrCodeImageData;
-
-      // Create an <img> HTML tag to display the image in the email body
-      var imageTag = '<img src="' + imageBase64 + '" alt="QR Code Image">';
-      
-      // Append the image tag to the email body
-      emailBody; // += '\n\n' + imageTag;  // Embedded QR CODE id disabled. 
-                                           // I cant figureout how to include it as a real image in email.body. My default Apple Mail app refuses to take it as <img> or base64.
-                                           // Will contiune to try in future versions. Help would be very much appreciated.
-      // Encode the updated email body as a URI component
-      var updatedEncodedEmailBody = encodeURIComponent(emailBody);
-
-      // Prepare the updated mailto link with the encoded email address, subject, and body
-      var mailtoLink = 'mailto:' + encodeURIComponent(emailAddress) +
-        '?subject=' + encodeURIComponent(emailSubject) +
-        '&body=' + updatedEncodedEmailBody;
-
-      // Open the default email client with the updated mailto link
-      window.location.href = mailtoLink;
-    },
-    error: function () {
-      // Handle errors if the image data cannot be fetched
-      alert('Error fetching QR code image data.');
-    }
-  });
+  // Open the default email client with the mailto link
+  window.location.href = mailtoLink;
 });
-
   </script>
   
