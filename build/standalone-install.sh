@@ -81,7 +81,7 @@ then
 fi
 
 # Installing OpenVPN-UI and qrencode
-read -p "Would you like to install OpenVPN-UI and qrencode? (y/n) " -n 1 -r
+read -p "Would you like to build OpenVPN-UI and qrencode binaries? (y/n) " -n 1 -r
 echo    # move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
