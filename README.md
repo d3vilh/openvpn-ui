@@ -298,7 +298,7 @@ export OPENVPN_ADMIN_PASSWORD=$3kR3tPa$Sw0rd
 echo $OPENVPN_ADMIN_USERNAME
 echo $OPENVPN_ADMIN_PASSWORD
 ```
-This should return your username and password for first login. It is to set this vars on the first application start only. So OpenVPN-UI will create your Admin user with your own credentials.
+This should return your username and password for first login. It is mandatory to set this vars on the first application start only. So OpenVPN-UI will create your Admin user with your own credentials.
 
 9. Run `./openvpn-ui` binary and login with your new credentials.
 
