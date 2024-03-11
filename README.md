@@ -286,10 +286,21 @@ After build and installation is complete:
 2. Uncompress it with `tar -xzf openvpn-ui.tar.gz`.
 3. Double check openvpn-ui binary has +x permissions for your user.
 4. Create `db` directory in the same directory where `openvpn-ui` binary is located.
-5. Update `OpenVpnPath` and `EasyRsaPath` with real location of your OpenVPN server config (`/etc/openvpn`) and EasyRSA (`/usr/share/easy-rsa`) in `./conf/app.conf` file. 
-6. Set `EnableAdmin = false` and `RunMode = prod` in the same file, if you don't need to run BeeGo in development mode and don't need BeeGo admin console to run.
-7. On the first run set `OPENVPN_ADMIN_USERNAME` and `OPENVPN_ADMIN_PASSWORD` environment variables to create admin user with secret password (`export OPENVPN_ADMIN_USERNAME=admin; export OPENVPN_ADMIN_PASSWORD=$3kR3tPa$Sw0rd`). This is necessary to do on the first start only.
-8. Run `./openvpn-ui` binary. Login with your credentials.
+5. Update `OpenVpnPath` and `EasyRsaPath` with real location of your OpenVPN server config (`/etc/openvpn`) and EasyRSA (`/usr/share/easy-rsa`) in main application config file - `./conf/app.conf` file. 
+6. Set `EnableAdmin = false` and `RunMode = prod` in the same file, if you don't need to run BeeGo in development mode and don't need BeeGo admin console to run (in most cases you don't need it).
+7. On the first run set `OPENVPN_ADMIN_USERNAME` and `OPENVPN_ADMIN_PASSWORD` environment variables to create admin user with secret password:
+```bash
+export OPENVPN_ADMIN_USERNAME=admin
+export OPENVPN_ADMIN_PASSWORD=$3kR3tPa$Sw0rd
+```
+8. doublecheck enviroment variables are set properly:
+```bash
+echo $OPENVPN_ADMIN_USERNAME
+echo $OPENVPN_ADMIN_PASSWORD
+```
+This should return your username and password for first login. It is to set this vars on the first application start only. So OpenVPN-UI will create your Admin user with your own credentials.
+9. Run `./openvpn-ui` binary and login with your new credentials.
+10. Go to `Configuration > OpenVPN Server` and update all the fields with your current `server.conf` options.
 
   </details>
 
