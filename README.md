@@ -298,11 +298,18 @@ export OPENVPN_ADMIN_PASSWORD=$3kR3tPa$Sw0rd
 echo $OPENVPN_ADMIN_USERNAME
 echo $OPENVPN_ADMIN_PASSWORD
 ```
-This should return your username and password for first login. It is mandatory to set this vars on the first application start only. So OpenVPN-UI will create your Admin user with your own credentials.
+This should return your username and password you will use for the first login into UI. It is mandatory to set this vars on the first application start only. So OpenVPN-UI will create your Admin user with your own credentials.
 
 9. Run `./openvpn-ui` binary and login with your new credentials.
 
 10. Go to `Configuration > OpenVPN Server` and update all the fields with your current `server.conf` options.
+
+11. For security reasons **you have to unset**  vars after successful login, so it will be removed from the local server environment:
+
+```bash
+unset OPENVPN_ADMIN_USERNAME
+unset OPENVPN_ADMIN_PASSWORD
+```
 
   </details>
 
