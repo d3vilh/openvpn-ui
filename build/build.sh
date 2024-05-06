@@ -10,25 +10,25 @@ case $ARCH in
     PLATFORM="linux/arm/v5"
     #UIIMAGE="FROM arm32v5/debian:stable-slim"
     UIIMAGE="FROM arm32v6/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM arm32v5/golang:1.21.1-bookworm"
+    BEEIMAGE="FROM arm32v5/golang:1.21.5-bookworm"
     ;;
   armv7*)
     PLATFORM="linux/arm/v7"
     #UIIMAGE="FROM arm32v7/debian:stable-slim"
     UIIMAGE="FROM arm32v7/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM arm32v7/golang:1.21"
+    BEEIMAGE="FROM arm32v7/golang:1.21.5"
     ;;
   aarch64*)
     PLATFORM="linux/arm64/v8"
     #UIIMAGE="FROM arm64v8/debian:stable-slim"
     UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM golang:1.21.1-bookworm"
+    BEEIMAGE="FROM golang:1.21.5-bookworm"
     ;;
   *)
     PLATFORM="linux/amd64"
     #UIIMAGE="FROM debian:stable-slim"
     UIIMAGE="FROM alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM golang:1.21.1-bookworm"
+    BEEIMAGE="FROM golang:1.21.5-bookworm"
     ;;
 esac
 

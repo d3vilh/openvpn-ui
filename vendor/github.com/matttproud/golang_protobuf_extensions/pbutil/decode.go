@@ -19,10 +19,9 @@ import (
 	"errors"
 	"io"
 
-	"google.golang.org/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 )
 
-// TODO: Give error package name prefix in next minor release.
 var errInvalidVarint = errors.New("invalid varint32 encountered")
 
 // ReadDelimited decodes a message from the provided length-delimited stream,
@@ -37,12 +36,6 @@ var errInvalidVarint = errors.New("invalid varint32 encountered")
 // of the stream has been reached in doing so.  In that case, any subsequent
 // calls return (0, io.EOF).
 func ReadDelimited(r io.Reader, m proto.Message) (n int, err error) {
-	// TODO: Consider allowing the caller to specify a decode buffer in the
-	// next major version.
-
-	// TODO: Consider using error wrapping to annotate error state in pass-
-	// through cases in the next minor version.
-
 	// Per AbstractParser#parsePartialDelimitedFrom with
 	// CodedInputStream#readRawVarint32.
 	var headerBuf [binary.MaxVarintLen32]byte
@@ -60,14 +53,15 @@ func ReadDelimited(r io.Reader, m proto.Message) (n int, err error) {
 			if err != nil {
 				return bytesRead, err
 			}
-			// A Reader should not return (0, nil); but if it does, it should
-			// be treated as no-op according to the Reader contract.
+			// A Reader should not return (0, nil), but if it does,
+			// it should be treated as no-op (according to the
+			// Reader contract). So let's go on...
 			continue
 		}
 		bytesRead += newBytesRead
 		// Now present everything read so far to the varint decoder and
 		// see if a varint can be decoded already.
-		messageLength, varIntBytes = binary.Uvarint(headerBuf[:bytesRead])
+		messageLength, varIntBytes = proto.DecodeVarint(headerBuf[:bytesRead])
 	}
 
 	messageBuf := make([]byte, messageLength)
