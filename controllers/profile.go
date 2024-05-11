@@ -243,3 +243,51 @@ func (c *ProfileController) DeleteUser() {
 	flash.Store(&c.Controller)
 	c.List()
 }
+
+// @router /profile/edit/:key [post]
+func (c *ProfileController) EditUser() {
+	c.TplName = "profile.html"
+	flash := web.NewFlash()
+	id, err := c.GetInt(":key")
+	if err != nil {
+		logs.Error("Failed to get user ID:", err)
+		return
+	}
+
+	o := orm.NewOrm()
+	user := models.User{Id: int64(id)}
+	if err := o.Read(&user); err != nil {
+		logs.Error("Failed to read user \""+user.Name+"\" profile:", err)
+		flash.Error("Failed to read user \"" + user.Name + "\" profile")
+		return
+	}
+
+	// Updating form "username" and "email" fields
+	username := c.GetString("name")
+	email := c.GetString("email")
+
+	// Log the username and email
+	logs.Info("Form username: ", username)
+	logs.Info("Form email: ", email)
+
+	user.Name = username
+	user.Email = email
+
+	if username != "" {
+		user.Name = username
+	}
+	if email != "" {
+		user.Email = email
+	}
+
+	if _, err := o.Update(&user); err != nil {
+		logs.Error("Failed to update user \""+user.Name+"\" profile:", err)
+		flash.Error("Failed to update user \"" + user.Name + "\" profile")
+		return
+	}
+
+	logs.Info("Updated user profile with ID", id)
+	flash.Success("User \"" + user.Name + "\" updated successfully")
+	flash.Store(&c.Controller)
+	c.List()
+}
