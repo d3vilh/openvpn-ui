@@ -3,7 +3,6 @@ package controllers
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -95,7 +94,7 @@ func (c *CertificatesController) DisplayImage() {
 	logs.Info("Image path: %s", imagePath)
 
 	// Check if the image file exists
-	data, err := ioutil.ReadFile(imagePath)
+	data, err := os.ReadFile(imagePath)
 	if err != nil {
 		c.Ctx.Output.SetStatus(404)
 		c.Ctx.WriteString("Image not found")
