@@ -89,7 +89,7 @@ func (c *ProfileController) Post() {
 	if _, err := o.Update(c.Userinfo); err != nil {
 		flash.Error(err.Error())
 	} else {
-		flash.Success("Profile has been updated")
+		flash.Success("Profile has been updated!")
 	}
 	flash.Store(&c.Controller)
 	c.List()
@@ -159,7 +159,7 @@ func (c *ProfileController) Create() {
 	var existingUser models.User
 	err := o.QueryTable("user").Filter("Login", user.Login).One(&existingUser)
 	if err == nil {
-		flash.Warning("User with login \"" + user.Login + "\" is already exists")
+		flash.Warning("User with login \"" + user.Login + "\" is already exists!")
 		flash.Store(&c.Controller)
 		logs.Info("User already exists:", user.Login)
 		c.List()
@@ -193,8 +193,8 @@ func (c *ProfileController) Create() {
 	newUser.Password = hash
 	if created, _, err := o.ReadOrCreate(&newUser, "Name"); err == nil {
 		if created {
-			logs.Info("New user with login \"" + user.Login + "\" created successfully")
-			flash.Success("New user with login \"" + user.Login + "\" created successfully")
+			logs.Info("New user with login \"" + user.Login + "\" created successfully.")
+			flash.Success("New user with login \"" + user.Login + "\" created successfully.")
 			flash.Store(&c.Controller)
 		} else {
 			logs.Debug(newUser)
@@ -232,14 +232,22 @@ func (c *ProfileController) DeleteUser() {
 
 	o := orm.NewOrm()
 	user := models.User{Id: int64(id)}
+
+	// Read the user first to populate the Login field before deleting it from the database
+	err = o.Read(&user)
+	if err != nil {
+		logs.Error("Failed to get user:", err)
+		return
+	}
+
 	if _, err := o.Delete(&user); err != nil {
 		logs.Error("Failed to delete user \""+user.Login+"\" profile:", err)
 		flash.Error("Failed to delete user \"" + user.Login + "\" profile")
 		return
 	}
 
-	logs.Info("Deleted user profile with ID", id)
-	flash.Success("User  \"" + user.Login + "\" deleted successfully")
+	logs.Info("New user with login \""+user.Login+"\" deleted successfully. It had user ID: ", id)
+	flash.Success("User  \"" + user.Login + "\" deleted successfully.")
 	flash.Store(&c.Controller)
 	c.List()
 }
@@ -265,10 +273,6 @@ func (c *ProfileController) EditUser() {
 	// Updating form "username" and "email" fields
 	username := c.GetString("name")
 	email := c.GetString("email")
-
-	// Log the username and email
-	logs.Info("Form username: ", username)
-	logs.Info("Form email: ", email)
 
 	user.Name = username
 	user.Email = email
