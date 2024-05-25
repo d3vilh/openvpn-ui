@@ -4,3 +4,4 @@ openvpn/
 easy-rsa/pki/vars
 easy-rsa/easy-rsa.vars
 openvpn-ui.Bullseye.x86_64.tar.gz
+easy-rsa/pki/index.txt

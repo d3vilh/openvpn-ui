@@ -185,7 +185,8 @@
             </thead>
             <tbody>
               {{range .users}}
-              <tr>
+              <form action="/profile/edit/{{ .Id }}" method="post">
+                <tr>
                   <td>
                       {{ .Id }}
                   </td>
@@ -200,10 +201,18 @@
                       {{ .Login }}
                     </td>
                     <td>
-                      {{ .Name }}
+                      {{ if eq .Id 1 }}
+                        {{ .Name }}
+                      {{else}}
+                        <input type="text" name="name" value="{{ .Name }}" size="10" required>
+                      {{end}}
                     </td>
                     <td>
-                      <a href="mailto:{{ .Email }}">{{ .Email }}</a>
+                      {{ if eq .Id 1 }}
+                        {{ .Email }}
+                      {{else}}
+                        <input type="email" name="email" value="{{ .Email }}" size="17" required>
+                      {{end}}
                     </td>
                     <td>
                       {{ dateformat .Created "2006-01-02 15:04" }}
@@ -224,14 +233,20 @@
                     </td>
                     <td>
                       {{ if eq .Id 1 }}
+                      <a class="btn btn-default btn-xs" disabled>Update</a>
+                      {{else}}
+                      <input type="submit" class="btn btn-primary btn-xs" title="Update User" style="font-size: 70%;" value="Update">
+                      {{end}}
+                      {{ if eq .Id 1 }}
                       <a class="btn btn-default btn-xs" disabled>Delete</a>
                       {{else}}
-                      <a href="{{urlfor "ProfileController.DeleteUser" ":key" .Id}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 70%;">
+                      <a href="{{urlfor "ProfileController.DeleteUser" ":key" .Id}}" class="btn btn-danger btn-xs" title="Burn" style="font-size: 70%" onclick="return confirm('Are you sure you want to delete this user?');">
                         Delete
                       </a>
                       {{end}}
                     </td>
-              </tr>
+                </tr>
+              </form>
 
               {{end}}
               </tbody>
