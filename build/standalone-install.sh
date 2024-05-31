@@ -3,7 +3,7 @@
 #
 
 # All the variables
-GOVERSION="1.21.5"
+GOVERSION="1.22.3"
 
 # Description
 echo "This script will install OpenVPN-UI and all the dependencies on your local environment. No containers will be used."
@@ -19,19 +19,19 @@ fi
 go_version=$(go version 2>/dev/null | awk '{print $3}' | tr -d "go")
 if [[ -z "$go_version" || "$go_version" < $GOVERSION ]]
 then
-    echo "Golang version 1.21 is not installed."
+    echo "Golang version 1.22.3 is not installed."
     read -p "Would you like to install it? (y/n) " -n 1 -r
     echo    # move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         # Install Go
-        wget https://golang.org/dl/go1.21.5.linux-amd64.tar.gz # x86_64 only, at the monment.
-        sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+        wget https://golang.org/dl/go1.22.3.linux-amd64.tar.gz # x86_64 only, at the monment.
+        sudo tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
         export PATH=$PATH:/usr/local/go/bin
         echo "export PATH=$PATH:$(go env GOPATH)/bin" >> ~/.bashrc
         source ~/.bashrc
     else
-        read -p "Would you like to continue without Golang 1.21 installation? (y/n) " -n 1 -r
+        read -p "Would you like to continue without Golang 1.22.3 installation? (y/n) " -n 1 -r
         echo    # move to a new line
         if [[ ! $REPLY =~ ^[Yy]$ ]]
         then
