@@ -1,6 +1,6 @@
 client
 dev {{ .Device }}
-proto {{ .Proto}}
+proto {{ .Proto }}
 remote {{ .ServerAddress }} {{ .OpenVpnServerPort }} {{ .Proto }}
 {{ .ResolveRetry }}
 user {{ .OVClientUser }}
