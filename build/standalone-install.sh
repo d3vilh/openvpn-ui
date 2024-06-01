@@ -28,16 +28,16 @@ then
         arch=$(uname -m)
         if [[ "$arch" == "x86_64" ]]; then
             # Install Go for x86_64
-            wget https://golang.org/dl/go${GOVERSION}.linux-arm64.tar.gz
-            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-arm64.tar.gz
+            wget https://golang.org/dl/go${GOVERSION}.linux-amd64.tar.gz
+            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-amd64.tar.gz
         elif [[ "$arch" == "aarch64" ]]; then
             # Install Go for arm64
             wget https://golang.org/dl/go${GOVERSION}.linux-arm64.tar.gz
             sudo tar -C /usr/local -xzf go${GOVERSION}.linux-arm64.tar.gz
         elif [[ "$arch" == "armv7l" ]]; then
             # Install Go for armv7l
-            wget https://golang.org/dl/go${GOVERSION}.linux-armv6l.tar.gz
-            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-armv6l.tar.gz
+            wget https://golang.org/dl/go${GOVERSION}.linux-armv7l.tar.gz
+            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-armv7l.tar.gz
         elif [[ "$arch" == "armv6l" ]]; then
             # Install Go for armv6l
             wget https://golang.org/dl/go${GOVERSION}.linux-armv6l.tar.gz
