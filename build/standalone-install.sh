@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 0.2 by d3vilh@github.com aka Mr. Philipp.
+# VERSION 0.3 by d3vilh@github.com aka Mr. Philipp.
 #
 
 # All the variables
@@ -15,23 +15,42 @@ then
     exit 1
 fi
 
-# Check if Go is installed and the version is 1.21
+# Check if Go is installed and the version is supported
 go_version=$(go version 2>/dev/null | awk '{print $3}' | tr -d "go")
 if [[ -z "$go_version" || "$go_version" < $GOVERSION ]]
 then
-    echo "Golang version 1.22.3 is not installed."
+    echo "Golang version ${GOVERSION} is not installed."
     read -p "Would you like to install it? (y/n) " -n 1 -r
     echo    # move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        # Install Go
-        wget https://golang.org/dl/go1.22.3.linux-amd64.tar.gz # x86_64 only, at the monment.
-        sudo tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
+        # Check the architecture of the machine
+        arch=$(uname -m)
+        if [[ "$arch" == "x86_64" ]]; then
+            # Install Go for x86_64
+            wget https://golang.org/dl/go${GOVERSION}.linux-arm64.tar.gz
+            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-arm64.tar.gz
+        elif [[ "$arch" == "aarch64" ]]; then
+            # Install Go for arm64
+            wget https://golang.org/dl/go${GOVERSION}.linux-arm64.tar.gz
+            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-arm64.tar.gz
+        elif [[ "$arch" == "armv7l" ]]; then
+            # Install Go for armv7l
+            wget https://golang.org/dl/go${GOVERSION}.linux-armv6l.tar.gz
+            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-armv6l.tar.gz
+        elif [[ "$arch" == "armv6l" ]]; then
+            # Install Go for armv6l
+            wget https://golang.org/dl/go${GOVERSION}.linux-armv6l.tar.gz
+            sudo tar -C /usr/local -xzf go${GOVERSION}.linux-armv6l.tar.gz
+        else
+            echo "Unsupported architecture."
+            exit 1
+        fi
         export PATH=$PATH:/usr/local/go/bin
         echo "export PATH=$PATH:$(go env GOPATH)/bin" >> ~/.bashrc
         source ~/.bashrc
     else
-        read -p "Would you like to continue without Golang 1.22.3 installation? (y/n) " -n 1 -r
+        read -p "Would you like to continue without Golang ${GOVERSION} installation? (y/n) " -n 1 -r
         echo    # move to a new line
         if [[ ! $REPLY =~ ^[Yy]$ ]]
         then
