@@ -251,7 +251,9 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	cfg.PersistKey = ovClientConfig.PersistKey
 	cfg.RemoteCertTLS = ovClientConfig.RemoteCertTLS
 	cfg.RedirectGateway = ovClientConfig.RedirectGateway
-	// cfg.Proto = ovClientConfig.Proto // this will be set from server config
+	cfg.Proto = ovClientConfig.Proto   // this will be set from client instead of server config
+	cfg.Auth = ovClientConfig.Auth     // this will be set from client instead of server config
+	cfg.Cipher = ovClientConfig.Cipher // this will be set from client instead of server config
 	cfg.Device = ovClientConfig.Device
 	cfg.AuthNoCache = ovClientConfig.AuthNoCache
 	cfg.TlsClient = ovClientConfig.TlsClient
@@ -288,9 +290,9 @@ func (c *CertificatesController) saveClientConfig(keysPath string, name string) 
 	serverConfig := models.OVConfig{Profile: "default"}
 	_ = serverConfig.Read("Profile")
 	cfg.Port = serverConfig.Port
-	cfg.Proto = serverConfig.Proto
-	cfg.Auth = serverConfig.Auth
-	cfg.Cipher = serverConfig.Cipher
+	// cfg.Proto = serverConfig.Proto   //Now getting it from client config
+	// cfg.Auth = serverConfig.Auth     //Now getting it from client config
+	// cfg.Cipher = serverConfig.Cipher //Now getting it from client config
 
 	destPath := filepath.Join(state.GlobalCfg.OVConfigPath, "clients", name+".ovpn")
 	if err := SaveToFile(filepath.Join(c.ConfigDir, "openvpn-client-config.tpl"), cfg, destPath); err != nil {
