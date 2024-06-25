@@ -9,6 +9,8 @@ require (
 	github.com/go-ldap/ldap/v3 v3.4.8
 	github.com/mattn/go-sqlite3 v1.14.22
 	gopkg.in/hlandau/passlib.v1 v1.0.11
+	golang.org/x/oauth2 v0.21.0
+	google.golang.org/api v0.185.0	
 )
 
 require (

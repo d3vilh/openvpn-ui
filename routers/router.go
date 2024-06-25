@@ -15,8 +15,10 @@ import (
 func Init(configDir string) {
 	web.SetStaticPath("/swagger", "swagger")
 	web.Router("/", &controllers.MainController{})
-	web.Router("/login", &controllers.LoginController{}, "get,post:Login")
+	web.Router("/login", &controllers.LoginController{}, "get:Login;post:Login")
 	web.Router("/logout", &controllers.LoginController{}, "get:Logout")
+	web.Router("/auth/google", &controllers.LoginController{}, "get:GoogleLogin")
+	web.Router("/auth/google/callback", &controllers.LoginController{}, "get:GoogleCallback")	
 	web.Router("/profile", &controllers.ProfileController{})
 	web.Router("/settings", &controllers.SettingsController{})
 	web.Router("/ov/config", &controllers.OVConfigController{})

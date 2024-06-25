@@ -23,21 +23,24 @@ type NestFinisher interface {
 func (c *BaseController) Prepare() {
 	c.SetParams()
 
-	c.IsLogin = c.GetSession("userinfo") != nil
-	if c.IsLogin {
-		c.Userinfo = c.GetLogin()
+	userID := c.GetSession("userinfo")
+	if userID != nil {
+		var user models.User
+		user.Id = userID.(int64)
+		err := user.Read("Id")
+		if err == nil {
+			c.IsLogin = true
+			c.Userinfo = &user
+		} else {
+			c.IsLogin = false
+			c.DelSession("userinfo")
+		}
+	} else {
+		c.IsLogin = false
 	}
 
 	c.Data["IsLogin"] = c.IsLogin
 	c.Data["Userinfo"] = c.Userinfo
-
-	//c.Data["HeadStyles"] = []string{}
-	//c.Data["HeadScripts"] = []string{}
-
-	//c.Layout = "base.tpl"
-	//c.LayoutSections = make(map[string]string)
-	//c.LayoutSections["BaseHeader"] = "header.tpl"
-	//c.LayoutSections["BaseFooter"] = "footer.tpl"
 
 	if app, ok := c.AppController.(NestPreparer); ok {
 		app.NestPrepare()
@@ -52,16 +55,20 @@ func (c *BaseController) Finish() {
 
 func (c *BaseController) GetLogin() *models.User {
 	u := &models.User{Id: c.GetSession("userinfo").(int64)}
-	u.Read()
+	u.Read("Id")
 	return u
 }
 
 func (c *BaseController) DelLogin() {
 	c.DelSession("userinfo")
+	c.IsLogin = false
+	c.Userinfo = nil
 }
 
 func (c *BaseController) SetLogin(user *models.User) {
 	c.SetSession("userinfo", user.Id)
+	c.IsLogin = true
+	c.Userinfo = user
 }
 
 func (c *BaseController) LoginPath() string {
