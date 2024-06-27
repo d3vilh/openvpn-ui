@@ -15,23 +15,44 @@ import (
 	oauth2api "google.golang.org/api/oauth2/v2"
 )
 
+// Initialize OAuth2 configuration
 var (
-	oauthConf      *oauth2.Config
-	oauthStateString = "random" // use a random string for security purposes
+    oauthConf        *oauth2.Config
+    oauthStateString = "random" // use a random string for security purposes
+    allowedDomains   []string
 )
 
 func init() {
-	clientID, _ := web.AppConfig.String("googleClientID")
-	clientSecret, _ := web.AppConfig.String("googleClientSecret")
-	redirectURL, _ := web.AppConfig.String("googleRedirectURL")
+    clientID := os.Getenv("GOOGLE_CLIENT_ID")
+    clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+    redirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
+    allowedDomainsStr := os.Getenv("ALLOWED_DOMAINS")
 
-	oauthConf = &oauth2.Config{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-		RedirectURL:  redirectURL,
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-		Endpoint:     google.Endpoint,
-	}
+    if clientID == "" {
+        log.Println("Environment variable GOOGLE_CLIENT_ID not set")
+    }
+    if clientSecret == "" {
+        log.Println("Environment variable GOOGLE_CLIENT_SECRET not set")
+    }
+    if redirectURL == "" {
+        log.Println("Environment variable GOOGLE_REDIRECT_URL not set")
+    }
+    if allowedDomainsStr == "" {
+        log.Println("Environment variable ALLOWED_DOMAINS not set")
+    }
+    oauthConf = &oauth2.Config{
+        ClientID:     clientID,
+        ClientSecret: clientSecret,
+        RedirectURL:  redirectURL,
+        Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
+        Endpoint:     google.Endpoint,
+    }
+
+    if allowedDomainsStr != "" {
+        allowedDomains = strings.Split(allowedDomainsStr, ",")
+    } else {
+        allowedDomains = []string{}
+    }
 }
 
 type LoginController struct {
@@ -124,10 +145,6 @@ func (c *LoginController) GoogleCallback() {
 	}
 
 	logs.Info("User Info: %+v", userinfo)
-
-	// Get allowed domains from config
-	allowedDomainsStr, _ := web.AppConfig.String("allowedDomains")
-	allowedDomains := strings.Split(allowedDomainsStr, ",")
 
 	// Check if the user's email domain is allowed
 	emailDomain := strings.Split(userinfo.Email, "@")[1]
