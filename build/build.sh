@@ -24,6 +24,12 @@ case $ARCH in
     UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM golang:1.22.3-bookworm"
     ;;
+  arm64*)
+    PLATFORM="linux/arm64/v8"
+    #UIIMAGE="FROM arm64v8/debian:stable-slim"
+    UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
+    BEEIMAGE="FROM golang:1.22.3-bookworm"
+    ;;
   *)
     PLATFORM="linux/amd64"
     #UIIMAGE="FROM debian:stable-slim"
