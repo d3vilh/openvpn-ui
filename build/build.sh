@@ -18,7 +18,7 @@ case $ARCH in
     UIIMAGE="FROM arm32v7/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
     BEEIMAGE="FROM arm32v7/golang:1.22.3-bookworm"
     ;;
-  arm64*)
+  aarch64*)
     PLATFORM="linux/arm64/v8"
     #UIIMAGE="FROM arm64v8/debian:stable-slim"
     UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
@@ -37,10 +37,10 @@ start_time=$(date +%s)
 
 printf "\033[1;34mBuilding for\033[0m $ARCH ($PLATFORM) with: \n  \033[1;34mUI Image:\033[0m $UIIMAGE \n  \033[1;34mBeeGo Image:\033[0m $BEEIMAGE \n"
 # Update Dockerfile based on platform
-sed "s#FROM DEFINE-YOUR-ARCH#$UIIMAGE#g" Dockerfile > Dockerfile.tmp && mv Dockerfile.tmp Dockerfile
+sed -i "s#FROM DEFINE-YOUR-ARCH#$UIIMAGE#g" Dockerfile
 # Update Dockerfile-beego based on platform
-sed "s#FROM DEFINE-YOUR-ARCH#$BEEIMAGE#g" Dockerfile-beego > Dockerfile-beego.tmp && mv Dockerfile-beego.tmp Dockerfile-beego
-printf "Dockerfiles updated \n\033[1;34mBuilding Golang and Bee environment.\033[0m\n"
+sed -i "s#FROM DEFINE-YOUR-ARCH#$BEEIMAGE#g" Dockerfile-beego
+printf "Dockerfiles updated \n\033[1;34mBuilding Golang and Bee enviroment.\033[0m\n"
 
 # Build golang & bee environment
 docker build --platform=$PLATFORM -f Dockerfile-beego -t local/beego-v8 -t local/beego-v8:latest .
