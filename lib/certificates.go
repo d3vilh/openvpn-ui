@@ -53,10 +53,19 @@ func ReadCerts(path string) ([]*Cert, error) {
 				fmt.Errorf("incorrect number of lines in line: \n%s\n. Expected %d, found %d",
 					line, 6, len(fields))
 		}
-		expT, _ := time.Parse("060102150405Z", fields[1])
+		layout := "060102150405Z"
+		if len(fields[1]) == len(layout) + 2 {
+			layout = "20060102150405Z"
+		}
+		expT, _ := time.Parse(layout, fields[1])
 		expTA := time.Now().AddDate(0, 0, 30).After(expT) // If cer will expire in 30 days, raise this flag
 		//logs.Debug("ExpirationT: %v, IsExpiring: %v", expT, expTA) // logging
-		revT, _ := time.Parse("060102150405Z", fields[2])
+
+		layout = "060102150405Z"
+		if len(fields[1]) == len(layout) + 2 {
+			layout = "20060102150405Z"
+		}
+		revT, _ := time.Parse(layout, fields[2])
 		c := &Cert{
 			EntryType:   fields[0],
 			Expiration:  fields[1],
