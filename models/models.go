@@ -66,7 +66,6 @@ func CreateDefaultUsers() {
 			logs.Debug(user)
 		}
 	}
-
 }
 
 func CreateDefaultSettings() (*Settings, error) {

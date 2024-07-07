@@ -13,13 +13,9 @@ import (
 	"gopkg.in/hlandau/passlib.v1"
 )
 
-var authError error
+var authError = errors.New("invalid login or password")
 
-func init() {
-	authError = errors.New("invalid login or password")
-}
-
-func Authenticate(login string, password string, authType string) (*models.User, error) {
+func Authenticate(login, password, authType string) (*models.User, error) {
 	logs.Info("auth type: ", authType)
 	if authType == "ldap" {
 		return authenticateLdap(login, password)
@@ -28,7 +24,7 @@ func Authenticate(login string, password string, authType string) (*models.User,
 	}
 }
 
-func authenticateSimple(login string, password string) (*models.User, error) {
+func authenticateSimple(login, password string) (*models.User, error) {
 	user := &models.User{Login: login}
 	err := user.Read("Login")
 	if err != nil {
@@ -36,7 +32,7 @@ func authenticateSimple(login string, password string) (*models.User, error) {
 		return nil, authError
 	}
 	if user.Id < 1 {
-		logs.Error(err)
+		logs.Error(authError)
 		return nil, authError
 	}
 	if _, err := passlib.Verify(password, user.Password); err != nil {
@@ -46,7 +42,7 @@ func authenticateSimple(login string, password string) (*models.User, error) {
 	return user, nil
 }
 
-func authenticateLdap(login string, password string) (*models.User, error) {
+func authenticateLdap(login, password string) (*models.User, error) {
 	address, _ := web.AppConfig.String("LdapAddress")
 	var connection *ldap.Conn
 	var err error
@@ -96,5 +92,18 @@ func authenticateLdap(login string, password string) (*models.User, error) {
 		return nil, authError
 	}
 
+	return user, nil
+}
+
+// GetUserByEmail retrieves a user by their email address
+func GetUserByEmail(email string) (*models.User, error) {
+	user := &models.User{Email: email}
+	err := user.Read("Email")
+	if err != nil {
+		if err == orm.ErrNoRows {
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
 	return user, nil
 }

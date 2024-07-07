@@ -1,6 +1,8 @@
 package controllers
 
-import "github.com/beego/beego/v2/core/logs"
+import (
+	"github.com/beego/beego/v2/core/logs"
+)
 
 type APIBaseController struct {
 	BaseController
@@ -8,18 +10,16 @@ type APIBaseController struct {
 
 // JSONResponse http://stackoverflow.com/a/12979961
 type JSONResponse struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
-	Code    string `json:"code,omitempty"`
-
-	Data interface{} `json:"data,omitempty"`
+	Status  string      `json:"status"`
+	Message string      `json:"message"`
+	Code    string      `json:"code,omitempty"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
 func NewJSONResponse() *JSONResponse {
 	response := &JSONResponse{
 		Status: "success",
 	}
-
 	return response
 }
 
@@ -44,7 +44,6 @@ func (c *APIBaseController) ServeJSONMessage(message string) {
 
 func (c *APIBaseController) ServeJSONData(data interface{}) {
 	r := NewJSONResponse()
-
 	r.Data = data
 	c.Data["json"] = r
 	c.ServeJSON()
