@@ -3,6 +3,8 @@ package controllers
 import (
 	"context"
 	"html/template"
+	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -17,42 +19,42 @@ import (
 
 // Initialize OAuth2 configuration
 var (
-    oauthConf        *oauth2.Config
-    oauthStateString = "random" // use a random string for security purposes
-    allowedDomains   []string
+	oauthConf        *oauth2.Config
+	oauthStateString = "random" // use a random string for security purposes
+	allowedDomains   []string
 )
 
 func init() {
-    clientID := os.Getenv("GOOGLE_CLIENT_ID")
-    clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
-    redirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
-    allowedDomainsStr := os.Getenv("ALLOWED_DOMAINS")
+	clientID := os.Getenv("GOOGLE_CLIENT_ID")
+	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	redirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
+	allowedDomainsStr := os.Getenv("ALLOWED_DOMAINS")
 
-    if clientID == "" {
-        log.Println("Environment variable GOOGLE_CLIENT_ID not set")
-    }
-    if clientSecret == "" {
-        log.Println("Environment variable GOOGLE_CLIENT_SECRET not set")
-    }
-    if redirectURL == "" {
-        log.Println("Environment variable GOOGLE_REDIRECT_URL not set")
-    }
-    if allowedDomainsStr == "" {
-        log.Println("Environment variable ALLOWED_DOMAINS not set")
-    }
-    oauthConf = &oauth2.Config{
-        ClientID:     clientID,
-        ClientSecret: clientSecret,
-        RedirectURL:  redirectURL,
-        Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-        Endpoint:     google.Endpoint,
-    }
+	if clientID == "" {
+		log.Println("Environment variable GOOGLE_CLIENT_ID not set")
+	}
+	if clientSecret == "" {
+		log.Println("Environment variable GOOGLE_CLIENT_SECRET not set")
+	}
+	if redirectURL == "" {
+		log.Println("Environment variable GOOGLE_REDIRECT_URL not set")
+	}
+	if allowedDomainsStr == "" {
+		log.Println("Environment variable ALLOWED_DOMAINS not set")
+	}
+	oauthConf = &oauth2.Config{
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		RedirectURL:  redirectURL,
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
+		Endpoint:     google.Endpoint,
+	}
 
-    if allowedDomainsStr != "" {
-        allowedDomains = strings.Split(allowedDomainsStr, ",")
-    } else {
-        allowedDomains = []string{}
-    }
+	if allowedDomainsStr != "" {
+		allowedDomains = strings.Split(allowedDomainsStr, ",")
+	} else {
+		allowedDomains = []string{}
+	}
 }
 
 type LoginController struct {
