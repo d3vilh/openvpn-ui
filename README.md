@@ -44,7 +44,7 @@ For the best experience, it is recommended to deploy it within a Docker environm
  - The [`d3vilh/openvpn-server`](https://github.com/d3vilh/openvpn-server) Back-End container (openvpn) for running OpenVPN server.
  - OpenVPN UI Front-End container (openvpn-ui) for efficient management of the OpenVPN server environment.
 
-However it works fine as standalone application with standalove OpenVPN server as well.
+However it works fine as standalone application with standalone OpenVPN server as well.
 ### Intel x86 and AMD64 platforms
 You can run both containers from the official [openvpn-server](https://github.com/d3vilh/openvpn-server) repository, `docker-compose-openvpnui.yml`.
 It includes all the files in its main directory. 
