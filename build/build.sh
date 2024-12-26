@@ -64,7 +64,7 @@ time docker run \
     local/beego-v8 \
 sh -c "cd /go/src/github.com/d3vilh/openvpn-ui/ && \
     git config --global --add safe.directory /go/src/github.com/d3vilh/openvpn-ui && \
-    git switch googleauth && \
+    git switch 0.9.5.6.rc && \
     go env -w GOFLAGS=\"-buildvcs=false\" && \
     bee version && \
     CGO_ENABLED=1 CC=musl-gcc bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs' && \
