@@ -60,15 +60,16 @@
         <!-- /.col -->
         {{ .xsrfdata }}
         <div class="com-md-12">
-          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fa fa-exchange-alt"></i> &nbsp;Sign In</button>
         </div>
         <!-- /.col -->
       </form>
       <br>
       <a href="{{urlfor "LoginController.GoogleLogin"}}" class="btn btn-block btn-danger">
-        <i class="fab fa-google mr-2"></i> Sign in with Google
+        <i class="fab fa-google"></i> &nbsp;Sign in with Google
       </a>
-      <br>
+      <p class="login-box-msg"><small><a href="https://github.com/d3vilh/openvpn-ui?tab=readme-ov-file#authentication-with-google-apis-oauth-20" target="_blank">How to Sign In</a> with Google</small></p>
     </div>
     <!-- /.login-box-body -->
   </div>
