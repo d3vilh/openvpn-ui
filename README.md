@@ -827,6 +827,18 @@ For MFA authentication you can use optional `Passphrase` when generating new Cli
 
   </details>
 
+### Authentication with Google APIs (OAuth 2.0)
+Starting from vestion `0.9.5.5` OpenVPN-UI support [OAuth 2.0 authentication with Google APIs](https://developers.google.com/identity/protocols/oauth2).
+
+Gogle configurations can be passed as Environment Variables. Here we can update secrets , cliendID from [google developer console](https://console.developers.google.com/) and allowed domains checked which email domains are allowed. 
+
+Required ENV variables for google login to work.
+>          GOOGLE_CLIENT_ID
+>          GOOGLE_CLIENT_SECRET
+>          GOOGLE_REDIRECT_URL
+>          ALLOWED_DOMAINS
+
+Kudos to [opsnin](https://github.com/d3vilh/openvpn-ui/pull/89) for this feature.
 ### User Management
 Starting from `v.0.9.2` OpenVPN UI has user management feature. 
 
