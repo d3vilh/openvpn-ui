@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION 1.3 by d3vilh@github.com aka Mr. Philipp
+#VERSION 1.4 by d3vilh@github.com aka Mr. Philipp. Updated with Easyrsa 3 support.
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
@@ -27,7 +27,7 @@ fi
 export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
 
 echo 'Patching easy-rsa.3.1.1 openssl-easyrsa.cnf...' 
-sed -i '/serialNumber_default/d' "$EASY_RSA/pki/openssl-easyrsa.cnf"
+sed -i '/serialNumber_default/d' "$EASY_RSA/openssl-easyrsa.cnf"
 
 echo 'Generate client certificate...'
 echo -e "Will use following parameters: \nEASYRSA_CERT_EXPIRE: $EASYRSA_CERT_EXPIRE\nEASYRSA_REQ_EMAIL: $EASYRSA_REQ_EMAIL\nEASYRSA_REQ_COUNTRY: $EASYRSA_REQ_COUNTRY\nEASYRSA_REQ_PROVINCE: $EASYRSA_REQ_PROVINCE\nEASYRSA_REQ_CITY: $EASYRSA_REQ_CITY\nEASYRSA_REQ_ORG: $EASYRSA_REQ_ORG\nEASYRSA_REQ_OU: $EASYRSA_REQ_OU"
@@ -38,16 +38,18 @@ cd $EASY_RSA
 # Generate certificates
 if  [[ -z $CERT_PASS ]]; then
     echo 'Without password...'
-    ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" gen-req "$CERT_NAME" nopass subject="/C=$EASYRSA_REQ_COUNTRY/ST=$EASYRSA_REQ_PROVINCE/L=\"$EASYRSA_REQ_CITY\"/O=\"$EASYRSA_REQ_ORG\"/OU=\"$EASYRSA_REQ_OU\""
+    ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" gen-req "$CERT_NAME" nopass 
+    #subject="/C=$EASYRSA_REQ_COUNTRY/ST=$EASYRSA_REQ_PROVINCE/L=\"$EASYRSA_REQ_CITY\"/O=\"$EASYRSA_REQ_ORG\"/OU=\"$EASYRSA_REQ_OU\""
 else
     echo 'With password...'
     # See https://stackoverflow.com/questions/4294689/how-to-generate-an-openssl-key-using-a-passphrase-from-the-command-line
     # ... and https://stackoverflow.com/questions/22415601/using-easy-rsa-how-to-automate-client-server-creation-process
     # ... and https://github.com/OpenVPN/easy-rsa/blob/master/doc/EasyRSA-Advanced.md
-    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" --passin=pass:"${CERT_PASS}" --passout=pass:"${CERT_PASS}" gen-req "$CERT_NAME" subject="/C=$EASYRSA_REQ_COUNTRY/ST=$EASYRSA_REQ_PROVINCE/L=\"$EASYRSA_REQ_CITY\"/O=\"$EASYRSA_REQ_ORG\"/OU=\"$EASYRSA_REQ_OU\""
+    (echo -e '\n') | ./easyrsa --batch --req-cn="$CERT_NAME" --days="$EASYRSA_CERT_EXPIRE" --req-email="$EASYRSA_REQ_EMAIL" --passin=pass:"${CERT_PASS}" --passout=pass:"${CERT_PASS}" gen-req "$CERT_NAME" 
+    #subject="/C=$EASYRSA_REQ_COUNTRY/ST=$EASYRSA_REQ_PROVINCE/L=\"$EASYRSA_REQ_CITY\"/O=\"$EASYRSA_REQ_ORG\"/OU=\"$EASYRSA_REQ_OU\""
 fi
 
-# Sign request
+# Sign request. Bypass "yes" with export EASYRSA_BATCH=1 
 ./easyrsa sign-req client "$CERT_NAME"
 # Fix for /name in index.txt
 
