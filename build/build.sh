@@ -16,25 +16,25 @@ case $ARCH in
     PLATFORM="linux/arm/v7"
     #UIIMAGE="FROM arm32v7/debian:stable-slim"
     UIIMAGE="FROM arm32v7/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM arm32v7/golang:1.22.3-bookworm"
+    BEEIMAGE="FROM arm32v7/golang:1.23.4-bookworm"
     ;;
   aarch64*)
     PLATFORM="linux/arm64/v8"
     #UIIMAGE="FROM arm64v8/debian:stable-slim"
     UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM golang:1.22.3-bookworm"
+    BEEIMAGE="FROM golang:1.23.4-bookworm"
     ;;
   arm64*)
     PLATFORM="linux/arm64/v8"
     #UIIMAGE="FROM arm64v8/debian:stable-slim"
     UIIMAGE="FROM arm64v8/alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM golang:1.22.3-bookworm"
+    BEEIMAGE="FROM golang:1.23.4-bookworm"
     ;;
   *)
     PLATFORM="linux/amd64"
     #UIIMAGE="FROM debian:stable-slim"
     UIIMAGE="FROM alpine" #moving to unstable because it has easy-rsa v3.1.6 which supports cert renewal
-    BEEIMAGE="FROM golang:1.22.3-bookworm"
+    BEEIMAGE="FROM golang:1.23.4-bookworm"
     ;;
 esac
 
@@ -64,7 +64,7 @@ time docker run \
     local/beego-v8 \
 sh -c "cd /go/src/github.com/d3vilh/openvpn-ui/ && \
     git config --global --add safe.directory /go/src/github.com/d3vilh/openvpn-ui && \
-    git switch googleauth && \
+    git switch 0.9.5.6.rc && \
     go env -w GOFLAGS=\"-buildvcs=false\" && \
     bee version && \
     CGO_ENABLED=1 CC=musl-gcc bee pack -exr='^vendor|^ace.tar.bz2|^data.db|^build|^README.md|^docs' && \

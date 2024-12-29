@@ -69,44 +69,44 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Redirect Gateway</label> <strong><span style="color:#337ab7" title="&quot;redirect-gateway def1&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#redirect-gateway def1"</span>
+        <label for="name">Redirect Gateway</label> <!-- strong><span style="color:#337ab7" title="&quot;redirect-gateway def1&quot;">!</span></strong --><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#redirect-gateway def1"</span>
         <input type="text" class="form-control" id="RedirectGateway" name="RedirectGateway" placeholder="redirect-gateway def1"
           value="{{ .Settings.RedirectGateway }}">
           <span id="helpBlock" class="text-muted">Used to redirect all Client traffic via OpenVPN Server.</span>
       </div>
 
       <div class="form-group">
-        <label for="name">Resolv-retry</label> <strong><span style="color:#337ab7" title="&quot;resolv-retry infinite&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#resolv-retry infinite"</span>
+        <label for="name">Resolv-retry</label> <!--strong><span style="color:#337ab7" title="&quot;resolv-retry infinite&quot;">!</span></strong--><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#resolv-retry infinite"</span>
         <input type="text" class="form-control" id="ResolveRetry" name="ResolveRetry" placeholder="resolv-retry infinite"
           value="{{ .Settings.ResolveRetry }}"> 
       </div>
 
       <div class="form-group">
-        <label for="name">User</label> <span id="helpBlock" class="text-muted">(Non Windows Only)</span> <span style="color:#337ab7" title="&quot;nobody&quot;"><strong>!</strong></span>
+        <label for="name">User</label> <span id="helpBlock" class="text-muted">(Non Windows Only)</span> <!--span style="color:#337ab7" title="&quot;nobody&quot;"><strong>!</strong></span -->
         <input type="text" class="form-control" id="OVClientUser" name="OVClientUser" placeholder="nobody"
           value="{{ .Settings.OVClientUser }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Group</label> <span id="helpBlock" class="text-muted">(Non Windows Only)</span> <span style="color:#337ab7" title="&quot;nobody&quot;"><strong>!</strong></span>
+        <label for="name">Group</label> <span id="helpBlock" class="text-muted">(Non Windows Only)</span> <!--span style="color:#337ab7" title="&quot;nobody&quot;"><strong>!</strong></span -->
         <input type="text" class="form-control" id="OVClientGroup" name="OVClientGroup" placeholder="nogroup"
           value="{{ .Settings.OVClientGroup }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Persist-tun</label> <strong><span style="color:#337ab7" title="&quot;persist-tun&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#persist-tun"</span>
+        <label for="name">Persist-tun</label> <!--strong><span style="color:#337ab7" title="&quot;persist-tun&quot;">!</span></strong--><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#persist-tun"</span>
         <input type="text" class="form-control" id="PersistTun" name="PersistTun" placeholder="persist-tun"
           value="{{ .Settings.PersistTun }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Persist-key</label> <strong><span style="color:#337ab7" title="&quot;persist-key&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#persist-key"</span>
+        <label for="name">Persist-key</label> <!--strong><span style="color:#337ab7" title="&quot;persist-key&quot;">!</span></strong --><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#persist-key"</span>
         <input type="text" class="form-control" id="PersistKey" name="PersistKey" placeholder="persist-key"
           value="{{ .Settings.PersistKey }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Remote-cert-tls</label> <strong><span style="color:#337ab7" title="&quot;remote-cert-tls server&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#remote-cert-tls server"</span>
+        <label for="name">Remote-cert-tls</label> <!--strong><span style="color:#337ab7" title="&quot;remote-cert-tls server&quot;">!</span></strong --><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#remote-cert-tls server"</span>
         <input type="text" class="form-control" id="RemoteCertTLS" name="RemoteCertTLS" placeholder="remote-cert-tls server"
           value="{{ .Settings.RemoteCertTLS }}">
       </div>
@@ -124,19 +124,19 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Auth-nocache</label> <strong><span style="color:#337ab7" title="&quot;auth-nocache&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#auth-nocache"</span>
+        <label for="name">Auth-nocache</label> <!--strong><span style="color:#337ab7" title="&quot;auth-nocache&quot;">!</span></strong --><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#auth-nocache"</span>
         <input type="text" class="form-control" id="AuthNoCache" name="AuthNoCache" placeholder="auth-nocache"
           value="{{ .Settings.AuthNoCache }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Tls-client</label> <strong><span style="color:#337ab7" title="&quot;tls-client&quot;">!</span></strong><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#tls-client"</span>
+        <label for="name">Tls-client</label> <!--strong><span style="color:#337ab7" title="&quot;tls-client&quot;">!</span></strong --><span id="helpBlock" class="text-muted" style="font-size: 80%;"> Comment out this line if you don't need it: "#tls-client"</span>
         <input type="text" class="form-control" id="TlsClient" name="TlsClient" placeholder="tls-client"
           value="{{ .Settings.TlsClient }}">
       </div>
 
       <div class="form-group">
-        <label for="name">Client logs verbose level</label> <strong><span style="color:#337ab7" title="&quot;3&quot;">!</span></strong>
+        <label for="name">Client logs verbose level</label> <!--strong><span style="color:#337ab7" title="&quot;3&quot;">!</span></strong -->
         <input type="text" class="form-control" id="Verbose" name="Verbose" placeholder="3"
           value="{{ .Settings.Verbose }}">
           <span id="helpBlock" class="text-muted">From 0 to 4, where 0 is no logs, 4 - maximum verbose level.</span>
