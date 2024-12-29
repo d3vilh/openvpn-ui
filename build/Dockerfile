@@ -28,5 +28,6 @@ ADD openvpn-ui.tar.gz /opt/openvpn-ui/
 ADD qrencode /opt/scripts/qrencode
 RUN rm -f /opt/openvpn-ui/data.db
 ADD assets/app.conf /opt/openvpn-ui/conf/app.conf
+ADD assets/easyrsa-tools.lib /usr/share/easy-rsa/easyrsa-tools.lib
 
 CMD /opt/start.sh
