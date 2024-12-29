@@ -17,7 +17,7 @@ if [ "$ACTION" = "copy_vars" ]; then
   echo 'New vars applied.'
 fi
 
-if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt || ! -f $OPENVPN_DIR/pki/issued/server.crt || ! -f $OPENVPN_DIR/pki/dh.pem || ! -f $OPENVPN_DIR/pki/ta.key || ! -f $OPENVPN_DIR/pki/crl.pem || "$ACTION" = "init_all" || "$ACTION" = "gen_crl" ]] && ! [[ "$ACTION" = "copy_vars" ]]; then
+if [[ ! -f $EASY_RSA/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt || ! -f $OPENVPN_DIR/pki/issued/server.crt || ! -f $OPENVPN_DIR/pki/dh.pem || ! -f $OPENVPN_DIR/pki/ta.key || ! -f $OPENVPN_DIR/pki/crl.pem || "$ACTION" = "init_all" || "$ACTION" = "gen_crl" ]] && ! [[ "$ACTION" = "copy_vars" ]]; then
     export EASYRSA_BATCH=1 # see https://superuser.com/questions/1331293/easy-rsa-v3-execute-build-ca-and-gen-req-silently
 
     # Copy easy-rsa variables
@@ -26,7 +26,7 @@ if [[ ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf || ! -f $OPENVPN_DIR/pki/ca.crt 
     echo "Following EASYRSA variables will be used:"
     cat $EASY_RSA/pki/vars | awk '{$1=""; print $0}';
 
-  if [[ "$ACTION" = "init-pki" && ! -f $OPENVPN_DIR/pki/openssl-easyrsa.cnf ]]; then
+  if [[ "$ACTION" = "init-pki" && ! -f $EASY_RSA/openssl-easyrsa.cnf ]]; then
       # Building the CA with WA to avoid issues with .pki container volume which not possible to remove due to its origin
       echo 'Setting up public key infrastructure...'
       $EASY_RSA/easyrsa --pki-dir=$TEMP_PKI_DIR init-pki
