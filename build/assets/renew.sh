@@ -21,7 +21,7 @@ if [ -n "$1" ]; then
   # Renew certificate.
   echo "Renew certificate: $CERT_NAME with $TFA_NAME with localip: $CERT_IP and serial: $CERT_SERIAL"
   cd $EASY_RSA
-  ./easyrsa renew "$CERT_NAME" nopass  #as of now only nopass is supported
+  ./easyrsa renew "$CERT_NAME" # nopass  #as of now only nopass is supported
   
   # Fix for new /name in index.txt (adding name and ip to the last line)
   sed -i'.bak' "$ s/$/\/name=${CERT_NAME}\/LocalIP=${CERT_IP}\/2FAName=${TFA_NAME}/" $EASY_RSA/pki/index.txt
