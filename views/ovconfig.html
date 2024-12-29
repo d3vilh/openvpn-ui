@@ -78,7 +78,7 @@
       </div>
                         
       <div class="form-group">
-        <label for="name">Topology</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Topology</label> <!-- <strong><span style="color:#337ab7" title="New format in this version">!</span></strong> -->
         <input type="text" selector="vformdata" class="form-control" name="OVConfigTopology" id="OVConfigTopology" placeholder="subnet"
          value="{{ .Settings.OVConfigTopology }}">
         <span class="text-muted"> OpenVPN Topology. 
@@ -104,7 +104,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">User</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">User</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="OVConfigUser" id="OVConfigUser" placeholder="nobody"
          value="{{ .Settings.OVConfigUser }}">
         <span id="helpBlock" class="text-muted"> User OpenVPN Server will use (non-Windows only). 
@@ -112,7 +112,7 @@
      </div>
 
      <div class="form-group">
-        <label for="name">Group</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Group</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="OVConfigGroup" id="OVConfigGroup" placeholder="nogroup"
          value="{{ .Settings.OVConfigGroup }}">
         <span id="helpBlock" class="text-muted"> Group OpenVPN Server will use (non-Windows only). 
@@ -120,7 +120,7 @@
      </div>
 
      <div class="form-group">
-      <label for="name">Client-Config-Dir</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+      <label for="name">Client-Config-Dir</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
       <input type="text" class="form-control" name="OVConfigClientConfigDir" id="OVConfigClientConfigDir" placeholder="/etc/openvpn/staticclients"
        value="{{ .Settings.OVConfigClientConfigDir }}">
       <span id="helpBlock" class="text-muted"> Directory, which the OpenVPN server will scan on every incoming connection, searching for a client-specific configuration file. 
@@ -167,7 +167,7 @@
       </div>
                   
       <div class="form-group">
-       <label for="name">Crl-verify</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+       <label for="name">Crl-verify</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
        <input type="text" class="form-control" name="Crl" id="Crl" placeholder="pki/crl.pem"
         value="{{ .Settings.Crl }}">
        <span id="helpBlock" class="text-muted"> Certificate Revocation List file. 
@@ -186,7 +186,7 @@
       </div>
                
       <div class="form-group">
-        <label for="name">TLS-Crypt</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">TLS-Crypt</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="TLSControlChannel" id="TLSControlChannel" placeholder="tls-crypt pki/ta.key"
          value="{{ .Settings.TLSControlChannel }}">
         <span id="helpBlock" class="text-muted"> Key for TLS authentication and session encryption. Full format option (to disable - comment with #). 
@@ -195,7 +195,7 @@
       </div>
                 
       <div class="form-group">
-        <label for="name">TLS-Version-Min</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">TLS-Version-Min</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="TLSMinVersion" id="TLSMinVersion" placeholder="tls-version-min 1.2"
          value="{{ .Settings.TLSMinVersion }}">
         <span id="helpBlock" class="text-muted"> Sets the minimum TLS version to accept from the peer. Full format option (to disable - comment with #). 
@@ -204,7 +204,7 @@
       </div>
                  
       <div class="form-group">
-        <label for="name">Remote-Cert-TLS</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Remote-Cert-TLS</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="TLSRemoteCert" id="TLSRemoteCert" placeholder="remote-cert-tls client"
          value="{{ .Settings.TLSRemoteCert }}">
         <span id="helpBlock" class="text-muted"> Security option for clients, to ensure that the host they connect to is a designated server. Full format option (to disable - comment with #). 
@@ -222,7 +222,7 @@
       </div>
                 
       <div class="form-group">
-        <label for="name">Ncp-Ciphers</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Ncp-Ciphers</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="OVConfigNcpCiphers" id="OVConfigNcpCiphers" placeholder="AES-256-GCM:AES-192-GCM:AES-128-GCM"
          value="{{ .Settings.OVConfigNcpCiphers }}">
         <span id="helpBlock" class="text-muted"> The list of ciphers that the client can use. 
@@ -238,7 +238,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name" title="New format in this version">Server (Trusted VPN Subnet)</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name" title="New format in this version">Server (Trusted VPN Subnet)</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" selector="vformdata" class="form-control" name="Server" id="Server" placeholder="server 10.0.70.0 255.255.255.0"
          value="{{ .Settings.Server }}">
         <span id="helpBlock" class="text-muted"> In Server mode supplys a Trusted VPN subnet for OpenVPN clients 
@@ -248,7 +248,7 @@
      </div>
 
       <div class="form-group">
-        <label for="name">Route (Guest VPN subnet)</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Route (Guest VPN subnet)</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" selector="vformdata" class="form-control" name="Route" id="Route" placeholder="route 10.0.71.0 255.255.255.0"
           value="{{ .Settings.Route }}">
         <span id="helpBlock" class="text-muted">Used to route (&quot;route [Guest subnet]&quot;) for Guest Network to for &quot;VLAN2&quot; (Guest Users) subnet clients. 
@@ -257,7 +257,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Push Route (Your Home subnet)</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Push Route (Your Home subnet)</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" selector="vformdata" class="form-control" name="PushRoute" id="PushRoute" placeholder="push &quot;route 10.0.60.0 255.255.255.0&quot;"
           value="{{ .Settings.PushRoute }}">
         <span id="helpBlock" class="text-muted">Used to push route for Home Network to &quot;VLAN1&quot; (Trusted VPN) subnet clients.
@@ -266,7 +266,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Push DHCP (DNS Server 1)</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Push DHCP (DNS Server 1)</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" selector="vformdata" class="form-control" name="DNSServer1" id="DNSServer1" placeholder="push &quot;dhcp-option DNS 8.8.8.8&quot;"
           value="{{ .Settings.DNSServer1 }}">
         <span class="text-muted">DNS Server 1 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.
@@ -275,7 +275,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Push DHCP (DNS Server 2)</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Push DHCP (DNS Server 2)</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" selector="vformdata" class="form-control" name="DNSServer2" id="DNSServer2" placeholder="push &quot;dhcp-option DNS 1.0.0.1&quot;"
           value="{{ .Settings.DNSServer2 }}">
         <span class="text-muted">DNS Server 2 configuration for connected Clients. For 'push "dhcp-option DNS [IP of DNS Server]"' configuration.
@@ -284,7 +284,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Push Redirect-gateway</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+        <label for="name">Push Redirect-gateway</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
         <input type="text" class="form-control" name="RedirectGW" id="RedirectGW" placeholder="push &quot;redirect-gateway def1 bypass-dhcp&quot;"
           value="{{ .Settings.RedirectGW }}">
         <span class="text-muted"> When this option uncommented, the OpenVPN server push a default route to the client, which tells client to 
@@ -293,7 +293,7 @@
       </div>
 
       <div class="form-group">
-         <label for="name">OpenVPN Server Logfile</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">OpenVPN Server Logfile</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <input type="text" class="form-control" name="OVConfigLogfile" id="OVConfigLogfile" placeholder="/var/log/openvpn/openvpn.log"
           value="{{ .Settings.OVConfigLogfile }}">
         <span id="helpBlock" class="text-muted"> This option is used to define the file where OpenVPN Server will save log messages. 
@@ -302,7 +302,7 @@
       </div>
 
       <div class="form-group">
-         <label for="name">OpenVPN Server Logging verbose level</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">OpenVPN Server Logging verbose level</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <input type="text" class="form-control" id="OVConfigLogVerbose" name="OVConfigLogVerbose" placeholder="3"
           value="{{ .Settings.OVConfigLogVerbose }}">
           <span id="helpBlock" class="text-muted"> This option is used to set the verbosity level of log messages generated by the OpenVPN server (0 to 4)
@@ -311,7 +311,7 @@
       </div>
 
       <div class="form-group">
-         <label for="name">OpenVPN Server Status Log file</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">OpenVPN Server Status Log file</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <input type="text" class="form-control" name="OVConfigStatusLog" id="OVConfigStatusLog" placeholder="/var/log/openvpn/openvpn-status.log"
           value="{{ .Settings.OVConfigStatusLog }}">
          <span id="helpBlock" class="text-muted"> This option is used to set the file where OpenVPN Server will report status.
@@ -320,7 +320,7 @@
       </div>
 
       <div class="form-group">
-         <label for="name">OpenVPN Server Status Logging version</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">OpenVPN Server Status Logging version</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <input type="text" class="form-control" name="OVConfigStatusLogVersion" id="OVConfigStatusLogVersion" placeholder="2"
           value="{{ .Settings.OVConfigStatusLogVersion }}">
          <span id="helpBlock" class="text-muted"> This option is used to set the version of OpenVPN Status report file. Used for openvpn-exporters. 
@@ -349,21 +349,21 @@
       </div>
 
       <div class="form-group">
-         <label for="name">Custom Option One</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">Custom Option One</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <input type="text" class="form-control" name="CustomOptOne" id="CustomOptOne" placeholder="#Custom Option One"
           value="{{ .Settings.CustomOptOne }}">
          <span id="helpBlock" class="text-muted"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
       </div>
 
       <div class="form-group">
-         <label for="name">Custom Option Two</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">Custom Option Two</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <textarea class="form-control" name="CustomOptTwo" id="CustomOptTwo" placeholder="#Custom Option Two" 
          rows="2">{{ .Settings.CustomOptTwo }}</textarea>
          <span id="helpBlock" class="text-muted"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
       </div>
 
       <div class="form-group">
-         <label for="name">Custom Option Three</label> <strong><span style="color:#337ab7" title="New format in this version">!</span></strong>
+         <label for="name">Custom Option Three</label> <!-- strong><span style="color:#337ab7" title="New format in this version">!</span></strong -->
          <textarea class="form-control" name="CustomOptThree" id="CustomOptThree" placeholder="#Custom Option Three" 
          rows="3">{{ .Settings.CustomOptThree }}</textarea>
          <span id="helpBlock" class="text-muted"> Custom Option for Server.conf. Literally anything. Full format option (to disable - comment with #) </span>
