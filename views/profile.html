@@ -108,8 +108,8 @@
 
             <div class="custom-control custom-checkbox form-group {{if field_error_exist .validation "IsAdmin" }}has-error{{end}}">
               <input class="custom-control-input custom-control-input-danger" type="checkbox" id="isadmin" name="IsAdmin">
-              <label for="isadmin" class="custom-control-label" style="color: #dd4b39;">Is user Admin?</label> <span class="text-muted"> 
-                &nbsp; For regular users Configuration and User management is not accessible. They can only maintain Certificates, view Logs and Connections.</span>
+              <label for="isadmin" class="custom-control-label" style="color: #dd4b39;">This user is Admin.</label> <span class="text-muted"> 
+                &nbsp; Not Admins can maintain Certificates, view Logs and Connections. Server configuration and User management is not accessible.</span>
             </div>
 
             <div class="form-group {{if field_error_exist .validation "NewName" }}has-error{{end}}">
@@ -135,22 +135,22 @@
             </div>
 
             <div class="form-group {{if field_error_exist .validation "NewPassword" }}has-error{{end}}">
-              <label class="col-form-label" for="newpassword">Repeat password</label>
+              <label class="col-form-label" for="newpassword">Enter user password</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fas fa-lock"></i></span>
                 </div>
-                <input type="password" class="form-control" id="newpassword" name="NewPassword" placeholder="Repeat password">
+                <input type="password" class="form-control" id="newpassword" name="NewPassword" placeholder="Enter new user password">
                 <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewPassword" }}</span>
               </div>
             </div>
             <div class="form-group {{if field_error_exist .validation "NewRepassword" }}has-error{{end}}">
-              <label class="col-form-label" for="newrepassword">Repeat password</label>
+              <label class="col-form-label" for="newrepassword">Repeat user password</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fas fa-lock"></i></span>
                 </div>
-                <input type="password" class="form-control" id="newrepassword" name="NewRepassword" placeholder="Repeat password">
+                <input type="password" class="form-control" id="newrepassword" name="NewRepassword" placeholder="Repeat new user password">
                 <span class="text-muted"> {{template "common/fvalid.html" field_error_message .validation "NewRepassword" }}</span>
               </div>
             </div>
