@@ -1,6 +1,8 @@
 # armv5l raspberry pi 1/zero 32bit: FROM arm32v5/debian:stable-slim, armv7l raspberry pi 2/3/4 32bit: FROM arm32v7/debian:stable-slim
 # AMD64 64bit: FROM debian:stable-slim, arm64v8 64bit: FROM arm64v8/debian:stable-slim
 
+# LINE 33 is WA for current version of easy-rsa, it will be removed in future!! 
+
 FROM DEFINE-YOUR-ARCH
 LABEL maintainer="Mr.Philipp <d3vilh@github.com>"
 LABEL version="0.9.5.6"
