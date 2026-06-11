@@ -49,6 +49,11 @@ func Init(configDir string) {
 				&controllers.APISignalController{},
 			),
 		),
+		web.NSNamespace("/certificates",
+			web.NSInclude(
+				&controllers.APICertificatesController{ConfigDir: configDir},
+			),
+		),
 	)
 	web.AddNamespace(ns)
 }
