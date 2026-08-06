@@ -6,6 +6,46 @@ import (
 
 func init() {
 
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"],
+			web.ControllerComments{
+				Method:           "Get",
+				Router:           `/:name`,
+				AllowHTTPMethods: []string{"get"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"],
+			web.ControllerComments{
+				Method:           "Create",
+				Router:           `/`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"],
+			web.ControllerComments{
+				Method:           "Renew",
+				Router:           `/:name/renew`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"],
+			web.ControllerComments{
+				Method:           "Revoke",
+				Router:           `/:name/revoke`,
+				AllowHTTPMethods: []string{"post"},
+				Params:           nil})
+
+	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"] =
+		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APICertificatesController"],
+			web.ControllerComments{
+				Method:           "Delete",
+				Router:           `/:name`,
+				AllowHTTPMethods: []string{"delete"},
+				Params:           nil})
+
 	web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APISessionController"] =
 		append(web.GlobalControllerRouter["github.com/d3vilh/openvpn-ui/controllers:APISessionController"],
 			web.ControllerComments{

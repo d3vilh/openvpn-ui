@@ -115,6 +115,52 @@ func trim(s string) string {
 	return strings.Trim(strings.Trim(s, "\r\n"), "\n")
 }
 
+func certIndexPath() string {
+	return state.GlobalCfg.OVConfigPath + "/pki/index.txt"
+}
+
+// FindActiveCertByName returns the latest valid certificate for name.
+func FindActiveCertByName(name string) (*Cert, error) {
+	certs, err := ReadCerts(certIndexPath())
+	if err != nil {
+		return nil, err
+	}
+	var found *Cert
+	for _, cert := range certs {
+		if cert.Details == nil || cert.Details.Name != name {
+			continue
+		}
+		if cert.EntryType == "V" && cert.Revocation == "" {
+			found = cert
+		}
+	}
+	if found == nil {
+		return nil, fmt.Errorf("active certificate for %q not found", name)
+	}
+	return found, nil
+}
+
+// FindRevokedCertByName returns the latest revoked certificate for name.
+func FindRevokedCertByName(name string) (*Cert, error) {
+	certs, err := ReadCerts(certIndexPath())
+	if err != nil {
+		return nil, err
+	}
+	var found *Cert
+	for _, cert := range certs {
+		if cert.Details == nil || cert.Details.Name != name {
+			continue
+		}
+		if cert.EntryType == "R" || cert.Revocation != "" {
+			found = cert
+		}
+	}
+	if found == nil {
+		return nil, fmt.Errorf("revoked certificate for %q not found", name)
+	}
+	return found, nil
+}
+
 func CreateCertificate(name string, staticip string, passphrase string, expiredays string, email string, country string, province string, city string, org string, orgunit string, tfaname string, tfaissuer string) error {
 	logs.Info("Lib: Creating certificate with parameters: name=%s, staticip=%s, passphrase=%s, expiredays=%s, email=%s, country=%s, province=%s, city=%s, org=%s, orgunit=%s, tfaname=%s, tfaissuer=%s", name, staticip, passphrase, expiredays, email, country, province, city, org, orgunit, tfaname, tfaissuer)
 	path := state.GlobalCfg.OVConfigPath + "/pki/index.txt"
