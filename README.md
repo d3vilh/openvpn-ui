@@ -161,7 +161,7 @@ sudo docker compose -f docker-compose.yml up -d
 
 **Where:** 
 * `TRUST_SUB` is Trusted subnet, from which OpenVPN server will assign IPs to trusted clients (default subnet for all clients)
-* `GUEST_SUB` is Gusets subnet for clients with internet access only
+* `GUEST_SUB` is Guest subnet for clients with internet access only
 * `HOME_SUB` is subnet where the VPN server is located, thru which you get internet access to the clients with MASQUERADE
 * `fw-rules.sh` is bash file with additional firewall rules you would like to apply during container start
 
