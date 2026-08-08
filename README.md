@@ -154,6 +154,7 @@ wget https://raw.githubusercontent.com/d3vilh/openvpn-server/refs/heads/main/ser
 wget https://raw.githubusercontent.com/d3vilh/openvpn-server/refs/heads/main/config/easy-rsa.vars -O config/easy-rsa.vars
 wget https://raw.githubusercontent.com/d3vilh/openvpn-server/refs/heads/main/config/client.conf -O config/client.conf
 echo "" > ./fw-rules.sh
+chmod +x ./fw-rules.sh
 
 sudo docker compose -f docker-compose.yml up -d
 ```
